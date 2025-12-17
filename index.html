@@ -2,9 +2,8 @@
 <html lang="sq">
 <head>
 <meta charset="UTF-8">
-<title>POS Market – FINAL HTTPS</title>
+<title>POS Market – FINAL STABLE (FIXED)</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
 body{margin:0;font-family:Segoe UI;background:#eef2f7}
 header{background:#1e293b;color:#fff;padding:12px}
@@ -20,14 +19,11 @@ table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{padding:6px;border-bottom:1px solid #e5e7eb;text-align:center}
 th{background:#f1f5f9}
 .admin{display:none}
-#scanner{width:100%;height:260px;background:#000;border-radius:12px}
+.qtyBtn{padding:4px 8px}
 </style>
-
 <script src="https://unpkg.com/@ericblade/quagga2/dist/quagga.js"></script>
 </head>
-
 <body>
-
 <header>
 <h2>🛒 POS Market</h2>
 <nav id="menu" style="display:none">
@@ -38,48 +34,35 @@ th{background:#f1f5f9}
 </nav>
 </header>
 
-<!-- LOGIN -->
 <section id="loginSec" class="active">
 <div class="card">
 <h3>Login</h3>
-<input id="u" placeholder="admin">
-<input id="p" type="password" placeholder="admin">
+<input id="u" placeholder="user">
+<input id="p" type="password" placeholder="pass">
 <button onclick="doLogin()">Login</button>
 <p id="msg" style="color:red"></p>
 </div>
 </section>
 
-<!-- STOK -->
 <section id="stock">
 <div class="card admin">
-<h3>Shto Produkt</h3>
+<h3>Shto / Edito Produkt</h3>
 <input id="sn" placeholder="Emri">
 <input id="sb" placeholder="Barkod">
 <input id="sp" type="number" placeholder="Çmimi">
 <input id="ss" type="number" placeholder="Sasia">
-<br>
 <button onclick="addProd()">➕ Shto</button>
-<button class="alt" onclick="startScan('stock')">📷 Scan Barkod</button>
+<button class="alt" onclick="openCam('stock')">📷 Kamera</button>
 </div>
-
-<div class="card">
-<div id="scanner"></div>
-<button class="warn" onclick="stopScan()">❌ Mbyll Kamerën</button>
-</div>
-
-<div class="card">
-<table id="stockTable"></table>
-</div>
+<div class="card"><table id="stockTable"></table></div>
 </section>
 
-<!-- SHITJE -->
 <section id="sale">
 <div class="card">
-<input id="scan" placeholder="Scan barkod / USB">
-<button class="alt" onclick="startScan('sale')">📷 Kamera</button>
+<input id="scan" placeholder="Scan barkod / USB" autofocus>
+<button class="alt" onclick="openCam('sale')">📷 Kamera</button>
 <button onclick="addSale()">Shto</button>
 </div>
-
 <div class="card">
 <table id="saleTable"></table>
 <h3>Total: <span id="total">0</span> ALL</h3>
@@ -89,82 +72,150 @@ th{background:#f1f5f9}
 </div>
 </section>
 
-<!-- BILANC -->
 <section id="bil" class="admin">
 <div class="card">
-<h3>📊 Bilanc</h3>
-<p>Shitje: <b><span id="daily">0</span> ALL</b></p>
-<input id="cashReal" type="number" placeholder="Para reale">
-<p>Diferenca: <b><span id="diff">0</span></b></p>
+<h3>📊 Bilanc Ditor</h3>
+<p>Shitje sistem: <b><span id="daily">0</span> ALL</b></p>
+<input id="cashReal" type="number" placeholder="Para reale në arkë">
+<p>Diferenca: <b><span id="diff">0</span> ALL</b></p>
 <button onclick="closeDay()">Mbyll Ditën</button>
 </div>
 </section>
 
+<div id="camModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999">
+<div class="card" style="max-width:420px;margin:40px auto">
+<div id="scanner" style="height:260px"></div>
+<button class="warn" onclick="closeCam()">Mbyll Kamerën</button>
+</div>
+</div>
+
 <script>
+// ===== USERS =====
 const USERS=[{u:'admin',p:'admin',r:'admin'},{u:'kasier',p:'kasier',r:'kasier'}];
 let role=null;
+
+// ===== DATA =====
 let products=JSON.parse(localStorage.getItem('products')||'[]');
 let sales=[];
-let daily=+localStorage.getItem('daily')||0;
-let scanTarget='sale';
+let dailyValue=Number(localStorage.getItem('daily')||0);
 
-/* LOGIN */
+// ===== LOGIN =====
 function doLogin(){
  const f=USERS.find(x=>x.u===u.value&&x.p===p.value);
- if(!f){msg.textContent='Login gabim';return}
- role=f.r;loginSec.style.display='none';menu.style.display='block';
+ if(!f){msg.textContent='Login gabim';return;}
+ role=f.r;
+ loginSec.style.display='none';
+ menu.style.display='block';
  document.querySelectorAll('.admin').forEach(e=>e.style.display=role==='admin'?'block':'none');
- openSec('sale');renderStock();updateDaily();
+ openSec('sale');
+ renderStock();
+ updateDaily();
 }
-function logout(){location.reload()}
-function openSec(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active')}
+function logout(){location.reload();}
+function openSec(id){document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
 
-/* STOK */
-function addProd(){products.push({n:sn.value,b:sb.value,p:+sp.value,s:+ss.value});save()}
+// ===== STOK =====
+function addProd(){
+ if(!sn.value||!sb.value)return alert('Plotëso të dhënat');
+ products.push({n:sn.value,b:sb.value,p:+sp.value||0,s:+ss.value||0});
+ sn.value=sb.value=sp.value=ss.value='';
+ save();
+}
 function renderStock(){
- stockTable.innerHTML='<tr><th>Emër</th><th>Barkod</th><th>Çmim</th><th>Sasi</th></tr>';
- products.forEach(p=>stockTable.innerHTML+=`<tr><td>${p.n}</td><td>${p.b}</td><td>${p.p}</td><td>${p.s}</td></tr>`);
+ stockTable.innerHTML='<tr><th>Emër</th><th>Barkod</th><th>Çmim</th><th>Stok</th><th>🗑️</th></tr>';
+ products.forEach((p,i)=>{
+  stockTable.innerHTML+=`<tr>
+   <td><input value="${p.n}" onchange="products[${i}].n=this.value;save()"></td>
+   <td><input value="${p.b}" onchange="products[${i}].b=this.value;save()"></td>
+   <td><input type="number" value="${p.p}" onchange="products[${i}].p=+this.value;save()"></td>
+   <td><input type="number" value="${p.s}" onchange="products[${i}].s=+this.value;save()"></td>
+   <td><button onclick="products.splice(${i},1);save()">🗑️</button></td>
+  </tr>`;
+ });
 }
 
-/* SHITJE */
+// ===== SHITJE =====
+scan.addEventListener('keydown',e=>{if(e.key==='Enter')addSale();});
 function addSale(){
- const v=scan.value.trim();
- const p=products.find(x=>x.b===v);
- if(!p||p.s<1)return alert('Ska stok');
- sales.push({n:p.n,b:p.b,p:p.p,q:1});drawSale();scan.value='';
+ const v=scan.value.trim().toLowerCase();
+ if(!v)return;
+ const p=products.find(x=>x.b===v||x.n.toLowerCase().includes(v));
+ if(!p||p.s<1)return alert('Nuk ka stok');
+ let s=sales.find(x=>x.b===p.b);
+ if(s){if(s.q<p.s)s.q++;}
+ else sales.push({b:p.b,n:p.n,p:p.p,q:1});
+ scan.value='';
+ drawSale();
 }
 function drawSale(){
- saleTable.innerHTML='<tr><th>Produkt</th><th>Sasi</th><th>Total</th></tr>';
- let t=0;
- sales.forEach(x=>{t+=x.p*x.q;saleTable.innerHTML+=`<tr><td>${x.n}</td><td>${x.q}</td><td>${x.p*x.q}</td></tr>`});
- total.textContent=t;change.textContent=(+paid.value||0)-t;
+ saleTable.innerHTML='<tr><th>Produkt</th><th>Sasi</th><th>Çmim</th><th>Total</th><th>🗑️</th></tr>';
+ sales.forEach((x,i)=>{
+  saleTable.innerHTML+=`<tr>
+   <td>${x.n}</td>
+   <td><button class="qtyBtn" onclick="chg(${i},-1)">➖</button>${x.q}<button class="qtyBtn" onclick="chg(${i},1)">➕</button></td>
+   <td><input type="number" value="${x.p}" onchange="sales[${i}].p=+this.value;drawSale()"></td>
+   <td>${x.q*x.p}</td>
+   <td><button onclick="sales.splice(${i},1);drawSale()">🗑️</button></td>
+  </tr>`;
+ });
+ recalc();
+}
+function chg(i,d){
+ const pr=products.find(p=>p.b===sales[i].b);
+ sales[i].q=Math.max(1,Math.min(pr.s,sales[i].q+d));
+ drawSale();
+}
+function recalc(){
+ let t=0; sales.forEach(x=>t+=x.q*x.p);
+ total.textContent=t;
+ change.textContent=(+paid.value||0)-t;
+}
+paid.oninput=recalc;
+function pay(){
+ const t=+total.textContent;
+ if(t<1)return;
+ if(+paid.value<t)return alert('Mungojnë para');
+ sales.forEach(x=>products.find(p=>p.b===x.b).s-=x.q);
+ dailyValue+=t;
+ localStorage.setItem('daily',dailyValue);
+ sales=[]; saleTable.innerHTML='';
+ total.textContent=paid.value=change.textContent=0;
+ save(); updateDaily();
 }
 
-/* CAMERA */
-function startScan(target){
- scanTarget=target;
+// ===== BILANC FIX =====
+function updateDaily(){document.getElementById('daily').textContent=dailyValue;}
+cashReal.oninput=()=>{
+ const diffVal=(+cashReal.value||0)-dailyValue;
+ diff.textContent=diffVal;
+ diff.style.color=diffVal<0?'red':'green';
+};
+function closeDay(){
+ alert(`Shitje sistem: ${dailyValue} ALL`);
+ dailyValue=0;
+ localStorage.setItem('daily',0);
+ cashReal.value=''; diff.textContent='0'; updateDaily();
+}
+
+// ===== CAMERA =====
+let scanTarget=null;
+function openCam(t){
+ scanTarget=t;
+ camModal.style.display='block';
  Quagga.init({
-  inputStream:{name:"Live",type:"LiveStream",target:document.querySelector('#scanner'),
-  constraints:{facingMode:"environment"}},
-  decoder:{readers:["ean_reader","code_128_reader","ean_8_reader"]}
- },err=>{
-  if(err){alert('Kamera nuk u hap');return}
-  Quagga.start();
- });
+  inputStream:{type:'LiveStream',target:document.querySelector('#scanner'),constraints:{facingMode:'environment'}},
+  decoder:{readers:['ean_reader','ean_8_reader','code_128_reader']}
+ },err=>{if(err)return alert('Nuk hapet kamera');Quagga.start();});
  Quagga.onDetected(d=>{
   const code=d.codeResult.code;
-  if(scanTarget==='stock')sb.value=code;
-  else{scan.value=code;addSale();}
-  stopScan();
+  if(scanTarget==='stock')sb.value=code; else{scan.value=code; addSale();}
+  closeCam();
  });
 }
-function stopScan(){Quagga.stop();document.getElementById('scanner').innerHTML=''}
+function closeCam(){Quagga.stop();camModal.style.display='none';}
 
-/* BILANC */
-function updateDaily(){dailyEl.textContent=daily}
-cashReal.oninput=()=>{const d=(+cashReal.value||0)-daily;diff.textContent=d;diff.style.color=d<0?'red':'green'}
-function closeDay(){daily=0;localStorage.setItem('daily',0);updateDaily()}
+// ===== SAVE =====
+function save(){localStorage.setItem('products',JSON.stringify(products));renderStock();}
 </script>
-
 </body>
 </html>
