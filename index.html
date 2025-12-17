@@ -2,37 +2,35 @@
 <html lang="sq">
 <head>
 <meta charset="UTF-8">
-<title>POS Market – FINAL ABSOLUT</title>
-
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
+<title>POS Market – FINAL STABLE</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{margin:0;font-family:Segoe UI;background:#eef2f7}
-header{background:#1e293b;color:#fff;padding:15px}
+header{background:#1e293b;color:#fff;padding:12px}
 nav button{margin:4px;padding:10px;border:none;border-radius:10px;background:#334155;color:#fff}
 section{display:none;padding:15px}
 section.active{display:block}
 .card{background:#fff;padding:15px;border-radius:14px;margin-bottom:12px;box-shadow:0 8px 18px rgba(0,0,0,.1)}
 input,button{padding:8px;border-radius:8px;border:1px solid #cbd5f5}
 button{background:#2563eb;color:#fff;font-weight:600;margin:3px}
+button.alt{background:#0f766e}
+button.warn{background:#b91c1c}
 table{width:100%;border-collapse:collapse;margin-top:10px}
 th,td{padding:6px;border-bottom:1px solid #e5e7eb;text-align:center}
 th{background:#f1f5f9}
 .admin{display:none}
 .qtyBtn{padding:4px 8px}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999}
-.modal-content{background:#fff;margin:80px auto;padding:15px;width:95%;max-width:420px;border-radius:14px}
+video{width:100%;max-height:220px;border-radius:12px;background:#000}
 </style>
-
-<script src="https://unpkg.com/@ericblade/quagga2/dist/quagga.js"></script>
 </head>
+
 <body>
 
 <header>
 <h2>🛒 POS Market</h2>
 <nav id="menu" style="display:none">
-<button onclick="openSec('prod')" class="admin">Stok</button>
+<button onclick="openSec('stock')" class="admin">Stok</button>
 <button onclick="openSec('sale')">Shitje</button>
 <button onclick="openSec('bil')" class="admin">Bilanc</button>
 <button onclick="logout()">Dil</button>
@@ -43,221 +41,224 @@ th{background:#f1f5f9}
 <section id="loginSec" class="active">
 <div class="card">
 <h3>Login</h3>
-<input id="u" placeholder="User">
-<input id="p" type="password">
-<button onclick="doLogin()">Hyr</button>
+<input id="u" placeholder="user">
+<input id="p" type="password" placeholder="pass">
+<button onclick="doLogin()">Login</button>
 <p id="msg" style="color:red"></p>
 </div>
 </section>
 
 <!-- STOK -->
-<section id="prod">
+<section id="stock">
 <div class="card admin">
 <h3>Shto Produkt</h3>
-<input id="pn" placeholder="Emri">
-<input id="pb" placeholder="Barkodi">
-<input id="pp" type="number" placeholder="Çmimi">
-<input id="ps" type="number" placeholder="Sasia">
-<button onclick="addProduct()">➕ Shto</button>
-<button onclick="openCam('stock','environment')">📷 Mbrapa</button>
-<button onclick="openCam('stock','user')">🤳 Para</button>
+<input id="sn" placeholder="Emri">
+<input id="sb" placeholder="Barkod">
+<input id="sp" type="number" placeholder="Çmimi">
+<input id="ss" type="number" placeholder="Sasia">
+<button onclick="addProd()">➕ Shto</button>
 </div>
-<table id="prodTable"></table>
+
+<div class="card">
+<table id="stockTable"></table>
+</div>
 </section>
 
 <!-- SHITJE -->
 <section id="sale">
 <div class="card">
-<input id="saleScan" placeholder="Emër / Barkod / Scan USB" autofocus>
-<button onclick="manualAdd()">➕ Shto</button>
-<button onclick="openCam('sale','environment')">📷 Mbrapa</button>
-<button onclick="openCam('sale','user')">🤳 Para</button>
+<input id="scan" placeholder="Scan barkod / emër (USB punon direkt)" autofocus>
+<button class="alt" onclick="startCam()">📷 Kamera</button>
+<button onclick="addSale()">Shto</button>
+</div>
+
+<div class="card" id="camBox" style="display:none">
+<video id="video" autoplay></video>
+<button class="warn" onclick="stopCam()">Mbyll Kamerën</button>
 </div>
 
 <div class="card">
 <table id="saleTable"></table>
-<h3>Total: <span id="tot">0</span> ALL</h3>
-<input id="paid" type="number" placeholder="Lekë nga klienti">
-<h3>Kusur / Mungesë: <span id="change">0</span></h3>
+<h3>Total: <span id="total">0</span> ALL</h3>
+<input id="paid" type="number" placeholder="Paguar">
+<h3>Kusur: <span id="change">0</span></h3>
 <button onclick="pay()">Paguaj</button>
-<button onclick="cancel()">Anulo</button>
 </div>
 </section>
 
 <!-- BILANC -->
 <section id="bil" class="admin">
 <div class="card">
-<h3>Bilanci Ditor</h3>
-<p>Sistemi: <b><span id="daily">0</span> ALL</b></p>
-<input id="cashReal" type="number" placeholder="Shuma reale në arkë">
-<p>Diferenca: <b><span id="diff">0</span></b></p>
+<h3>📊 Bilanc Ditor</h3>
+<p>Shitje sipas sistemit: <b><span id="daily">0</span> ALL</b></p>
+<input id="cashReal" type="number" placeholder="Para reale në arkë">
+<p>Diferenca: <b><span id="diff">0</span> ALL</b></p>
 <button onclick="closeDay()">Mbyll Ditën</button>
 </div>
 </section>
 
-<!-- CAMERA -->
-<div class="modal" id="cam">
-<div class="modal-content">
-<h3>Scan Barcode</h3>
-<div id="scanner" style="height:260px"></div>
-<button onclick="stopCam()">Mbyll</button>
-</div>
-</div>
-
 <script>
-/* USERS */
-const users=[{u:'admin',p:'admin',r:'admin'},{u:'kasier',p:'kasier',r:'kasier'}];
-let role=null, scanTarget=null, scanLock=false, camMode='environment';
+// ================= USERS =================
+const USERS=[
+ {u:'admin',p:'admin',r:'admin'},
+ {u:'kasier',p:'kasier',r:'kasier'}
+];
 
-let products=JSON.parse(localStorage.getItem('p')||'[]');
+let role=null;
+let products=JSON.parse(localStorage.getItem('products')||'[]');
 let sales=[];
 let daily=+localStorage.getItem('daily')||0;
 
-/* LOGIN */
+// ================= LOGIN =================
 function doLogin(){
-let f=users.find(x=>x.u===u.value&&x.p===p.value);
-if(!f)return msg.textContent='Gabim login';
-role=f.r;
-loginSec.style.display='none';
-menu.style.display='block';
-document.querySelectorAll('.admin').forEach(e=>e.style.display=role==='admin'?'block':'none');
-openSec('sale'); renderProducts(); updateDaily();
+ const f=USERS.find(x=>x.u===u.value&&x.p===p.value);
+ if(!f){msg.textContent='Login gabim';return;}
+ role=f.r;
+ loginSec.style.display='none';
+ menu.style.display='block';
+ document.querySelectorAll('.admin')
+  .forEach(e=>e.style.display=role==='admin'?'block':'none');
+ openSec('sale');
+ renderStock();updateDaily();
 }
 function logout(){location.reload();}
 function openSec(id){
-document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
-document.getElementById(id).classList.add('active');
+ document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
 }
 
-/* STOK */
-function addProduct(){
-products.push({n:pn.value,b:pb.value,p:+pp.value,s:+ps.value});
-store();
-pn.value=pb.value=pp.value=ps.value='';
+// ================= STOK =================
+function addProd(){
+ if(!sn.value||!sb.value)return alert('Plotëso të dhënat');
+ products.push({n:sn.value,b:sb.value,p:+sp.value||0,s:+ss.value||0});
+ save();sn.value=sb.value=sp.value=ss.value='';
 }
-function renderProducts(){
-prodTable.innerHTML='<tr><th>Emër</th><th>Barkod</th><th>Çmim</th><th>Stok</th><th>❌</th></tr>';
-products.forEach((p,i)=>{
-prodTable.innerHTML+=`
-<tr>
-<td><input value="${p.n}" onchange="products[${i}].n=this.value;store()"></td>
-<td><input value="${p.b}" onchange="products[${i}].b=this.value;store()"></td>
-<td><input type="number" value="${p.p}" onchange="products[${i}].p=+this.value;store()"></td>
-<td><input type="number" value="${p.s}" onchange="products[${i}].s=+this.value;store()"></td>
-<td><button onclick="products.splice(${i},1);store()">🗑️</button></td>
-</tr>`;
-});
+function deleteStock(i){
+ if(confirm('Fshi produktin nga stoku?')){
+  products.splice(i,1);save();
+ }
+}
+function renderStock(){
+ stockTable.innerHTML='<tr><th>Emër</th><th>Barkod</th><th>Çmim</th><th>Stok</th><th>🗑️</th></tr>';
+ products.forEach((p,i)=>{
+  stockTable.innerHTML+=`
+  <tr>
+   <td>${p.n}</td>
+   <td>${p.b}</td>
+   <td>${p.p}</td>
+   <td>${p.s}</td>
+   <td><button onclick="deleteStock(${i})">🗑️</button></td>
+  </tr>`;
+ });
 }
 
-/* SHITJE */
-function addToSale(p){
-if(p.s<1)return alert('Stoku = 0');
-let s=sales.find(x=>x.b===p.b);
-if(s){ if(s.q+1>p.s)return; s.q++; }
-else sales.push({b:p.b,n:p.n,p:p.p,q:1});
-drawSale();
-}
-function manualAdd(){
-let v=saleScan.value.trim().toLowerCase();
-let p=products.find(x=>x.b===v||x.n.toLowerCase().includes(v));
-if(!p)return alert('Nuk u gjet');
-addToSale(p); saleScan.value='';
-}
-saleScan.addEventListener('keydown',e=>{if(e.key==='Enter')manualAdd();});
+// ================= SHITJE =================
+scan.addEventListener('keydown',e=>{if(e.key==='Enter')addSale();});
 
-/* SHITJE + LLOGARITJE */
+function addSale(){
+ const v=scan.value.trim().toLowerCase();
+ if(!v)return;
+ const p=products.find(x=>x.b===v||x.n.toLowerCase().includes(v));
+ if(!p||p.s<1)return alert('Nuk ka stok');
+ let s=sales.find(x=>x.b===p.b);
+ if(s){if(s.q<p.s)s.q++;}
+ else sales.push({b:p.b,n:p.n,p:p.p,q:1});
+ drawSale();scan.value='';
+}
+
 function drawSale(){
-saleTable.innerHTML='<tr><th>Produkt</th><th>Sasi</th><th>Total</th><th></th></tr>';
-sales.forEach((x,i)=>{
-saleTable.innerHTML+=`
-<tr>
-<td>${x.n}</td>
-<td>
-<button class="qtyBtn" onclick="x.q--; if(x.q<1)sales.splice(${i},1); drawSale()">➖</button>
-${x.q}
-<button class="qtyBtn" onclick="if(x.q<products.find(p=>p.b===x.b).s)x.q++; drawSale()">➕</button>
-</td>
-<td>${x.q*x.p}</td>
-<td><button onclick="sales.splice(${i},1);drawSale()">🗑️</button></td>
-</tr>`;
-});
-recalc();
+ saleTable.innerHTML='<tr><th>Produkt</th><th>Sasi</th><th>Stok</th><th>Total</th><th>🗑️</th></tr>';
+ sales.forEach((x,i)=>{
+  const pr=products.find(p=>p.b===x.b);
+  saleTable.innerHTML+=`
+  <tr>
+   <td>${x.n}</td>
+   <td>
+    <button class="qtyBtn" onclick="chg(${i},-1)">➖</button>
+    ${x.q}
+    <button class="qtyBtn" onclick="chg(${i},1)">➕</button>
+   </td>
+   <td>
+    <input type="number" value="${pr.s}" style="width:60px"
+     onchange="editStock('${x.b}',this.value)">
+   </td>
+   <td>${x.q*x.p}</td>
+   <td><button onclick="rem(${i})">🗑️</button></td>
+  </tr>`;
+ });
+ recalc();
+}
+
+function chg(i,d){
+ const pr=products.find(p=>p.b===sales[i].b);
+ sales[i].q=Math.max(1,Math.min(pr.s,sales[i].q+d));
+ drawSale();
+}
+function rem(i){sales.splice(i,1);drawSale();}
+function editStock(b,v){
+ const pr=products.find(p=>p.b===b);
+ pr.s=+v||0;save();
 }
 function recalc(){
-let total=0; sales.forEach(x=>total+=x.q*x.p);
-tot.textContent=total;
-let diff=(+paid.value||0)-total;
-change.textContent=diff<0?`Mungojnë ${Math.abs(diff)} ALL`:diff+' ALL';
-change.style.color=diff<0?'red':'green';
+ let t=0;sales.forEach(x=>t+=x.q*x.p);
+ total.textContent=t;
+ change.textContent=(+paid.value||0)-t;
 }
-paid.addEventListener('input',recalc);
+paid.oninput=recalc;
 
-/* 📷 CAMERA PARA / MBRAPA */
-function openCam(target,mode){
-scanTarget=target;
-camMode=mode;
-scanLock=false;
-cam.style.display='block';
-
-Quagga.init({
-inputStream:{
-type:"LiveStream",
-target:document.querySelector('#scanner'),
-constraints:{
-facingMode:{ ideal: camMode },
-width:{ ideal:640 },
-height:{ ideal:480 }
-}
-},
-locator:{patchSize:"medium",halfSample:true},
-decoder:{readers:["ean_reader","ean_8_reader","code_128_reader","upc_reader"]},
-locate:true
-},err=>{
-if(err){alert("Kamera nuk u hap (HTTPS / leje)");return;}
-Quagga.start();
-});
-
-Quagga.onDetected(d=>{
-if(scanLock)return;
-scanLock=true;
-let code=d.codeResult.code;
-if(scanTarget==='stock')pb.value=code;
-if(scanTarget==='sale'){
-let p=products.find(x=>x.b===code);
-if(p)addToSale(p);
-}
-setTimeout(stopCam,400);
-});
-}
-
-function stopCam(){Quagga.stop();cam.style.display='none';}
-
-/* PAGESA & BILANC */
 function pay(){
-let total=+tot.textContent, cash=+paid.value||0;
-if(cash<total)return alert('Shumë e pamjaftueshme');
-sales.forEach(x=>products.find(p=>p.b===x.b).s-=x.q);
-daily+=total; localStorage.setItem('daily',daily);
-store(); cancel(); updateDaily();
+ const t=+total.textContent;
+ const c=+paid.value||0;
+ if(t<1)return alert('Asgjë për paguar');
+ if(c<t)return alert('Mungojnë para');
+ sales.forEach(x=>products.find(p=>p.b===x.b).s-=x.q);
+ daily+=t;localStorage.setItem('daily',daily);
+ sales=[];saleTable.innerHTML='';
+ total.textContent=0;paid.value='';change.textContent=0;
+ save();updateDaily();
+ alert('Pagesa u krye');
 }
-function cancel(){
-sales=[]; saleTable.innerHTML='';
-tot.textContent=0; paid.value=''; change.textContent=0;
-}
-function updateDaily(){dailyEl.textContent=daily;}
+
+// ================= BILANC =================
+const dailyEl=daily;
+function updateDaily(){document.getElementById('daily').textContent=daily;}
 cashReal.addEventListener('input',()=>{
-let d=(+cashReal.value||0)-daily;
-diff.textContent=d+' ALL'; diff.style.color=d<0?'red':'green';
+ const d=(+cashReal.value||0)-daily;
+ diff.textContent=d;diff.style.color=d<0?'red':'green';
 });
 function closeDay(){
-alert(`Sistemi: ${daily} ALL\nArka: ${cashReal.value} ALL\nDiferenca: ${cashReal.value-daily} ALL`);
-daily=0; localStorage.setItem('daily',0);
-cashReal.value=''; updateDaily(); diff.textContent=0;
+ const real=+cashReal.value||0;
+ const d=real-daily;
+ alert(`Shitje sistem: ${daily} ALL\nArka reale: ${real} ALL\nDiferenca: ${d} ALL`);
+ daily=0;localStorage.setItem('daily',0);
+ cashReal.value='';diff.textContent='0';updateDaily();
 }
 
-/* UTIL */
-function store(){localStorage.setItem('p',JSON.stringify(products)); renderProducts();}
-const dailyEl=document.getElementById('daily');
+// ================= CAMERA =================
+let stream=null,detector=null;
+async function startCam(){
+ if(!('BarcodeDetector'in window))return alert('Browser nuk e suporton kamerën');
+ detector=new BarcodeDetector({formats:['ean_13','ean_8','code_128']});
+ stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+ video.srcObject=stream;camBox.style.display='block';
+ scanLoop();
+}
+async function scanLoop(){
+ if(!stream)return;
+ const codes=await detector.detect(video);
+ if(codes[0]){scan.value=codes[0].rawValue;addSale();}
+ requestAnimationFrame(scanLoop);
+}
+function stopCam(){
+ if(stream)stream.getTracks().forEach(t=>t.stop());
+ stream=null;camBox.style.display='none';
+}
+
+// ================= SAVE =================
+function save(){
+ localStorage.setItem('products',JSON.stringify(products));
+ renderStock();
+}
 </script>
 
 </body>
