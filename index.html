@@ -2,7 +2,7 @@
 <html lang="sq">
 <head>
 <meta charset="UTF-8">
-<title>POS Market – FINAL STABLE</title>
+<title>POS Market – FINAL</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -21,8 +21,10 @@ th,td{padding:6px;border-bottom:1px solid #e5e7eb;text-align:center}
 th{background:#f1f5f9}
 .admin{display:none}
 .qtyBtn{padding:4px 8px}
-video{width:100%;max-height:220px;border-radius:12px;background:#000}
+#scanner{width:100%;height:240px}
 </style>
+
+<script src="https://unpkg.com/@ericblade/quagga2/dist/quagga.js"></script>
 </head>
 
 <body>
@@ -56,7 +58,9 @@ video{width:100%;max-height:220px;border-radius:12px;background:#000}
 <input id="sb" placeholder="Barkod">
 <input id="sp" type="number" placeholder="Çmimi">
 <input id="ss" type="number" placeholder="Sasia">
+<br>
 <button onclick="addProd()">➕ Shto</button>
+<button class="alt" onclick="openCam('stock')">📷 Scan Barkod</button>
 </div>
 
 <div class="card">
@@ -67,14 +71,9 @@ video{width:100%;max-height:220px;border-radius:12px;background:#000}
 <!-- SHITJE -->
 <section id="sale">
 <div class="card">
-<input id="scan" placeholder="Scan barkod / emër (USB punon direkt)" autofocus>
-<button class="alt" onclick="startCam()">📷 Kamera</button>
+<input id="scan" placeholder="Scan barkod / USB">
+<button class="alt" onclick="openCam('sale')">📷 Kamera</button>
 <button onclick="addSale()">Shto</button>
-</div>
-
-<div class="card" id="camBox" style="display:none">
-<video id="video" autoplay></video>
-<button class="warn" onclick="stopCam()">Mbyll Kamerën</button>
 </div>
 
 <div class="card">
@@ -90,34 +89,36 @@ video{width:100%;max-height:220px;border-radius:12px;background:#000}
 <section id="bil" class="admin">
 <div class="card">
 <h3>📊 Bilanc Ditor</h3>
-<p>Shitje sipas sistemit: <b><span id="daily">0</span> ALL</b></p>
+<p>Sistemi: <b><span id="daily">0</span> ALL</b></p>
 <input id="cashReal" type="number" placeholder="Para reale në arkë">
-<p>Diferenca: <b><span id="diff">0</span> ALL</b></p>
+<p>Diferenca: <b><span id="diff">0</span></b></p>
 <button onclick="closeDay()">Mbyll Ditën</button>
 </div>
 </section>
 
-<script>
-// ================= USERS =================
-const USERS=[
- {u:'admin',p:'admin',r:'admin'},
- {u:'kasier',p:'kasier',r:'kasier'}
-];
+<!-- CAMERA -->
+<div id="camModal" style="display:none" class="card">
+<h3>📷 Scan Barcode</h3>
+<div id="scanner"></div>
+<button class="warn" onclick="stopCam()">Mbyll</button>
+</div>
 
-let role=null;
+<script>
+/* ================= STATE ================= */
+const USERS=[{u:'admin',p:'admin',r:'admin'},{u:'kasier',p:'kasier',r:'kasier'}];
+let role=null, camTarget=null;
 let products=JSON.parse(localStorage.getItem('products')||'[]');
 let sales=[];
 let daily=+localStorage.getItem('daily')||0;
 
-// ================= LOGIN =================
+/* ================= LOGIN ================= */
 function doLogin(){
  const f=USERS.find(x=>x.u===u.value&&x.p===p.value);
- if(!f){msg.textContent='Login gabim';return;}
+ if(!f)return msg.textContent='Login gabim';
  role=f.r;
  loginSec.style.display='none';
  menu.style.display='block';
- document.querySelectorAll('.admin')
-  .forEach(e=>e.style.display=role==='admin'?'block':'none');
+ document.querySelectorAll('.admin').forEach(e=>e.style.display=role==='admin'?'block':'none');
  openSec('sale');
  renderStock();updateDaily();
 }
@@ -127,77 +128,50 @@ function openSec(id){
  document.getElementById(id).classList.add('active');
 }
 
-// ================= STOK =================
+/* ================= STOK ================= */
 function addProd(){
- if(!sn.value||!sb.value)return alert('Plotëso të dhënat');
  products.push({n:sn.value,b:sb.value,p:+sp.value||0,s:+ss.value||0});
  save();sn.value=sb.value=sp.value=ss.value='';
 }
 function deleteStock(i){
- if(confirm('Fshi produktin nga stoku?')){
-  products.splice(i,1);save();
- }
+ if(confirm('Fshi produktin?')){products.splice(i,1);save();}
 }
 function renderStock(){
  stockTable.innerHTML='<tr><th>Emër</th><th>Barkod</th><th>Çmim</th><th>Stok</th><th>🗑️</th></tr>';
  products.forEach((p,i)=>{
-  stockTable.innerHTML+=`
-  <tr>
-   <td>${p.n}</td>
-   <td>${p.b}</td>
-   <td>${p.p}</td>
-   <td>${p.s}</td>
-   <td><button onclick="deleteStock(${i})">🗑️</button></td>
-  </tr>`;
+ stockTable.innerHTML+=`
+ <tr>
+  <td>${p.n}</td>
+  <td>${p.b}</td>
+  <td>${p.p}</td>
+  <td>${p.s}</td>
+  <td><button onclick="deleteStock(${i})">🗑️</button></td>
+ </tr>`;
  });
 }
 
-// ================= SHITJE =================
-scan.addEventListener('keydown',e=>{if(e.key==='Enter')addSale();});
-
+/* ================= SHITJE ================= */
+scan.onkeydown=e=>{if(e.key==='Enter')addSale();};
 function addSale(){
- const v=scan.value.trim().toLowerCase();
- if(!v)return;
- const p=products.find(x=>x.b===v||x.n.toLowerCase().includes(v));
+ const v=scan.value.trim();
+ const p=products.find(x=>x.b===v||x.n.toLowerCase().includes(v.toLowerCase()));
  if(!p||p.s<1)return alert('Nuk ka stok');
  let s=sales.find(x=>x.b===p.b);
- if(s){if(s.q<p.s)s.q++;}
- else sales.push({b:p.b,n:p.n,p:p.p,q:1});
+ if(s){if(s.q<p.s)s.q++;} else sales.push({b:p.b,n:p.n,p:p.p,q:1});
  drawSale();scan.value='';
 }
-
 function drawSale(){
- saleTable.innerHTML='<tr><th>Produkt</th><th>Sasi</th><th>Stok</th><th>Total</th><th>🗑️</th></tr>';
+ saleTable.innerHTML='<tr><th>Produkt</th><th>Sasi</th><th>Total</th><th>🗑️</th></tr>';
  sales.forEach((x,i)=>{
-  const pr=products.find(p=>p.b===x.b);
-  saleTable.innerHTML+=`
-  <tr>
-   <td>${x.n}</td>
-   <td>
-    <button class="qtyBtn" onclick="chg(${i},-1)">➖</button>
-    ${x.q}
-    <button class="qtyBtn" onclick="chg(${i},1)">➕</button>
-   </td>
-   <td>
-    <input type="number" value="${pr.s}" style="width:60px"
-     onchange="editStock('${x.b}',this.value)">
-   </td>
-   <td>${x.q*x.p}</td>
-   <td><button onclick="rem(${i})">🗑️</button></td>
-  </tr>`;
+ saleTable.innerHTML+=`
+ <tr>
+  <td>${x.n}</td>
+  <td>${x.q}</td>
+  <td>${x.q*x.p}</td>
+  <td><button onclick="sales.splice(${i},1);drawSale()">🗑️</button></td>
+ </tr>`;
  });
  recalc();
-}
-
-function chg(i,d){
- const pr=products.find(p=>p.b===sales[i].b);
- sales[i].q=Math.max(1,Math.min(pr.s,sales[i].q+d));
- drawSale();
-}
-function rem(i){sales.splice(i,1);drawSale();}
-function editStock(b,v){
- const pr=products.find(p=>p.b===b);
- pr.s=+v||0;save();
 }
 function recalc(){
  let t=0;sales.forEach(x=>t+=x.q*x.p);
@@ -206,59 +180,52 @@ function recalc(){
 }
 paid.oninput=recalc;
 
+/* ================= PAY & BILANC ================= */
 function pay(){
- const t=+total.textContent;
- const c=+paid.value||0;
- if(t<1)return alert('Asgjë për paguar');
+ let t=+total.textContent,c=+paid.value||0;
  if(c<t)return alert('Mungojnë para');
  sales.forEach(x=>products.find(p=>p.b===x.b).s-=x.q);
  daily+=t;localStorage.setItem('daily',daily);
- sales=[];saleTable.innerHTML='';
- total.textContent=0;paid.value='';change.textContent=0;
+ sales=[];saleTable.innerHTML='';total.textContent=0;paid.value='';change.textContent=0;
  save();updateDaily();
- alert('Pagesa u krye');
 }
-
-// ================= BILANC =================
-const dailyEl=daily;
-function updateDaily(){document.getElementById('daily').textContent=daily;}
-cashReal.addEventListener('input',()=>{
- const d=(+cashReal.value||0)-daily;
- diff.textContent=d;diff.style.color=d<0?'red':'green';
-});
+function updateDaily(){dailyEl.textContent=daily;}
+cashReal.oninput=()=>{diff.textContent=(+cashReal.value||0)-daily;}
 function closeDay(){
- const real=+cashReal.value||0;
- const d=real-daily;
- alert(`Shitje sistem: ${daily} ALL\nArka reale: ${real} ALL\nDiferenca: ${d} ALL`);
- daily=0;localStorage.setItem('daily',0);
- cashReal.value='';diff.textContent='0';updateDaily();
+ alert(`Sistemi: ${daily} ALL\nArka: ${cashReal.value} ALL\nDiferenca: ${cashReal.value-daily}`);
+ daily=0;localStorage.setItem('daily',0);cashReal.value='';updateDaily();diff.textContent=0;
 }
 
-// ================= CAMERA =================
-let stream=null,detector=null;
-async function startCam(){
- if(!('BarcodeDetector'in window))return alert('Browser nuk e suporton kamerën');
- detector=new BarcodeDetector({formats:['ean_13','ean_8','code_128']});
- stream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
- video.srcObject=stream;camBox.style.display='block';
- scanLoop();
-}
-async function scanLoop(){
- if(!stream)return;
- const codes=await detector.detect(video);
- if(codes[0]){scan.value=codes[0].rawValue;addSale();}
- requestAnimationFrame(scanLoop);
+/* ================= CAMERA (QUAGGA) ================= */
+function openCam(target){
+ camTarget=target;
+ camModal.style.display='block';
+ Quagga.init({
+  inputStream:{type:"LiveStream",target:document.querySelector('#scanner'),
+   constraints:{facingMode:"environment"}},
+  decoder:{readers:["ean_reader","ean_8_reader","code_128_reader"]},
+ },err=>{
+  if(err){alert('Kamera nuk hapet (HTTPS?)');return;}
+  Quagga.start();
+ });
+ Quagga.onDetected(d=>{
+  let code=d.codeResult.code;
+  if(camTarget==='stock')sb.value=code;
+  if(camTarget==='sale'){scan.value=code;addSale();}
+  stopCam();
+ });
 }
 function stopCam(){
- if(stream)stream.getTracks().forEach(t=>t.stop());
- stream=null;camBox.style.display='none';
+ Quagga.stop();
+ camModal.style.display='none';
 }
 
-// ================= SAVE =================
+/* ================= SAVE ================= */
 function save(){
  localStorage.setItem('products',JSON.stringify(products));
  renderStock();
 }
+const dailyEl=document.getElementById('daily');
 </script>
 
 </body>
