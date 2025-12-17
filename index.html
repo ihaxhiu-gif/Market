@@ -202,16 +202,30 @@ let scanTarget=null;
 function openCam(t){
  scanTarget=t;
  camModal.style.display='block';
+ scanning=true;
  Quagga.init({
   inputStream:{type:'LiveStream',target:document.querySelector('#scanner'),constraints:{facingMode:'environment'}},
   decoder:{readers:['ean_reader','ean_8_reader','code_128_reader']}
- },err=>{if(err)return alert('Nuk hapet kamera');Quagga.start();});
+ },err=>{
+  if(err) return alert('Nuk hapet kamera');
+  Quagga.start();
+ });
+
+ Quagga.offDetected();
  Quagga.onDetected(d=>{
+  if(!scanning) return;
+  scanning=false; // 1 skanim = 1 cope
   const code=d.codeResult.code;
-  if(scanTarget==='stock')sb.value=code; else{scan.value=code; addSale();}
-  closeCam();
+  if(scanTarget==='stock'){
+    sb.value=code;
+  } else {
+    scan.value=code;
+    addSale();
+  }
+  setTimeout(closeCam,300);
  });
 }
+
 function closeCam(){Quagga.stop();camModal.style.display='none';}
 
 // ===== SAVE =====
