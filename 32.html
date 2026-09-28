@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POS Market Ultra Pro Advanced</title>
+  <title>POS Market Ultra Pro Complete</title>
   <style>
     :root {
       --bg: #0f172a;
@@ -11,7 +11,6 @@
       --panel: #111b2d;
       --panel-2: #172337;
       --line: rgba(148, 163, 184, 0.2);
-      --line-strong: rgba(148, 163, 184, 0.35);
       --primary: #38bdf8;
       --primary-2: #2563eb;
       --success: #22c55e;
@@ -27,17 +26,12 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
     html, body { height: 100%; }
     body {
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,.18), transparent 38%),
-        radial-gradient(circle at bottom right, rgba(139,92,246,.18), transparent 30%),
-        linear-gradient(135deg, var(--bg), var(--bg-2));
+      background: radial-gradient(circle at top left, rgba(56,189,248,.18), transparent 38%),
+                  radial-gradient(circle at bottom right, rgba(139,92,246,.18), transparent 30%),
+                  linear-gradient(135deg, var(--bg), var(--bg-2));
       color: var(--text);
       overflow: hidden;
     }
-    a { text-decoration: none; color: inherit; }
-    button, input, select, textarea { font: inherit; }
-    button { cursor: pointer; }
-    .hidden { display: none !important; }
 
     #app-shell {
       display: flex;
@@ -49,7 +43,7 @@
       width: 260px;
       background: linear-gradient(180deg, rgba(17,27,45,0.96), rgba(17,24,39,0.96));
       border-right: 1px solid var(--line);
-      padding: 18px 14px 18px;
+      padding: 18px 14px;
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
@@ -62,7 +56,6 @@
       gap: 12px;
       font-size: 1.45rem;
       font-weight: 800;
-      letter-spacing: 0.02em;
       padding: 8px 8px 20px;
       border-bottom: 1px solid var(--line);
       margin-bottom: 14px;
@@ -75,7 +68,6 @@
       place-items: center;
       background: linear-gradient(135deg, var(--primary), var(--purple));
       border-radius: 12px;
-      box-shadow: 0 18px 28px rgba(59,130,246,0.25);
       font-size: 1.1rem;
       font-weight: 800;
       color: white;
@@ -85,7 +77,6 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 12px;
     }
 
     .nav-item {
@@ -98,24 +89,12 @@
       border: 1px solid transparent;
       transition: 0.16s ease;
       font-weight: 700;
-      user-select: none;
       cursor: pointer;
     }
 
     .nav-item:hover, .nav-item.active {
       background: rgba(148,163,184,0.08);
       border-color: rgba(56,189,248,0.18);
-      transform: translateX(1px);
-    }
-
-    .nav-item .icon {
-      width: 24px;
-      height: 24px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 8px;
-      background: rgba(148,163,184,0.08);
-      font-size: 0.9rem;
     }
 
     .sidebar-footer {
@@ -124,7 +103,6 @@
       border-top: 1px solid var(--line);
       color: var(--text-soft);
       font-size: 0.82rem;
-      line-height: 1.7;
     }
 
     #main {
@@ -138,9 +116,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
       background: rgba(15, 23, 42, 0.83);
-      backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
       padding: 18px 26px;
       box-shadow: 0 12px 18px rgba(2,8,23,.12);
@@ -149,7 +125,6 @@
     #section-title {
       font-size: 1.8rem;
       font-weight: 800;
-      letter-spacing: 0.02em;
     }
 
     .topbar-right {
@@ -162,7 +137,7 @@
       background: rgba(139, 92, 246, 0.12);
       border: 1px solid rgba(139, 92, 246, 0.3);
       border-radius: 10px;
-      padding: 6px 12px;
+      padding: 8px 12px;
       font-size: 0.85rem;
       font-weight: 800;
       color: #c4b5fd;
@@ -176,7 +151,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      min-width: 180px;
     }
 
     .user-avatar {
@@ -211,41 +185,29 @@
       border-radius: 12px;
       padding: 10px 14px;
       font-weight: 800;
-      letter-spacing: 0.02em;
-      transition: transform .15s ease, opacity .15s ease;
+      cursor: pointer;
+      transition: transform .15s ease;
     }
 
-    .btn:hover { transform: translateY(-1px); opacity: 0.96; }
+    .btn:hover { transform: translateY(-1px); }
     .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; }
     .btn-success { background: linear-gradient(135deg, var(--success), #16a34a); color: white; }
     .btn-danger { background: linear-gradient(135deg, var(--danger), #b91c1c); color: white; }
-    .btn-warning { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
-    .btn-purple { background: linear-gradient(135deg, var(--purple), #7c3aed); color: white; }
-    .btn-ghost {
-      background: rgba(148,163,184,0.08);
-      border: 1px solid var(--line);
-      color: var(--text);
-    }
+    .btn-ghost { background: rgba(148,163,184,0.08); border: 1px solid var(--line); color: var(--text); }
 
     .content {
       flex: 1;
       overflow-y: auto;
       padding: 22px;
-      background: rgba(15,23,42,0.55);
     }
 
-    .view {
-      display: none;
-      min-height: 100%;
-    }
-
+    .view { display: none; }
     .view.active { display: block; }
 
     .section-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
       margin-bottom: 18px;
       flex-wrap: wrap;
     }
@@ -263,7 +225,7 @@
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 16px;
       margin-bottom: 18px;
     }
@@ -273,7 +235,6 @@
       border: 1px solid var(--line);
       border-radius: var(--radius);
       padding: 18px 16px;
-      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
     }
 
     .stat-card .label {
@@ -286,7 +247,7 @@
     }
 
     .stat-card .value {
-      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
       font-weight: 900;
       color: white;
     }
@@ -301,25 +262,9 @@
       background: linear-gradient(180deg, rgba(17,27,45,0.9), rgba(17,24,39,0.92));
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
       padding: 18px;
       margin-bottom: 18px;
     }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1.1fr 1.2fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(180px, 1fr));
-      gap: 12px;
-    }
-
-    .form-grid .full { grid-column: 1 / -1; }
 
     .field {
       display: flex;
@@ -332,11 +277,10 @@
       font-size: 0.78rem;
       color: var(--text-soft);
       font-weight: 700;
-      letter-spacing: 0.06em;
       text-transform: uppercase;
     }
 
-    .field input, .field select, .field textarea {
+    .field input, .field select {
       background: rgba(15,23,42,0.7);
       border: 1px solid var(--line);
       border-radius: 12px;
@@ -346,95 +290,29 @@
       outline: none;
     }
 
-    .field textarea {
-      resize: vertical;
-      min-height: 84px;
-    }
-
-    .field input:focus, .field select:focus, .field textarea:focus {
+    .field input:focus, .field select:focus {
       border-color: rgba(56,189,248,0.7);
       box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
     }
 
-    .table-wrap {
-      overflow-x: auto;
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 12px;
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 700px;
-    }
-
-    th, td {
-      padding: 12px 10px;
-      border-bottom: 1px solid var(--line);
-      text-align: left;
-      vertical-align: middle;
-    }
-
-    th {
-      color: var(--text-soft);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(148,163,184,0.04);
-    }
-
-    tbody tr:hover {
-      background: rgba(148,163,184,0.03);
-    }
-
-    .status-badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .status-good { background: rgba(34,197,94,0.12); color: #86efac; }
-    .status-warn { background: rgba(245,158,11,0.12); color: #fbbf24; }
-    .status-bad { background: rgba(239,68,68,0.12); color: #fca5a5; }
-
-    .small-btn {
-      border: none;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-weight: 800;
-      color: white;
-      cursor: pointer;
-      margin-right: 6px;
-      font-size: 0.75rem;
-    }
-
-    .small-btn.edit { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
-    .small-btn.delete { background: linear-gradient(135deg, var(--danger), #b91c1c); }
-    .small-btn.success { background: linear-gradient(135deg, var(--success), #16a34a); }
-
-    .search-input {
-      min-width: 240px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.7);
-      color: var(--text);
-    }
+    .form-grid .full { grid-column: 1 / -1; }
 
     .pos-layout {
       display: grid;
       grid-template-columns: 1.4fr 0.92fr;
       gap: 18px;
-      min-height: calc(100vh - 170px);
     }
 
     .pos-shell, .cart-shell {
       background: linear-gradient(180deg, rgba(17,27,45,0.92), rgba(17,24,39,0.94));
       border: 1px solid var(--line);
       border-radius: var(--radius);
-      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
       padding: 18px;
     }
 
@@ -457,17 +335,16 @@
     .product-card {
       background: linear-gradient(180deg, rgba(20,31,52,0.95), rgba(17,24,39,0.98));
       border: 1px solid var(--line);
-      padding: 14px 12px;
+      padding: 14px;
       border-radius: 14px;
       text-align: center;
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
       cursor: pointer;
+      transition: transform .15s ease, border-color .15s ease;
     }
 
     .product-card:hover {
       transform: translateY(-2px);
       border-color: rgba(56,189,248,0.45);
-      box-shadow: 0 8px 18px rgba(11,18,32,0.18);
     }
 
     .product-card h4 {
@@ -484,6 +361,12 @@
       margin-bottom: 6px;
     }
 
+    .product-card .unit {
+      color: var(--text-soft);
+      font-size: 0.72rem;
+      margin-bottom: 4px;
+    }
+
     .product-card .stock {
       color: var(--text-soft);
       font-size: 0.76rem;
@@ -491,36 +374,56 @@
 
     .cart-table-wrap {
       margin-top: 14px;
-      max-height: 370px;
+      max-height: 320px;
       overflow-y: auto;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: rgba(15,23,42,0.46);
     }
 
-    #cart-items {
+    table {
       width: 100%;
       border-collapse: collapse;
+      min-width: 500px;
     }
 
-    #cart-items td {
+    th, td {
       padding: 10px 8px;
       border-bottom: 1px solid var(--line);
-      vertical-align: middle;
-      font-size: 0.9rem;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+
+    th {
+      color: var(--text-soft);
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      background: rgba(148,163,184,0.04);
     }
 
     .qty-input {
-      width: 60px;
-      padding: 8px;
-      border-radius: 10px;
+      width: 55px;
+      padding: 7px 8px;
+      border-radius: 8px;
       border: 1px solid var(--line);
       background: rgba(15,23,42,0.7);
       color: var(--text);
     }
 
+    .small-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 7px 10px;
+      font-weight: 800;
+      font-size: 0.7rem;
+      cursor: pointer;
+      color: white;
+    }
+
+    .small-btn.delete { background: linear-gradient(135deg, var(--danger), #b91c1c); }
+
     .totals-box {
-      margin-top: 18px;
+      margin-top: 16px;
       background: rgba(148,163,184,0.04);
       border: 1px solid var(--line);
       border-radius: 12px;
@@ -531,28 +434,28 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 14px;
+      gap: 10px;
       margin-bottom: 8px;
       font-weight: 700;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
+    }
+
+    .totals-row input {
+      width: 80px;
+      padding: 7px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,0.7);
+      color: var(--text);
     }
 
     .totals-row.grand {
       border-top: 1px solid var(--line);
-      padding-top: 12px;
-      margin-top: 12px;
+      padding-top: 10px;
+      margin-top: 10px;
       color: #9ae6b4;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 900;
-    }
-
-    .totals-row input {
-      width: 86px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.7);
-      color: var(--text);
     }
 
     .payment-section {
@@ -560,36 +463,46 @@
       border: 1px solid rgba(56, 189, 248, 0.3);
       border-radius: 12px;
       padding: 12px;
-      margin-top: 14px;
+      margin-top: 12px;
     }
 
     .payment-row {
       display: flex;
       justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
       align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+      font-size: 0.85rem;
     }
 
     .payment-row label {
-      font-size: 0.8rem;
       font-weight: 700;
     }
 
     .payment-row input {
-      width: 100px;
-      padding: 8px;
+      width: 90px;
+      padding: 7px 8px;
       border-radius: 8px;
       border: 1px solid var(--line);
       background: rgba(15,23,42,0.7);
       color: var(--text);
     }
 
+    .change-display {
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.3);
+      color: #86efac;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 800;
+      text-align: center;
+      margin-top: 8px;
+    }
+
     .checkout-row {
       display: flex;
       gap: 8px;
-      margin-top: 14px;
-      flex-wrap: wrap;
+      margin-top: 12px;
     }
 
     .checkout-row > * { flex: 1; }
@@ -611,24 +524,16 @@
       width: min(700px, 92vw);
       background: linear-gradient(180deg, rgba(17,27,45,0.96), rgba(14,20,33,0.98));
       border: 1px solid var(--line);
-      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
       border-radius: 20px;
       padding: 20px;
       max-height: 90vh;
       overflow-y: auto;
-      animation: fadeUp .2s ease;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
     }
 
     .modal-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
       margin-bottom: 18px;
     }
 
@@ -648,6 +553,31 @@
       cursor: pointer;
     }
 
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .margin-badge {
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .status-good { background: rgba(34,197,94,0.12); color: #86efac; }
+    .status-warn { background: rgba(245,158,11,0.12); color: #fbbf24; }
+
     #toast-container {
       position: fixed;
       right: 20px;
@@ -662,35 +592,21 @@
       padding: 12px 16px;
       border-radius: 12px;
       color: white;
-      min-width: 220px;
-      box-shadow: 0 18px 28px rgba(2,8,23,0.4);
-      animation: toastIn .2s ease;
       font-weight: 700;
+      box-shadow: 0 18px 28px rgba(2,8,23,0.4);
     }
 
     .toast.success { background: linear-gradient(135deg, var(--success), #16a34a); }
     .toast.danger { background: linear-gradient(135deg, var(--danger), #b91c1c); }
     .toast.info { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
 
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .margin-badge {
-      background: rgba(34, 197, 94, 0.12);
-      color: #86efac;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 800;
-    }
+    .hidden { display: none !important; }
 
     @media (max-width: 980px) {
       body { overflow: auto; }
       #app-shell { display: block; }
       #sidebar { width: 100%; }
-      .pos-layout, .two-col { grid-template-columns: 1fr; }
+      .pos-layout { grid-template-columns: 1fr; }
       .form-grid { grid-template-columns: 1fr; }
     }
   </style>
@@ -704,16 +620,16 @@
       </div>
 
       <nav class="nav">
-        <div class="nav-item active" data-target="pos-view"><span class="icon">🛒</span> Kasa</div>
-        <div class="nav-item" data-target="inventory-view"><span class="icon">📦</span> Stoku</div>
-        <div class="nav-item" data-target="suppliers-view"><span class="icon">🚚</span> Furnizuesit</div>
-        <div class="nav-item" data-target="reports-view"><span class="icon">📊</span> Raportet</div>
-        <div class="nav-item" data-target="loyalty-view"><span class="icon">🎁</span> Loyalty</div>
-        <div class="nav-item" data-target="settings-view"><span class="icon">⚙️</span> Cilësimet</div>
+        <div class="nav-item active" data-target="pos-view">🛒 Kasa</div>
+        <div class="nav-item" data-target="inventory-view">📦 Stoku</div>
+        <div class="nav-item" data-target="suppliers-view">🚚 Furnizuesit</div>
+        <div class="nav-item" data-target="reports-view">📊 Raportet</div>
+        <div class="nav-item" data-target="loyalty-view">🎁 Loyalty</div>
+        <div class="nav-item" data-target="settings-view">⚙️ Cilësimet</div>
       </nav>
 
       <div class="sidebar-footer">
-        <div>Version: 7.0 Pro Advanced</div>
+        <div>Version: 8.0 Complete</div>
         <div id="sidebar-user">Admin</div>
       </div>
     </aside>
@@ -724,8 +640,7 @@
 
         <div class="topbar-right">
           <div class="currency-badge">
-            <span id="currency-display">ALL</span> /
-            <span id="exchange-rate-display">100</span>
+            ALL / <span id="exchange-rate-display">100</span> EUR
           </div>
 
           <div class="user-pill">
@@ -735,8 +650,6 @@
               <div class="role" id="user-role">Admin</div>
             </div>
           </div>
-
-          <button class="btn btn-danger" id="logout-btn">Dil</button>
         </div>
       </header>
 
@@ -745,7 +658,7 @@
           <div class="section-head">
             <h3>Kasa (POS)</h3>
             <div class="action-row">
-              <button class="btn btn-ghost" id="clear-cart-btn">Pastro karte</button>
+              <button class="btn btn-ghost" onclick="POS.clearCart()">Pastro karte</button>
               <button class="btn btn-success" onclick="POS.checkout()">Kryej shitjen</button>
             </div>
           </div>
@@ -766,7 +679,7 @@
                       <th>Produkt</th>
                       <th>Sasi</th>
                       <th>Çmim</th>
-                      <th>Anulo</th>
+                      <th>Fshi</th>
                     </tr>
                   </thead>
                   <tbody id="cart-items"></tbody>
@@ -783,32 +696,30 @@
                   <input type="number" id="cart-discount" min="0" value="0" />
                 </div>
                 <div class="totals-row">
-                  <span>Totali për pagese</span>
+                  <span>Totali (ALL)</span>
                   <span id="cart-total">0 ALL</span>
                 </div>
-                <div class="totals-row grand">
-                  <span>Totali në EUR</span>
-                  <span id="cart-total-eur">0 €</span>
+                <div class="totals-row">
+                  <span>Totali (EUR)</span>
+                  <span id="cart-total-eur">0.00 €</span>
                 </div>
               </div>
 
               <div class="payment-section">
                 <div class="payment-row">
-                  <label>Klienti pagoi (ALL)</label>
+                  <label>Pagesa (ALL)</label>
                   <input type="number" id="payment-all" min="0" value="0" />
                 </div>
                 <div class="payment-row">
-                  <label>Këmbimi (EUR)</label>
+                  <label>Pagesa (EUR)</label>
                   <input type="number" id="payment-eur" min="0" value="0" />
                 </div>
-                <div class="payment-row">
-                  <span style="font-weight:800; color:#86efac;">Ndryshimi: <span id="change-amount">0 ALL</span></span>
-                </div>
+                <div class="change-display" id="change-display">Ndryshimi: 0 ALL</div>
               </div>
 
               <div class="checkout-row">
                 <button class="btn btn-success" onclick="POS.checkout()">Kryej shitjen</button>
-                <button class="btn btn-purple" onclick="POS.printLastInvoice()">Printo faturë</button>
+                <button class="btn btn-primary" onclick="POS.printLastInvoice()">Printo</button>
               </div>
             </div>
           </div>
@@ -817,19 +728,13 @@
         <section id="inventory-view" class="view">
           <div class="section-head">
             <h3>Menaxhimi i stokut</h3>
-            <div class="action-row">
-              <button class="btn btn-primary" id="add-product-btn">Shto produkt</button>
-            </div>
+            <button class="btn btn-primary" onclick="Inventory.openModal()">Shto produkt</button>
           </div>
 
           <div class="stats-grid" id="inventory-stats"></div>
 
           <div class="panel">
-            <div class="section-head">
-              <h3 style="font-size:1.2rem;">Lista e produkteve</h3>
-              <input type="text" id="inventory-search" class="search-input" placeholder="Kërko produkt..." />
-            </div>
-
+            <h3 style="margin-bottom:14px;">Lista e produkteve</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -837,7 +742,6 @@
                     <th>#</th>
                     <th>Emri</th>
                     <th>Barcode</th>
-                    <th>Kategoria</th>
                     <th>Njësia</th>
                     <th>Çmim Shitje</th>
                     <th>Çmim Blerjeje</th>
@@ -855,40 +759,13 @@
         <section id="suppliers-view" class="view">
           <div class="section-head">
             <h3>Furnizuesit</h3>
-            <div class="action-row">
-              <button class="btn btn-primary" id="add-supplier-btn">Shto furnizues</button>
-            </div>
+            <button class="btn btn-primary" onclick="Suppliers.openModal()">Shto furnizues</button>
           </div>
 
-          <div class="two-col">
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:14px;">Faturat e hapura</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Nr. Fature</th>
-                      <th>Furnizues</th>
-                      <th>Vlera</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody id="supplier-invoices-body"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:14px;">Statistikat</h3>
-              <div class="stats-grid" id="supplier-stats"></div>
-            </div>
-          </div>
+          <div class="stats-grid" id="supplier-stats"></div>
 
           <div class="panel">
-            <div class="section-head">
-              <h3 style="font-size:1.2rem;">Lista e furnizuesve</h3>
-            </div>
-
+            <h3 style="margin-bottom:14px;">Lista e furnizuesve</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -910,56 +787,27 @@
         <section id="reports-view" class="view">
           <div class="section-head">
             <h3>Raportet & Bilanci</h3>
-            <div class="action-row">
-              <button class="btn btn-purple" onclick="Reports.generateDemoReport()">Gjenero raport</button>
-            </div>
           </div>
 
           <div class="stats-grid" id="report-stats"></div>
 
-          <div class="two-col">
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Shitjet e 7 ditëve</h3>
-              <div style="display:flex; align-items:center; justify-content:center; height:200px; color:var(--text-soft);">
-                Grafiku (të dhëna në raporte)
-              </div>
-            </div>
-
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Produktet më të shitur</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Produkt</th>
-                      <th>Sasi</th>
-                      <th>Vlera Shitje</th>
-                      <th>Fitim</th>
-                    </tr>
-                  </thead>
-                  <tbody id="top-products-body"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
           <div class="panel">
-            <h3 style="font-size:1.2rem; margin-bottom:16px;">Historia e shitjeve</h3>
+            <h3 style="margin-bottom:14px;">Historia e shitjeve</h3>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Nr. Fature</th>
+                    <th>Fatura</th>
                     <th>Data</th>
-                    <th>Produkte</th>
-                    <th>Totali</th>
+                    <th>Produktet</th>
+                    <th>Nëntotali</th>
                     <th>Zbritje</th>
+                    <th>Totali</th>
                     <th>Fitim</th>
-                    <th>Status</th>
                     <th>Printo</th>
                   </tr>
                 </thead>
-                <tbody id="sales-history-body"></tbody>
+                <tbody id="sales-items"></tbody>
               </table>
             </div>
           </div>
@@ -968,18 +816,13 @@
         <section id="loyalty-view" class="view">
           <div class="section-head">
             <h3>Programi i Besnikërisë</h3>
-            <div class="action-row">
-              <button class="btn btn-primary" id="add-customer-btn">Shto klient</button>
-            </div>
+            <button class="btn btn-primary" onclick="Loyalty.openModal()">Shto klient</button>
           </div>
 
           <div class="stats-grid" id="loyalty-stats"></div>
 
           <div class="panel">
-            <div class="section-head">
-              <h3 style="font-size:1.2rem;">Lista e klientëve</h3>
-            </div>
-
+            <h3 style="margin-bottom:14px;">Lista e klientëve</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -1004,45 +847,23 @@
             <h3>Cilësimet</h3>
           </div>
 
-          <div class="two-col">
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Kursi i këmbimit</h3>
+          <div class="panel">
+            <h3 style="margin-bottom:16px;">Kursi i këmbimit</h3>
+            <div class="form-grid">
               <div class="field">
                 <label>Kursi ALL → EUR</label>
-                <div style="display:flex; gap:8px;">
-                  <input type="number" id="exchange-rate" min="0" step="0.01" value="100" style="flex:1;" />
-                  <button class="btn btn-success" onclick="Settings.updateExchangeRate()">Përditëso</button>
-                </div>
+                <input id="exchange-rate" type="number" min="1" step="0.01" value="100" />
               </div>
-              <div style="margin-top:12px; padding:12px; background:rgba(148,163,184,0.06); border-radius:10px; font-size:0.85rem; color:var(--text-soft);">
-                <strong>Përditëso çdo ditë:</strong> Vendos kursin e ri të këmbimit midis ALL dhe EUR.
-              </div>
+              <div></div>
             </div>
-
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Përdoruesit</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Emri</th>
-                      <th>Roli</th>
-                      <th>Username</th>
-                    </tr>
-                  </thead>
-                  <tbody id="users-table-body"></tbody>
-                </table>
-              </div>
-            </div>
+            <button class="btn btn-success" onclick="Settings.updateRate()">Ruaj kursin</button>
           </div>
 
           <div class="panel">
-            <h3 style="font-size:1.2rem; margin-bottom:16px;">Opsione të tjera</h3>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <button class="btn btn-primary" onclick="App.resetDemoData()">Rivendos demo</button>
-              <button class="btn btn-warning" onclick="App.exportData()">Eksporto JSON</button>
-              <button class="btn btn-purple" onclick="App.importData()">Importo JSON</button>
-              <input type="file" id="import-file" class="hidden" accept=".json" />
+            <h3 style="margin-bottom:14px;">Opsione</h3>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+              <button class="btn btn-primary" onclick="App.resetDemo()">Rivendos demo</button>
+              <button class="btn btn-danger" onclick="App.clearAll()">Pastro të gjitha të dhënat</button>
             </div>
           </div>
         </section>
@@ -1054,9 +875,8 @@
     <div class="modal-card">
       <div class="modal-head">
         <h3>Produkti</h3>
-        <button class="close-modal" type="button" data-close="product-modal">×</button>
+        <button class="close-modal" type="button" onclick="closeModal('product-modal')">×</button>
       </div>
-
       <form id="product-form">
         <input type="hidden" id="product-id" />
         <div class="form-grid">
@@ -1064,23 +884,10 @@
             <label>Emri</label>
             <input id="product-name" required />
           </div>
-
           <div class="field">
             <label>Barcode</label>
             <input id="product-barcode" required />
           </div>
-
-          <div class="field">
-            <label>Kategoria</label>
-            <select id="product-category">
-              <option value="Pije">Pije</option>
-              <option value="Ushqim">Ushqim</option>
-              <option value="Teknologji">Teknologji</option>
-              <option value="Kozmetikë">Kozmetikë</option>
-              <option value="Tjetër">Tjetër</option>
-            </select>
-          </div>
-
           <div class="field">
             <label>Njësia</label>
             <select id="product-unit">
@@ -1091,40 +898,38 @@
               <option value="pakete">pakete</option>
             </select>
           </div>
-
+          <div class="field">
+            <label>Kategoria</label>
+            <select id="product-category">
+              <option value="Pije">Pije</option>
+              <option value="Ushqim">Ushqim</option>
+              <option value="Teknologji">Teknologji</option>
+              <option value="Kozmetikë">Kozmetikë</option>
+            </select>
+          </div>
           <div class="field">
             <label>Çmim Blerjeje (ALL)</label>
-            <input id="product-cost" type="number" min="0" required />
+            <input id="product-cost" type="number" min="0" required onchange="Inventory.calculateMargin()" />
           </div>
-
           <div class="field">
             <label>Çmim Shitje (ALL)</label>
             <input id="product-price" type="number" min="0" required onchange="Inventory.calculateMargin()" />
           </div>
-
           <div class="field">
-            <label>Marzhina e fitimit %</label>
-            <input id="product-margin" type="number" min="0" value="0" readonly />
+            <label>Marzhina %</label>
+            <input id="product-margin" type="number" readonly />
           </div>
-
           <div class="field">
-            <label>Sasia në stok</label>
+            <label>Stok</label>
             <input id="product-stock" type="number" min="0" required />
           </div>
-
-          <div class="field">
+          <div class="field full">
             <label>Furnizues</label>
             <select id="product-supplier"></select>
           </div>
-
-          <div class="field full">
-            <label>Shënim</label>
-            <textarea id="product-description" rows="3"></textarea>
-          </div>
         </div>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-          <button type="button" class="btn btn-ghost" data-close="product-modal">Anulo</button>
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('product-modal')">Anulo</button>
           <button type="submit" class="btn btn-success">Ruaj</button>
         </div>
       </form>
@@ -1135,9 +940,8 @@
     <div class="modal-card">
       <div class="modal-head">
         <h3>Furnizuesi</h3>
-        <button class="close-modal" type="button" data-close="supplier-modal">×</button>
+        <button class="close-modal" type="button" onclick="closeModal('supplier-modal')">×</button>
       </div>
-
       <form id="supplier-form">
         <input type="hidden" id="supplier-id" />
         <div class="form-grid">
@@ -1145,30 +949,21 @@
             <label>Emri</label>
             <input id="supplier-name" required />
           </div>
-
           <div class="field">
             <label>Telefoni</label>
             <input id="supplier-phone" />
           </div>
-
           <div class="field">
             <label>Email</label>
             <input id="supplier-email" type="email" />
           </div>
-
           <div class="field">
             <label>Qyteti</label>
             <input id="supplier-city" />
           </div>
-
-          <div class="field full">
-            <label>Adresa</label>
-            <textarea id="supplier-address" rows="3"></textarea>
-          </div>
         </div>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-          <button type="button" class="btn btn-ghost" data-close="supplier-modal">Anulo</button>
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('supplier-modal')">Anulo</button>
           <button type="submit" class="btn btn-success">Ruaj</button>
         </div>
       </form>
@@ -1179,9 +974,8 @@
     <div class="modal-card">
       <div class="modal-head">
         <h3>Klienti</h3>
-        <button class="close-modal" type="button" data-close="customer-modal">×</button>
+        <button class="close-modal" type="button" onclick="closeModal('customer-modal')">×</button>
       </div>
-
       <form id="customer-form">
         <input type="hidden" id="customer-id" />
         <div class="form-grid">
@@ -1189,17 +983,14 @@
             <label>Emri</label>
             <input id="customer-name" required />
           </div>
-
           <div class="field">
             <label>Telefoni</label>
             <input id="customer-phone" />
           </div>
-
           <div class="field">
             <label>Email</label>
             <input id="customer-email" type="email" />
           </div>
-
           <div class="field">
             <label>Leveli</label>
             <select id="customer-tier">
@@ -1208,15 +999,13 @@
               <option value="VIP">VIP</option>
             </select>
           </div>
-
-          <div class="field full">
+          <div class="field">
             <label>Pikat</label>
             <input id="customer-points" type="number" min="0" value="0" />
           </div>
         </div>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-          <button type="button" class="btn btn-ghost" data-close="customer-modal">Anulo</button>
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:16px;">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('customer-modal')">Anulo</button>
           <button type="submit" class="btn btn-success">Ruaj</button>
         </div>
       </form>
@@ -1226,386 +1015,208 @@
   <div id="toast-container"></div>
 
   <script>
-    const STORAGE_KEYS = {
-      products: 'pos_products_v7',
-      suppliers: 'pos_suppliers_v7',
-      customers: 'pos_customers_v7',
-      sales: 'pos_sales_v7',
-      users: 'pos_users_v7',
-      settings: 'pos_settings_v7'
+    const STORAGE = {
+      products: 'pos_v8_products',
+      suppliers: 'pos_v8_suppliers',
+      customers: 'pos_v8_customers',
+      sales: 'pos_v8_sales',
+      settings: 'pos_v8_settings'
     };
 
-    const App = (() => {
-      const state = {
-        user: { name: 'Admin', role: 'Admin' },
+    const App = {
+      state: {
         products: [],
         suppliers: [],
         customers: [],
         sales: [],
-        users: [],
         cart: [],
-        settings: { exchangeRate: 100, currency: 'ALL' }
-      };
+        settings: { exchangeRate: 100 }
+      },
 
-      const init = () => {
-        const savedUsers = localStorage.getItem(STORAGE_KEYS.users);
-        state.users = savedUsers ? JSON.parse(savedUsers) : getDefaultUsers();
+      init() {
+        this.loadData();
+        this.bindNav();
+        this.bindInputs();
+        this.renderAll();
+      },
 
-        const savedProducts = localStorage.getItem(STORAGE_KEYS.products);
-        state.products = savedProducts ? JSON.parse(savedProducts) : getDefaultProducts();
+      loadData() {
+        const p = localStorage.getItem(STORAGE.products);
+        const s = localStorage.getItem(STORAGE.suppliers);
+        const c = localStorage.getItem(STORAGE.customers);
+        const sl = localStorage.getItem(STORAGE.sales);
+        const st = localStorage.getItem(STORAGE.settings);
 
-        const savedSuppliers = localStorage.getItem(STORAGE_KEYS.suppliers);
-        state.suppliers = savedSuppliers ? JSON.parse(savedSuppliers) : getDefaultSuppliers();
+        this.state.products = p ? JSON.parse(p) : this.getDefaultProducts();
+        this.state.suppliers = s ? JSON.parse(s) : this.getDefaultSuppliers();
+        this.state.customers = c ? JSON.parse(c) : this.getDefaultCustomers();
+        this.state.sales = sl ? JSON.parse(sl) : [];
+        this.state.settings = st ? JSON.parse(st) : { exchangeRate: 100 };
 
-        const savedCustomers = localStorage.getItem(STORAGE_KEYS.customers);
-        state.customers = savedCustomers ? JSON.parse(savedCustomers) : getDefaultCustomers();
+        document.getElementById('exchange-rate').value = this.state.settings.exchangeRate;
+        document.getElementById('exchange-rate-display').textContent = this.state.settings.exchangeRate;
+      },
 
-        const savedSales = localStorage.getItem(STORAGE_KEYS.sales);
-        state.sales = savedSales ? JSON.parse(savedSales) : buildDemoSales();
+      saveData() {
+        localStorage.setItem(STORAGE.products, JSON.stringify(this.state.products));
+        localStorage.setItem(STORAGE.suppliers, JSON.stringify(this.state.suppliers));
+        localStorage.setItem(STORAGE.customers, JSON.stringify(this.state.customers));
+        localStorage.setItem(STORAGE.sales, JSON.stringify(this.state.sales));
+        localStorage.setItem(STORAGE.settings, JSON.stringify(this.state.settings));
+      },
 
-        const savedSettings = localStorage.getItem(STORAGE_KEYS.settings);
-        state.settings = savedSettings ? JSON.parse(savedSettings) : { exchangeRate: 100, currency: 'ALL' };
+      getDefaultProducts() {
+        return [
+          { id: 1, barcode: '1001', name: 'Ujë Tepelene 1.5L', price: 70, cost: 50, stock: 50, unit: 'copë', category: 'Pije', supplier: 'Furnizuesi 1' },
+          { id: 2, barcode: '1002', name: 'Buka e Boshit', price: 120, cost: 80, stock: 30, unit: 'copë', category: 'Ushqim', supplier: 'Furnizuesi 2' },
+          { id: 3, barcode: '1003', name: 'Kafe Lavazza 250g', price: 500, cost: 350, stock: 15, unit: 'copë', category: 'Pije', supplier: 'Furnizuesi 1' },
+          { id: 4, barcode: '1004', name: 'Mishi i freskët', price: 650, cost: 500, stock: 18, unit: 'kg', category: 'Ushqim', supplier: 'Furnizuesi 2' },
+          { id: 5, barcode: '1005', name: 'USB 32GB', price: 1500, cost: 1000, stock: 12, unit: 'copë', category: 'Teknologji', supplier: 'Furnizuesi 3' }
+        ];
+      },
 
-        bindEvents();
-        renderUsersTable();
-        updateCurrencyDisplay();
-        renderViews();
-        showSection('pos-view');
-      };
+      getDefaultSuppliers() {
+        return [
+          { id: 1, name: 'Furnizuesi 1', phone: '044123456', email: 'f1@mail.com', city: 'Tiranë' },
+          { id: 2, name: 'Furnizuesi 2', phone: '068765432', email: 'f2@mail.com', city: 'Shkodër' },
+          { id: 3, name: 'Furnizuesi 3', phone: '049111222', email: 'f3@mail.com', city: 'Vlorë' }
+        ];
+      },
 
-      const bindEvents = () => {
-        document.getElementById('logout-btn').addEventListener('click', () => {
-          showToast('U çkyçët me sukses.', 'info');
-        });
+      getDefaultCustomers() {
+        return [
+          { id: 1, name: 'Arben Xhafa', phone: '067000111', email: 'arben@gmail.com', tier: 'VIP', points: 2500 },
+          { id: 2, name: 'Liridona Hoxha', phone: '068222333', email: 'liridona@gmail.com', tier: 'Gold', points: 980 },
+          { id: 3, name: 'Klaudio Balla', phone: '069111444', email: 'klaudio@gmail.com', tier: 'Standard', points: 420 }
+        ];
+      },
 
+      bindNav() {
         document.querySelectorAll('.nav-item').forEach(item => {
-          item.addEventListener('click', () => showSection(item.dataset.target));
-        });
+          item.addEventListener('click', () => {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            item.classList.add('active');
+            
+            const viewId = item.dataset.target;
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
 
-        document.getElementById('barcode-input').addEventListener('input', function(){
-          POS.handleSearch(this.value);
-        });
-
-        document.getElementById('inventory-search').addEventListener('input', function(){
-          Inventory.filterProducts(this.value);
-        });
-
-        document.getElementById('cart-discount').addEventListener('input', function(){
-          POS.updateTotals();
-        });
-
-        document.getElementById('payment-all').addEventListener('input', POS.calculateChange);
-        document.getElementById('payment-eur').addEventListener('input', POS.calculateChange);
-
-        document.getElementById('clear-cart-btn').addEventListener('click', POS.clearCart);
-
-        document.getElementById('add-product-btn').addEventListener('click', () => {
-          Inventory.openProductModal();
-        });
-
-        document.getElementById('add-supplier-btn').addEventListener('click', () => {
-          Suppliers.openModal();
-        });
-
-        document.getElementById('add-customer-btn').addEventListener('click', () => {
-          Loyalty.openModal();
-        });
-
-        document.getElementById('import-file').addEventListener('change', (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            try {
-              const json = JSON.parse(ev.target.result);
-              if (json.products) state.products = json.products;
-              if (json.suppliers) state.suppliers = json.suppliers;
-              if (json.customers) state.customers = json.customers;
-              if (json.sales) state.sales = json.sales;
-              saveState();
-              renderViews();
-              showToast('Importimi u krye me sukses.', 'success');
-            } catch(err) {
-              showToast('Skedari JSON nuk është valid.', 'danger');
-            }
-          };
-          reader.readAsText(file);
-        });
-
-        document.querySelectorAll('[data-close]').forEach(button => {
-          button.addEventListener('click', () => {
-            const modalId = button.getAttribute('data-close');
-            closeModal(modalId);
+            const titles = {
+              'pos-view': 'Kasa', 'inventory-view': 'Stoku', 'suppliers-view': 'Furnizuesit',
+              'reports-view': 'Raportet', 'loyalty-view': 'Loyalty', 'settings-view': 'Cilësimet'
+            };
+            document.getElementById('section-title').textContent = titles[viewId] || 'POS';
           });
         });
+      },
 
-        document.getElementById('product-form').addEventListener('submit', (event) => {
-          event.preventDefault();
+      bindInputs() {
+        document.getElementById('barcode-input').addEventListener('input', e => POS.search(e.target.value));
+        document.getElementById('cart-discount').addEventListener('input', () => POS.updateTotals());
+        document.getElementById('payment-all').addEventListener('input', () => POS.calculateChange());
+        document.getElementById('payment-eur').addEventListener('input', () => POS.calculateChange());
+        
+        document.getElementById('product-form').addEventListener('submit', e => {
+          e.preventDefault();
           Inventory.saveProduct();
         });
-
-        document.getElementById('supplier-form').addEventListener('submit', (event) => {
-          event.preventDefault();
+        
+        document.getElementById('supplier-form').addEventListener('submit', e => {
+          e.preventDefault();
           Suppliers.saveSupplier();
         });
-
-        document.getElementById('customer-form').addEventListener('submit', (event) => {
-          event.preventDefault();
+        
+        document.getElementById('customer-form').addEventListener('submit', e => {
+          e.preventDefault();
           Loyalty.saveCustomer();
         });
-      };
+      },
 
-      const getDefaultUsers = () => [
-        { username: 'admin', password: 'admin', role: 'admin', name: 'Admin' },
-        { username: 'cashier', password: 'cashier', role: 'cashier', name: 'Kasier' },
-        { username: 'manager', password: 'manager', role: 'manager', name: 'Menaxher' }
-      ];
-
-      const getDefaultProducts = () => [
-        { id: 'p1', barcode: '1001', name: 'Ujë Tepelene 1.5L', price: 70, cost: 50, stock: 50, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1', description: 'Ujë mineral' },
-        { id: 'p2', barcode: '1002', name: 'Buka e Boshit', price: 120, cost: 80, stock: 30, category: 'Ushqim', unit: 'copë', supplier: 'Furnizuesi 2', description: 'Buke artisane' },
-        { id: 'p3', barcode: '1003', name: 'Kafe Lavazza 250g', price: 500, cost: 350, stock: 15, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1', description: 'Kafe aromatike' },
-        { id: 'p4', barcode: '1004', name: 'Krem për duar', price: 380, cost: 250, stock: 20, category: 'Kozmetikë', unit: 'copë', supplier: 'Furnizuesi 3', description: 'Krem hidratues' },
-        { id: 'p5', barcode: '1005', name: 'USB 32GB', price: 1500, cost: 1000, stock: 12, category: 'Teknologji', unit: 'copë', supplier: 'Furnizuesi 4', description: 'Memorie USB' },
-        { id: 'p6', barcode: '1006', name: 'Mishi i freskët', price: 650, cost: 500, stock: 18, category: 'Ushqim', unit: 'kg', supplier: 'Furnizuesi 2', description: 'Mish premium' }
-      ];
-
-      const getDefaultSuppliers = () => [
-        { id: 's1', name: 'Furnizuesi 1', phone: '044123456', email: 'f1@mail.com', city: 'Tiranë', address: 'Rr. Durrësit 25' },
-        { id: 's2', name: 'Furnizuesi 2', phone: '068765432', email: 'f2@mail.com', city: 'Shkodër', address: 'Rr. Pjeter Bogdani 10' },
-        { id: 's3', name: 'Furnizuesi 3', phone: '049111222', email: 'f3@mail.com', city: 'Vlorë', address: 'Rr. Bregdeti 8' },
-        { id: 's4', name: 'Furnizuesi 4', phone: '067998877', email: 'f4@mail.com', city: 'Korçë', address: 'Rr. Republika 13' }
-      ];
-
-      const getDefaultCustomers = () => [
-        { id: 'c1', name: 'Arben Xhafa', phone: '067000111', email: 'arben@gmail.com', tier: 'VIP', points: 2500 },
-        { id: 'c2', name: 'Liridona Hoxha', phone: '068222333', email: 'liridona@gmail.com', tier: 'Gold', points: 980 },
-        { id: 'c3', name: 'Klaudio Balla', phone: '069111444', email: 'klaudio@gmail.com', tier: 'Standard', points: 420 }
-      ];
-
-      const buildDemoSales = () => {
-        const now = Date.now();
-        const day = 86400000;
-        return [
-          {
-            id: 'sale_1', receipt: '#INV-1010', date: new Date(now - 6 * day).toISOString(),
-            items: [{name:'Ujë Tepelene 1.5L', qty:2, price:70, cost:50},{name:'Kafe Lavazza 250g', qty:1, price:500, cost:350}],
-            subtotal: 640, discount: 30, total: 610, profit: 270, status: 'Paid'
-          },
-          {
-            id: 'sale_2', receipt: '#INV-1011', date: new Date(now - 4 * day).toISOString(),
-            items: [{name:'Buka e Boshit', qty:3, price:120, cost:80},{name:'USB 32GB', qty:1, price:1500, cost:1000}],
-            subtotal: 1860, discount: 100, total: 1760, profit: 540, status: 'Paid'
-          },
-          {
-            id: 'sale_3', receipt: '#INV-1012', date: new Date(now - 1 * day).toISOString(),
-            items: [{name:'Krem për duar', qty:2, price:380, cost:250}],
-            subtotal: 760, discount: 0, total: 760, profit: 260, status: 'Paid'
-          }
-        ];
-      };
-
-      const renderViews = () => {
-        POS.renderProductGrid();
+      renderAll() {
+        POS.renderProducts();
         POS.renderCart();
         Inventory.renderStats();
         Inventory.renderTable();
-        Suppliers.renderSuppliers();
-        Suppliers.renderInvoices();
+        Suppliers.renderTable();
         Suppliers.renderStats();
         Reports.renderStats();
-        Reports.renderTopProducts();
-        Reports.renderSalesHistory();
+        Reports.renderSales();
         Loyalty.renderStats();
-        Loyalty.renderCustomers();
-        renderUsersTable();
+        Loyalty.renderTable();
         Inventory.refreshSupplierOptions();
-      };
+      },
 
-      const saveState = () => {
-        localStorage.setItem(STORAGE_KEYS.products, JSON.stringify(state.products));
-        localStorage.setItem(STORAGE_KEYS.suppliers, JSON.stringify(state.suppliers));
-        localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(state.customers));
-        localStorage.setItem(STORAGE_KEYS.sales, JSON.stringify(state.sales));
-        localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(state.users));
-        localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(state.settings));
-      };
-
-      const showSection = (sectionId) => {
-        document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
-        const target = document.getElementById(sectionId);
-        if (target) target.classList.add('active');
-
-        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-        const selected = document.querySelector('.nav-item[data-target="' + sectionId + '"]');
-        if (selected) selected.classList.add('active');
-
-        const map = {
-          'pos-view': 'Kasa',
-          'inventory-view': 'Stoku & Produktet',
-          'suppliers-view': 'Furnizuesit',
-          'reports-view': 'Raportet & Bilanci',
-          'loyalty-view': 'Klientët (Loyalty)',
-          'settings-view': 'Cilësimet'
-        };
-
-        document.getElementById('section-title').textContent = map[sectionId] || 'POS Market Ultra Pro';
-      };
-
-      const renderUsersTable = () => {
-        const tbody = document.getElementById('users-table-body');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-        state.users.forEach(user => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${escapeHtml(user.name)}</td>
-            <td>${roleToText(user.role)}</td>
-            <td>${escapeHtml(user.username)}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      };
-
-      const roleToText = (role) => {
-        const map = { admin: 'Admin', cashier: 'Kasier', manager: 'Menaxher' };
-        return map[role] || 'Admin';
-      };
-
-      const makeId = (prefix = 'id') => `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
-
-      const exportData = () => {
-        const payload = {
-          products: state.products,
-          suppliers: state.suppliers,
-          customers: state.customers,
-          sales: state.sales,
-          users: state.users,
-          settings: state.settings
-        };
-
-        const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'pos-export.json';
-        a.click();
-        URL.revokeObjectURL(url);
-        showToast('Të dhënat u eksportuan.', 'success');
-      };
-
-      const importData = () => {
-        document.getElementById('import-file').click();
-      };
-
-      const resetDemoData = () => {
-        if (!confirm('Deshironi të rivendosni të dhënat demo?')) return;
-        state.products = getDefaultProducts();
-        state.suppliers = getDefaultSuppliers();
-        state.customers = getDefaultCustomers();
-        state.sales = buildDemoSales();
-        saveState();
-        renderViews();
-        showToast('Të dhënat demo u rivendosën.', 'success');
-      };
-
-      const openModal = (id) => {
-        const modal = document.getElementById(id);
-        if (modal) modal.classList.add('open');
-      };
-
-      const closeModal = (id) => {
-        const modal = document.getElementById(id);
-        if (modal) modal.classList.remove('open');
-      };
-
-      const showToast = (message, type = 'info') => {
-        const container = document.getElementById('toast-container');
+      showToast(msg, type = 'info') {
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
-        toast.textContent = message;
-        container.appendChild(toast);
+        toast.textContent = msg;
+        document.getElementById('toast-container').appendChild(toast);
         setTimeout(() => toast.remove(), 2500);
-      };
+      },
 
-      const updateCurrencyDisplay = () => {
-        document.getElementById('currency-display').textContent = state.settings.currency || 'ALL';
-        document.getElementById('exchange-rate-display').textContent = state.settings.exchangeRate || '100';
-      };
+      resetDemo() {
+        if (!confirm('Rivendos demo data?')) return;
+        this.state.products = this.getDefaultProducts();
+        this.state.suppliers = this.getDefaultSuppliers();
+        this.state.customers = this.getDefaultCustomers();
+        this.state.sales = [];
+        this.state.cart = [];
+        this.saveData();
+        this.renderAll();
+        this.showToast('Demo u rivendos.', 'success');
+      },
 
-      return {
-        state,
-        init,
-        showSection,
-        showToast,
-        saveState,
-        renderViews,
-        makeId,
-        exportData,
-        importData,
-        resetDemoData,
-        roleToText,
-        openModal,
-        closeModal,
-        updateCurrencyDisplay
-      };
-    })();
+      clearAll() {
+        if (!confirm('Fshi të gjitha të dhënat?')) return;
+        localStorage.clear();
+        location.reload();
+      }
+    };
 
-    const POS = (() => {
-      const getCart = () => App.state.cart;
-
-      const renderProductGrid = (items = App.state.products) => {
+    const POS = {
+      renderProducts(items = App.state.products) {
         const grid = document.getElementById('product-grid');
-        if (!grid) return;
         grid.innerHTML = '';
-
-        items.forEach(item => {
+        items.forEach(p => {
           const card = document.createElement('div');
           card.className = 'product-card';
           card.innerHTML = `
-            <h4>${escapeHtml(item.name)}</h4>
-            <div class="price">${Number(item.price).toFixed(0)} ALL</div>
-            <div style="font-size:0.75rem; color:var(--text-soft); margin-bottom:4px;">${item.unit}</div>
-            <div class="stock">Stok: ${item.stock}</div>
+            <h4>${p.name}</h4>
+            <div class="price">${p.price} ALL</div>
+            <div class="unit">${p.unit}</div>
+            <div class="stock">Stok: ${p.stock}</div>
           `;
-          card.addEventListener('click', () => addToCart(item.id));
+          card.onclick = () => this.addToCart(p.id);
           grid.appendChild(card);
         });
-      };
+      },
 
-      const handleSearch = (query) => {
-        const q = query.trim().toLowerCase();
+      search(q) {
+        q = q.trim().toLowerCase();
         if (!q) {
-          renderProductGrid(App.state.products);
+          this.renderProducts();
           return;
         }
-
         const match = App.state.products.find(p => p.barcode.toLowerCase() === q);
         if (match) {
-          addToCart(match.id);
+          this.addToCart(match.id);
           document.getElementById('barcode-input').value = '';
-          renderProductGrid(App.state.products);
+          this.renderProducts();
           return;
         }
-
         const filtered = App.state.products.filter(p =>
-          p.name.toLowerCase().includes(q) ||
-          p.barcode.toLowerCase().includes(q) ||
-          (p.category || '').toLowerCase().includes(q)
+          p.name.toLowerCase().includes(q) || p.barcode.toLowerCase().includes(q)
         );
-        renderProductGrid(filtered);
-      };
+        this.renderProducts(filtered);
+      },
 
-      const addToCart = (productId) => {
+      addToCart(productId) {
         const product = App.state.products.find(p => p.id === productId);
-        if (!product) return;
-
-        if (product.stock <= 0) {
+        if (!product || product.stock <= 0) {
           App.showToast('Produkti nuk është në stok!', 'danger');
           return;
         }
-
-        const existing = getCart().find(item => item.product.id === productId);
+        const existing = App.state.cart.find(item => item.product.id === productId);
         if (existing) {
           if (existing.qty + 1 > product.stock) {
             App.showToast('Nuk ka stok të mjaftueshëm!', 'danger');
@@ -1613,876 +1224,533 @@
           }
           existing.qty++;
         } else {
-          getCart().push({ product, qty: 1 });
+          App.state.cart.push({ product, qty: 1 });
         }
+        this.renderCart();
+      },
 
-        renderCart();
-      };
+      removeFromCart(idx) {
+        App.state.cart.splice(idx, 1);
+        this.renderCart();
+      },
 
-      const removeFromCart = (index) => {
-        getCart().splice(index, 1);
-        renderCart();
-      };
-
-      const clearCart = () => {
+      clearCart() {
         App.state.cart = [];
-        renderCart();
-      };
+        this.renderCart();
+      },
 
-      const renderCart = () => {
+      renderCart() {
         const tbody = document.getElementById('cart-items');
-        if (!tbody) return;
         tbody.innerHTML = '';
-
-        getCart().forEach((item, index) => {
+        App.state.cart.forEach((item, idx) => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${escapeHtml(item.product.name)}</td>
-            <td>
-              <input class="qty-input" type="number" min="1" max="${item.product.stock}" value="${item.qty}" onchange="POS.updateQty(${index}, this.value)" />
-            </td>
+            <td>${item.product.name}</td>
+            <td><input class="qty-input" type="number" min="1" max="${item.product.stock}" value="${item.qty}" onchange="POS.updateQty(${idx}, this.value)" /></td>
             <td>${(item.product.price * item.qty).toFixed(0)}</td>
-            <td><button class="small-btn delete" onclick="POS.removeFromCart(${index})">X</button></td>
+            <td><button class="small-btn delete" onclick="POS.removeFromCart(${idx})">X</button></td>
           `;
           tbody.appendChild(row);
         });
+        this.updateTotals();
+      },
 
-        updateTotals();
-      };
-
-      const updateQty = (index, value) => {
-        const qty = parseInt(value, 10);
-        const item = getCart()[index];
-        if (!item) return;
-
+      updateQty(idx, val) {
+        const qty = parseInt(val, 10);
+        const item = App.state.cart[idx];
         if (isNaN(qty) || qty <= 0) {
-          removeFromCart(index);
+          this.removeFromCart(idx);
           return;
         }
-
         if (qty > item.product.stock) {
           App.showToast('Sasia tejkalon stokun!', 'danger');
-          renderCart();
+          this.renderCart();
           return;
         }
-
         item.qty = qty;
-        renderCart();
-      };
+        this.renderCart();
+      },
 
-      const updateTotals = () => {
-        const subtotal = getCart().reduce((sum, item) => sum + (item.product.price * item.qty), 0);
+      updateTotals() {
+        const subtotal = App.state.cart.reduce((sum, item) => sum + item.product.price * item.qty, 0);
         const discount = parseFloat(document.getElementById('cart-discount').value) || 0;
         const total = Math.max(0, subtotal - discount);
-        const totalEur = total / App.state.settings.exchangeRate;
+        const eur = total / App.state.settings.exchangeRate;
 
         document.getElementById('cart-subtotal').textContent = `${subtotal.toFixed(0)} ALL`;
         document.getElementById('cart-total').textContent = `${total.toFixed(0)} ALL`;
-        document.getElementById('cart-total-eur').textContent = `${totalEur.toFixed(2)} €`;
-      };
+        document.getElementById('cart-total-eur').textContent = `${eur.toFixed(2)} €`;
+      },
 
-      const calculateChange = () => {
+      calculateChange() {
         const total = parseFloat(document.getElementById('cart-total').textContent) || 0;
         const paidAll = parseFloat(document.getElementById('payment-all').value) || 0;
         const paidEur = parseFloat(document.getElementById('payment-eur').value) || 0;
+        const paidInAll = paidAll + paidEur * App.state.settings.exchangeRate;
+        const change = paidInAll - total;
 
-        const paidAllValue = paidAll + (paidEur * App.state.settings.exchangeRate);
-        const change = paidAllValue - total;
-
-        const display = document.getElementById('change-amount');
-        display.textContent = `${change.toFixed(0)} ALL`;
+        const display = document.getElementById('change-display');
+        display.textContent = `Ndryshimi: ${change.toFixed(0)} ALL`;
         display.style.color = change >= 0 ? '#86efac' : '#fca5a5';
-      };
+      },
 
-      const checkout = () => {
-        if (getCart().length === 0) {
-          App.showToast('Karta është e bosh!', 'danger');
+      checkout() {
+        if (App.state.cart.length === 0) {
+          App.showToast('Karta është bosh!', 'danger');
           return;
         }
 
-        const subtotal = getCart().reduce((sum, item) => sum + (item.product.price * item.qty), 0);
+        const subtotal = App.state.cart.reduce((sum, item) => sum + item.product.price * item.qty, 0);
         const discount = parseFloat(document.getElementById('cart-discount').value) || 0;
         const total = Math.max(0, subtotal - discount);
 
-        const profit = getCart().reduce((sum, item) => {
-          const itemProfit = (item.product.price - item.product.cost) * item.qty;
-          return sum + itemProfit;
+        const profit = App.state.cart.reduce((sum, item) => {
+          const p = App.state.products.find(prod => prod.id === item.product.id);
+          return sum + (item.product.price - (p ? p.cost : 0)) * item.qty;
         }, 0);
 
-        getCart().forEach(item => {
+        App.state.cart.forEach(item => {
           const product = App.state.products.find(p => p.id === item.product.id);
-          if (product) {
-            product.stock = Math.max(0, Number(product.stock) - Number(item.qty));
-          }
+          if (product) product.stock -= item.qty;
         });
 
-        const sale = {
-          id: App.makeId('sale'),
-          receipt: '#INV-' + Math.floor(1000 + Math.random() * 9000),
+        App.state.sales.unshift({
+          id: Date.now(),
+          receipt: '#F-' + Math.floor(Math.random() * 10000),
           date: new Date().toISOString(),
-          items: getCart().map(item => ({
-            name: item.product.name,
-            qty: item.qty,
-            price: item.product.price,
-            cost: item.product.cost
-          })),
+          items: App.state.cart.map(i => ({ name: i.product.name, qty: i.qty, price: i.product.price, cost: i.product.cost || 0 })),
           subtotal,
           discount,
           total,
-          profit,
-          status: 'Paid'
-        };
+          profit
+        });
 
-        App.state.sales.unshift(sale);
         App.state.cart = [];
         document.getElementById('cart-discount').value = 0;
         document.getElementById('payment-all').value = 0;
         document.getElementById('payment-eur').value = 0;
-        document.getElementById('change-amount').textContent = '0 ALL';
-        document.getElementById('change-amount').style.color = '#86efac';
 
-        App.saveState();
-        renderCart();
-        renderProductGrid();
+        App.saveData();
+        this.renderCart();
+        this.renderProducts();
         Inventory.renderStats();
         Inventory.renderTable();
         Reports.renderStats();
-        Reports.renderTopProducts();
-        Reports.renderSalesHistory();
+        Reports.renderSales();
         App.showToast('Shitja u krye me sukses!', 'success');
+      },
 
-        POS.lastInvoice = sale;
-      };
-
-      const printLastInvoice = () => {
-        const invoice = POS.lastInvoice;
-        if (!invoice) {
-          App.showToast('Nuk ka faturë për t'u printuar.', 'danger');
+      printLastInvoice() {
+        const sale = App.state.sales[0];
+        if (!sale) {
+          App.showToast('Nuk ka faturë për t\'u printuar.', 'danger');
           return;
         }
 
-        const win = window.open('', '_blank', 'width=420,height=800');
-        const itemsHtml = invoice.items.map(item => `
+        const itemsHtml = sale.items.map(i => `
           <tr>
-            <td>${escapeHtml(item.name)}</td>
-            <td>${item.qty}</td>
-            <td>${Number(item.price).toFixed(0)}</td>
-            <td>${(item.qty * item.price).toFixed(0)}</td>
+            <td>${i.name}</td>
+            <td>${i.qty}</td>
+            <td>${i.price}</td>
+            <td>${(i.qty * i.price).toFixed(0)}</td>
           </tr>
         `).join('');
 
+        const win = window.open('', '', 'width=420,height=600');
         win.document.write(`
           <html>
             <head>
-              <title>${invoice.receipt}</title>
               <style>
-                body { font-family: Arial, sans-serif; padding: 18px; color: #111; }
-                h2 { text-align: center; margin-bottom: 8px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-                th, td { padding: 6px 4px; border-bottom: 1px solid #ddd; font-size: 0.85rem; }
-                th { text-align: left; }
-                .totals { margin-top: 16px; }
-                .totals div { display: flex; justify-content: space-between; margin: 4px 0; font-weight: 600; }
-                .profit-line { color: green; }
+                body { font-family: Arial; padding: 15px; font-size: 11px; }
+                h3 { text-align: center; margin: 5px 0; }
+                table { width: 100%; border-collapse: collapse; }
+                th, td { border-bottom: 1px solid #000; padding: 3px; text-align: left; }
+                .total { font-weight: bold; text-align: right; }
               </style>
             </head>
             <body>
-              <h2 style="font-size:1.3rem; margin-bottom:2px;">POS Market Ultra Pro</h2>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Fatura: ${invoice.receipt}</p>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Data: ${new Date(invoice.date).toLocaleString('sq-AL')}</p>
-              <hr style="margin:8px 0;" />
+              <h3>POS Market Ultra Pro</h3>
+              <p>Fatura: ${sale.receipt}</p>
+              <p>Data: ${new Date(sale.date).toLocaleDateString('sq-AL')}</p>
               <table>
-                <thead><tr><th>Produkti</th><th>Sasi</th><th>Çmim</th><th>Totali</th></tr></thead>
+                <thead><tr><th>Produkti</th><th>Sasi</th><th>Çmim</th><th>Total</th></tr></thead>
                 <tbody>${itemsHtml}</tbody>
               </table>
-              <hr style="margin:8px 0;" />
-              <div class="totals">
-                <div><span>Nëntotali</span><span>${Number(invoice.subtotal).toFixed(0)} ALL</span></div>
-                <div><span>Zbritje</span><span>${Number(invoice.discount).toFixed(0)} ALL</span></div>
-                <div><strong><span>Totali</span><span>${Number(invoice.total).toFixed(0)} ALL</span></strong></div>
-                <div class="profit-line"><strong><span>Fitim</span><span>${Number(invoice.profit).toFixed(0)} ALL</span></strong></div>
+              <div style="margin-top:10px;">
+                <p><strong>Nëntotali:</strong> ${sale.subtotal.toFixed(0)} ALL</p>
+                <p><strong>Zbritje:</strong> ${sale.discount.toFixed(0)} ALL</p>
+                <p style="font-size:14px; font-weight:bold;"><strong>TOTALI:</strong> ${sale.total.toFixed(0)} ALL</p>
+                <p style="color:green; font-weight:bold;"><strong>Fitim:</strong> ${sale.profit.toFixed(0)} ALL</p>
               </div>
             </body>
           </html>
         `);
-
         win.document.close();
-        win.focus();
-        setTimeout(() => win.print(), 400);
-      };
+        setTimeout(() => win.print(), 300);
+      }
+    };
 
-      return {
-        renderProductGrid,
-        handleSearch,
-        addToCart,
-        removeFromCart,
-        clearCart,
-        renderCart,
-        updateQty,
-        updateTotals,
-        calculateChange,
-        checkout,
-        printLastInvoice,
-        lastInvoice: null
-      };
-    })();
-
-    const Inventory = (() => {
-      const calculateMargin = () => {
-        const cost = Number(document.getElementById('product-cost').value || 0);
-        const price = Number(document.getElementById('product-price').value || 0);
-
-        if (cost > 0) {
-          const margin = ((price - cost) / cost * 100).toFixed(2);
-          document.getElementById('product-margin').value = margin;
-        }
-      };
-
-      const renderStats = () => {
+    const Inventory = {
+      renderStats() {
         const stats = document.getElementById('inventory-stats');
         if (!stats) return;
 
-        const totalProducts = App.state.products.length;
-        const totalStock = App.state.products.reduce((sum, p) => sum + Number(p.stock || 0), 0);
-        const lowStock = App.state.products.filter(p => Number(p.stock) <= 5).length;
-        const totalValue = App.state.products.reduce((sum, p) => sum + (Number(p.price || 0) * Number(p.stock || 0)), 0);
-        const totalCost = App.state.products.reduce((sum, p) => sum + (Number(p.cost || 0) * Number(p.stock || 0)), 0);
-        const potentialProfit = totalValue - totalCost;
+        const total = App.state.products.length;
+        const stock = App.state.products.reduce((s, p) => s + p.stock, 0);
+        const value = App.state.products.reduce((s, p) => s + p.price * p.stock, 0);
+        const low = App.state.products.filter(p => p.stock <= 5).length;
 
         stats.innerHTML = `
           <div class="stat-card">
             <div class="label">Produkte</div>
-            <div class="value">${totalProducts}</div>
-            <div class="meta">Total produkteve</div>
+            <div class="value">${total}</div>
+            <div class="meta">Totali</div>
           </div>
           <div class="stat-card">
-            <div class="label">Sasia totale</div>
-            <div class="value">${totalStock}</div>
+            <div class="label">Stok</div>
+            <div class="value">${stock}</div>
             <div class="meta">Në magazinë</div>
           </div>
           <div class="stat-card">
-            <div class="label">Me stok të ulët</div>
-            <div class="value">${lowStock}</div>
-            <div class="meta">Kritike</div>
+            <div class="label">Vlera</div>
+            <div class="value">${value.toFixed(0)}</div>
+            <div class="meta">ALL</div>
           </div>
           <div class="stat-card">
-            <div class="label">Vlera e stokut</div>
-            <div class="value">${totalValue.toFixed(0)} ALL</div>
-            <div class="meta">Vlera shitjeje</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Fitim potencial</div>
-            <div class="value">${potentialProfit.toFixed(0)} ALL</div>
-            <div class="meta">${((potentialProfit / totalValue * 100) || 0).toFixed(1)}% margin</div>
+            <div class="label">Kritike</div>
+            <div class="value">${low}</div>
+            <div class="meta">Stok i ulët</div>
           </div>
         `;
-      };
+      },
 
-      const renderTable = (items = App.state.products) => {
+      renderTable() {
         const tbody = document.getElementById('inventory-table-body');
-        if (!tbody) return;
-
         tbody.innerHTML = '';
-        items.forEach((product, index) => {
-          const margin = product.cost > 0 ? ((product.price - product.cost) / product.cost * 100).toFixed(1) : 0;
+        App.state.products.forEach((p, i) => {
+          const margin = p.cost > 0 ? ((p.price - p.cost) / p.cost * 100).toFixed(1) : 0;
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${escapeHtml(product.name)}</td>
-            <td>${escapeHtml(product.barcode)}</td>
-            <td>${escapeHtml(product.category || 'Tjetër')}</td>
-            <td>${escapeHtml(product.unit || 'copë')}</td>
-            <td>${Number(product.price).toFixed(0)} ALL</td>
-            <td>${Number(product.cost).toFixed(0)} ALL</td>
+            <td>${i + 1}</td>
+            <td>${p.name}</td>
+            <td>${p.barcode}</td>
+            <td>${p.unit}</td>
+            <td>${p.price} ALL</td>
+            <td>${p.cost} ALL</td>
             <td><span class="margin-badge">${margin}%</span></td>
-            <td><span class="status-badge ${Number(product.stock) <= 5 ? 'status-warn' : 'status-good'}">${product.stock}</span></td>
+            <td><span class="status-badge ${p.stock <= 5 ? 'status-warn' : 'status-good'}">${p.stock}</span></td>
             <td>
-              <button class="small-btn edit" onclick="Inventory.editProduct('${product.id}')">Edit</button>
-              <button class="small-btn delete" onclick="Inventory.deleteProduct('${product.id}')">Delete</button>
+              <button class="small-btn delete" onclick="Inventory.deleteProduct(${p.id})">Fshi</button>
             </td>
           `;
           tbody.appendChild(row);
         });
-      };
+      },
 
-      const filterProducts = (query) => {
-        const q = query.trim().toLowerCase();
-        if (!q) return renderTable(App.state.products);
+      calculateMargin() {
+        const cost = Number(document.getElementById('product-cost').value || 0);
+        const price = Number(document.getElementById('product-price').value || 0);
+        if (cost > 0) {
+          const margin = ((price - cost) / cost * 100).toFixed(1);
+          document.getElementById('product-margin').value = margin;
+        }
+      },
 
-        const filtered = App.state.products.filter(p =>
-          p.name.toLowerCase().includes(q) ||
-          p.barcode.toLowerCase().includes(q) ||
-          (p.category || '').toLowerCase().includes(q)
-        );
-        renderTable(filtered);
-      };
-
-      const openProductModal = () => {
+      openModal() {
         document.getElementById('product-form').reset();
         document.getElementById('product-id').value = '';
-        App.openModal('product-modal');
-      };
+        openModal('product-modal');
+      },
 
-      const editProduct = (id) => {
-        const product = App.state.products.find(p => p.id === id);
-        if (!product) return;
-
-        document.getElementById('product-id').value = product.id;
-        document.getElementById('product-name').value = product.name;
-        document.getElementById('product-barcode').value = product.barcode;
-        document.getElementById('product-price').value = product.price;
-        document.getElementById('product-cost').value = product.cost || 0;
-        document.getElementById('product-stock').value = product.stock;
-        document.getElementById('product-category').value = product.category || 'Pije';
-        document.getElementById('product-unit').value = product.unit || 'copë';
-        document.getElementById('product-supplier').value = product.supplier || '';
-        document.getElementById('product-description').value = product.description || '';
-        calculateMargin();
-
-        App.openModal('product-modal');
-      };
-
-      const saveProduct = () => {
-        const product = {
-          id: document.getElementById('product-id').value || App.makeId('p'),
+      saveProduct() {
+        const prod = {
+          id: document.getElementById('product-id').value || Date.now(),
           name: document.getElementById('product-name').value.trim(),
           barcode: document.getElementById('product-barcode').value.trim(),
-          price: Number(document.getElementById('product-price').value || 0),
-          cost: Number(document.getElementById('product-cost').value || 0),
-          stock: Number(document.getElementById('product-stock').value || 0),
-          category: document.getElementById('product-category').value || 'Tjetër',
-          unit: document.getElementById('product-unit').value || 'copë',
-          supplier: document.getElementById('product-supplier').value || 'N/A',
-          description: document.getElementById('product-description').value.trim()
+          unit: document.getElementById('product-unit').value,
+          category: document.getElementById('product-category').value,
+          price: Number(document.getElementById('product-price').value),
+          cost: Number(document.getElementById('product-cost').value),
+          stock: Number(document.getElementById('product-stock').value),
+          supplier: document.getElementById('product-supplier').value
         };
 
-        if (!product.name || !product.barcode) {
-          App.showToast('Emri dhe barcode-i janë të detyrueshëm.', 'danger');
+        if (!prod.name || !prod.barcode) {
+          App.showToast('Emri dhe barcode janë të detyrueshëm!', 'danger');
           return;
         }
 
-        const index = App.state.products.findIndex(p => p.id === product.id);
-        if (index >= 0) {
-          App.state.products[index] = product;
-        } else {
-          App.state.products.push(product);
-        }
+        const idx = App.state.products.findIndex(p => p.id === prod.id);
+        if (idx >= 0) App.state.products[idx] = prod;
+        else App.state.products.push(prod);
 
-        App.saveState();
-        renderStats();
-        renderTable();
-        POS.renderProductGrid();
-        App.closeModal('product-modal');
-        App.showToast('Produkti u ruajt me sukses.', 'success');
-      };
+        App.saveData();
+        this.renderStats();
+        this.renderTable();
+        POS.renderProducts();
+        closeModal('product-modal');
+        App.showToast('Produkti u ruajt.', 'success');
+      },
 
-      const deleteProduct = (id) => {
-        const product = App.state.products.find(p => p.id === id);
-        if (!product) return;
-
-        if (!confirm('Jeni i sigurt që doni të fshini produktin?')) return;
-
+      deleteProduct(id) {
+        if (!confirm('Fshi produktin?')) return;
         App.state.products = App.state.products.filter(p => p.id !== id);
-        App.saveState();
-        renderStats();
-        renderTable();
-        POS.renderProductGrid();
-        App.showToast(`Produkti "${product.name}" u fshi.`, 'success');
-      };
+        App.saveData();
+        this.renderStats();
+        this.renderTable();
+        POS.renderProducts();
+        App.showToast('Produkti u fshi.', 'success');
+      },
 
-      const refreshSupplierOptions = () => {
-        const select = document.getElementById('product-supplier');
-        if (!select) return;
-        select.innerHTML = '';
-
+      refreshSupplierOptions() {
+        const sel = document.getElementById('product-supplier');
+        if (!sel) return;
+        sel.innerHTML = '';
         App.state.suppliers.forEach(s => {
-          const option = document.createElement('option');
-          option.value = s.name;
-          option.textContent = s.name;
-          select.appendChild(option);
+          const opt = document.createElement('option');
+          opt.value = s.name;
+          opt.textContent = s.name;
+          sel.appendChild(opt);
         });
-      };
+      }
+    };
 
-      return {
-        calculateMargin,
-        renderStats,
-        renderTable,
-        filterProducts,
-        openProductModal,
-        editProduct,
-        saveProduct,
-        deleteProduct,
-        refreshSupplierOptions
-      };
-    })();
-
-    const Suppliers = (() => {
-      const renderSuppliers = () => {
+    const Suppliers = {
+      renderTable() {
         const tbody = document.getElementById('supplier-table-body');
-        if (!tbody) return;
         tbody.innerHTML = '';
-
-        App.state.suppliers.forEach((supplier, index) => {
+        App.state.suppliers.forEach((s, i) => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${escapeHtml(supplier.name)}</td>
-            <td>${escapeHtml(supplier.phone || '-')}</td>
-            <td>${escapeHtml(supplier.email || '-')}</td>
-            <td>${escapeHtml(supplier.city || '-')}</td>
-            <td>
-              <button class="small-btn edit" onclick="Suppliers.editSupplier('${supplier.id}')">Edit</button>
-              <button class="small-btn delete" onclick="Suppliers.deleteSupplier('${supplier.id}')">Delete</button>
-            </td>
+            <td>${i + 1}</td>
+            <td>${s.name}</td>
+            <td>${s.phone || '-'}</td>
+            <td>${s.email || '-'}</td>
+            <td>${s.city || '-'}</td>
+            <td><button class="small-btn delete" onclick="Suppliers.deleteSupplier(${s.id})">Fshi</button></td>
           `;
           tbody.appendChild(row);
         });
-      };
+      },
 
-      const renderInvoices = () => {
-        const tbody = document.getElementById('supplier-invoices-body');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        const arr = [
-          { nr: 'F-1001', supplier: 'Furnizuesi 1', value: 18500, status: 'Në pritje' },
-          { nr: 'F-1002', supplier: 'Furnizuesi 3', value: 9200, status: 'Paguar' },
-          { nr: 'F-1003', supplier: 'Furnizuesi 4', value: 24500, status: 'Në pritje' }
-        ];
-
-        arr.forEach(item => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${item.nr}</td>
-            <td>${item.supplier}</td>
-            <td>${Number(item.value).toFixed(0)} ALL</td>
-            <td><span class="status-badge ${item.status === 'Paguar' ? 'status-good' : 'status-warn'}">${item.status}</span></td>
-          `;
-          tbody.appendChild(row);
-        });
-      };
-
-      const renderStats = () => {
+      renderStats() {
         const stats = document.getElementById('supplier-stats');
         if (!stats) return;
-
-        const totalSuppliers = App.state.suppliers.length;
-
         stats.innerHTML = `
           <div class="stat-card">
             <div class="label">Furnizues</div>
-            <div class="value">${totalSuppliers}</div>
-            <div class="meta">Total furnizuesish</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Fatura të hapura</div>
-            <div class="value">2</div>
-            <div class="meta">Në pritje</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Vlera</div>
-            <div class="value">52200 ALL</div>
-            <div class="meta">Vlera totale</div>
+            <div class="value">${App.state.suppliers.length}</div>
+            <div class="meta">Totali</div>
           </div>
         `;
-      };
+      },
 
-      const openModal = () => {
+      openModal() {
         document.getElementById('supplier-form').reset();
         document.getElementById('supplier-id').value = '';
-        App.openModal('supplier-modal');
-      };
+        openModal('supplier-modal');
+      },
 
-      const editSupplier = (id) => {
-        const supplier = App.state.suppliers.find(s => s.id === id);
-        if (!supplier) return;
-        document.getElementById('supplier-id').value = supplier.id;
-        document.getElementById('supplier-name').value = supplier.name;
-        document.getElementById('supplier-phone').value = supplier.phone || '';
-        document.getElementById('supplier-email').value = supplier.email || '';
-        document.getElementById('supplier-city').value = supplier.city || '';
-        document.getElementById('supplier-address').value = supplier.address || '';
-        App.openModal('supplier-modal');
-      };
-
-      const saveSupplier = () => {
-        const supplier = {
-          id: document.getElementById('supplier-id').value || App.makeId('s'),
+      saveSupplier() {
+        const supp = {
+          id: document.getElementById('supplier-id').value || Date.now(),
           name: document.getElementById('supplier-name').value.trim(),
           phone: document.getElementById('supplier-phone').value.trim(),
           email: document.getElementById('supplier-email').value.trim(),
-          city: document.getElementById('supplier-city').value.trim(),
-          address: document.getElementById('supplier-address').value.trim()
+          city: document.getElementById('supplier-city').value.trim()
         };
 
-        if (!supplier.name) {
-          App.showToast('Emri i furnizuesit është i detyrueshëm.', 'danger');
+        if (!supp.name) {
+          App.showToast('Emri është i detyrueshëm!', 'danger');
           return;
         }
 
-        const index = App.state.suppliers.findIndex(s => s.id === supplier.id);
-        if (index >= 0) App.state.suppliers[index] = supplier;
-        else App.state.suppliers.push(supplier);
+        const idx = App.state.suppliers.findIndex(s => s.id === supp.id);
+        if (idx >= 0) App.state.suppliers[idx] = supp;
+        else App.state.suppliers.push(supp);
 
-        App.saveState();
-        renderSuppliers();
-        renderStats();
+        App.saveData();
+        this.renderTable();
+        this.renderStats();
         Inventory.refreshSupplierOptions();
-        App.closeModal('supplier-modal');
-        App.showToast('Furnizuesi u ruajt me sukses.', 'success');
-      };
+        closeModal('supplier-modal');
+        App.showToast('Furnizuesi u ruajt.', 'success');
+      },
 
-      const deleteSupplier = (id) => {
-        const supplier = App.state.suppliers.find(s => s.id === id);
-        if (!supplier) return;
-
-        if (!confirm('Jeni i sigurt që doni të fshini furnizuesin?')) return;
-
+      deleteSupplier(id) {
+        if (!confirm('Fshi furnizuesin?')) return;
         App.state.suppliers = App.state.suppliers.filter(s => s.id !== id);
-        App.saveState();
-        renderSuppliers();
-        renderStats();
+        App.saveData();
+        this.renderTable();
+        this.renderStats();
         Inventory.refreshSupplierOptions();
-        App.showToast(`Furnizuesi "${supplier.name}" u fshi.`, 'success');
-      };
+        App.showToast('Furnizuesi u fshi.', 'success');
+      }
+    };
 
-      return {
-        renderSuppliers,
-        renderInvoices,
-        renderStats,
-        openModal,
-        editSupplier,
-        saveSupplier,
-        deleteSupplier
-      };
-    })();
-
-    const Reports = (() => {
-      const renderStats = () => {
+    const Reports = {
+      renderStats() {
         const stats = document.getElementById('report-stats');
         if (!stats) return;
 
-        const totalSales = App.state.sales.reduce((sum, sale) => sum + Number(sale.total || 0), 0);
-        const totalProfit = App.state.sales.reduce((sum, sale) => sum + Number(sale.profit || 0), 0);
-        const avgTicket = App.state.sales.length ? totalSales / App.state.sales.length : 0;
-        const totalDiscounts = App.state.sales.reduce((sum, sale) => sum + Number(sale.discount || 0), 0);
-        const todayValue = App.state.sales.filter(sale => {
-          const d = new Date(sale.date);
-          const t = new Date();
-          return d.toDateString() === t.toDateString();
-        }).reduce((sum, sale) => sum + Number(sale.total || 0), 0);
+        const totalSales = App.state.sales.reduce((s, sale) => s + sale.total, 0);
+        const totalProfit = App.state.sales.reduce((s, sale) => s + sale.profit, 0);
+        const count = App.state.sales.length;
+        const avgSale = count ? (totalSales / count).toFixed(0) : 0;
 
         stats.innerHTML = `
           <div class="stat-card">
-            <div class="label">Shitjet totale</div>
-            <div class="value">${totalSales.toFixed(0)} ALL</div>
-            <div class="meta">Të gjitha faturat</div>
+            <div class="label">Shitjet</div>
+            <div class="value">${totalSales.toFixed(0)}</div>
+            <div class="meta">ALL</div>
           </div>
           <div class="stat-card">
-            <div class="label">Fitimi total</div>
-            <div class="value">${totalProfit.toFixed(0)} ALL</div>
-            <div class="meta">${((totalProfit / totalSales * 100) || 0).toFixed(1)}% margin</div>
+            <div class="label">Fitim</div>
+            <div class="value">${totalProfit.toFixed(0)}</div>
+            <div class="meta">ALL</div>
           </div>
           <div class="stat-card">
-            <div class="label">Mesatarja</div>
-            <div class="value">${avgTicket.toFixed(0)} ALL</div>
-            <div class="meta">Për faturë</div>
+            <div class="label">Fatura</div>
+            <div class="value">${count}</div>
+            <div class="meta">Shitje</div>
           </div>
           <div class="stat-card">
-            <div class="label">Zbritjet</div>
-            <div class="value">${totalDiscounts.toFixed(0)} ALL</div>
-            <div class="meta">Totali zbritjesh</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Ditore</div>
-            <div class="value">${todayValue.toFixed(0)} ALL</div>
-            <div class="meta">Shitjet e sotme</div>
+            <div class="label">Mesatare</div>
+            <div class="value">${avgSale}</div>
+            <div class="meta">Per fature</div>
           </div>
         `;
-      };
+      },
 
-      const renderTopProducts = () => {
-        const body = document.getElementById('top-products-body');
-        if (!body) return;
-        body.innerHTML = '';
-
-        const map = new Map();
-
-        App.state.sales.forEach(sale => {
-          sale.items.forEach(item => {
-            const key = item.name;
-            const current = map.get(key) || { qty: 0, total: 0, profit: 0 };
-            current.qty += Number(item.qty || 0);
-            current.total += Number(item.qty || 0) * Number(item.price || 0);
-            current.profit += (Number(item.price || 0) - Number(item.cost || 0)) * Number(item.qty || 0);
-            map.set(key, current);
-          });
-        });
-
-        const rows = [...map.entries()].sort((a, b) => b[1].qty - a[1].qty).slice(0, 5);
-
-        rows.forEach(([name, data]) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${escapeHtml(name)}</td>
-            <td>${data.qty}</td>
-            <td>${data.total.toFixed(0)} ALL</td>
-            <td><span class="margin-badge">${data.profit.toFixed(0)} ALL</span></td>
-          `;
-          body.appendChild(row);
-        });
-      };
-
-      const renderSalesHistory = () => {
-        const body = document.getElementById('sales-history-body');
-        if (!body) return;
-
-        body.innerHTML = '';
+      renderSales() {
+        const tbody = document.getElementById('sales-items');
+        tbody.innerHTML = '';
         App.state.sales.forEach(sale => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${escapeHtml(sale.receipt)}</td>
+            <td>${sale.receipt}</td>
             <td>${new Date(sale.date).toLocaleDateString('sq-AL')}</td>
-            <td>${sale.items.map(item => `${item.name} (${item.qty})`).join(', ')}</td>
-            <td>${Number(sale.total).toFixed(0)} ALL</td>
-            <td>${Number(sale.discount).toFixed(0)} ALL</td>
-            <td><span class="margin-badge">${Number(sale.profit).toFixed(0)} ALL</span></td>
-            <td><span class="status-badge status-good">${sale.status}</span></td>
-            <td><button class="small-btn success" onclick="Reports.printSale('${sale.receipt}')">Print</button></td>
+            <td>${sale.items.map(i => `${i.name} (${i.qty})`).join(', ')}</td>
+            <td>${sale.subtotal.toFixed(0)}</td>
+            <td>${sale.discount.toFixed(0)}</td>
+            <td>${sale.total.toFixed(0)}</td>
+            <td><span class="margin-badge">${sale.profit.toFixed(0)}</span></td>
+            <td><button class="small-btn delete" onclick="POS.printLastInvoice()">Print</button></td>
           `;
-          body.appendChild(row);
+          tbody.appendChild(row);
         });
-      };
+      }
+    };
 
-      const printSale = (receipt) => {
-        const sale = App.state.sales.find(s => s.receipt === receipt);
-        if (!sale) return;
-
-        const win = window.open('', '_blank', 'width=420,height=800');
-        const itemsHtml = sale.items.map(item => `
-          <tr>
-            <td>${escapeHtml(item.name)}</td>
-            <td>${item.qty}</td>
-            <td>${Number(item.price).toFixed(0)}</td>
-            <td>${(item.qty * item.price).toFixed(0)}</td>
-          </tr>
-        `).join('');
-
-        win.document.write(`
-          <html>
-            <head>
-              <style>
-                body { font-family: Arial, sans-serif; padding: 18px; color: #111; }
-                table { width: 100%; border-collapse: collapse; }
-                th, td { padding: 6px 4px; border-bottom: 1px solid #ddd; text-align: left; font-size: 0.85rem; }
-                .totals { margin-top: 16px; }
-                .totals div { display: flex; justify-content: space-between; margin: 4px 0; font-weight: 600; }
-              </style>
-            </head>
-            <body>
-              <h2 style="text-align:center; font-size:1.3rem; margin-bottom:8px;">POS Market Ultra Pro</h2>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Fatura: ${sale.receipt}</p>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Data: ${new Date(sale.date).toLocaleString('sq-AL')}</p>
-              <hr style="margin:8px 0;" />
-              <table>
-                <thead><tr><th>Produkti</th><th>Sasi</th><th>Çmim</th><th>Totali</th></tr></thead>
-                <tbody>${itemsHtml}</tbody>
-              </table>
-              <hr style="margin:8px 0;" />
-              <div class="totals">
-                <div><span>Nëntotali</span><span>${Number(sale.subtotal).toFixed(0)} ALL</span></div>
-                <div><span>Zbritje</span><span>${Number(sale.discount).toFixed(0)} ALL</span></div>
-                <div><strong><span>Totali</span><span>${Number(sale.total).toFixed(0)} ALL</span></strong></div>
-                <div style="color:green;"><strong><span>Fitim</span><span>${Number(sale.profit).toFixed(0)} ALL</span></strong></div>
-              </div>
-            </body>
-          </html>
-        `);
-
-        win.document.close();
-        win.focus();
-        setTimeout(() => win.print(), 400);
-      };
-
-      const generateDemoReport = () => {
-        App.state.sales.unshift({
-          id: App.makeId('sale'),
-          receipt: '#INV-' + Math.floor(2000 + Math.random() * 9000),
-          date: new Date().toISOString(),
-          items: [
-            { name: 'Mishi i freskët', qty: 2, price: 650, cost: 500 },
-            { name: 'Buka e Boshit', qty: 3, price: 120, cost: 80 }
-          ],
-          subtotal: 1660,
-          discount: 50,
-          total: 1610,
-          profit: 500,
-          status: 'Paid'
-        });
-
-        App.saveState();
-        renderStats();
-        renderTopProducts();
-        renderSalesHistory();
-        App.showToast('Raporti u krijua me sukses.', 'success');
-      };
-
-      return {
-        renderStats,
-        renderTopProducts,
-        renderSalesHistory,
-        printSale,
-        generateDemoReport
-      };
-    })();
-
-    const Loyalty = (() => {
-      const renderStats = () => {
+    const Loyalty = {
+      renderStats() {
         const stats = document.getElementById('loyalty-stats');
         if (!stats) return;
 
         const vip = App.state.customers.filter(c => c.tier === 'VIP').length;
-        const gold = App.state.customers.filter(c => c.tier === 'Gold').length;
-        const totalPoints = App.state.customers.reduce((sum, c) => sum + Number(c.points || 0), 0);
+        const total = App.state.customers.length;
+        const pts = App.state.customers.reduce((s, c) => s + c.points, 0);
 
         stats.innerHTML = `
           <div class="stat-card">
+            <div class="label">Klientë</div>
+            <div class="value">${total}</div>
+            <div class="meta">Totali</div>
+          </div>
+          <div class="stat-card">
             <div class="label">VIP</div>
             <div class="value">${vip}</div>
-            <div class="meta">Klientë VIP</div>
+            <div class="meta">Klientë</div>
           </div>
           <div class="stat-card">
-            <div class="label">Gold</div>
-            <div class="value">${gold}</div>
-            <div class="meta">Klientë Gold</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Pikat totale</div>
-            <div class="value">${totalPoints}</div>
-            <div class="meta">Pikat në sistem</div>
+            <div class="label">Pikat</div>
+            <div class="value">${pts}</div>
+            <div class="meta">Totali</div>
           </div>
         `;
-      };
+      },
 
-      const renderCustomers = () => {
+      renderTable() {
         const tbody = document.getElementById('customer-table-body');
-        if (!tbody) return;
         tbody.innerHTML = '';
-
-        App.state.customers.forEach((customer, index) => {
+        App.state.customers.forEach((c, i) => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${escapeHtml(customer.name)}</td>
-            <td>${escapeHtml(customer.phone || '-')}</td>
-            <td>${escapeHtml(customer.email || '-')}</td>
-            <td>${escapeHtml(customer.tier || 'Standard')}</td>
-            <td>${Number(customer.points || 0)}</td>
-            <td>
-              <button class="small-btn edit" onclick="Loyalty.editCustomer('${customer.id}')">Edit</button>
-              <button class="small-btn delete" onclick="Loyalty.deleteCustomer('${customer.id}')">Delete</button>
-            </td>
+            <td>${i + 1}</td>
+            <td>${c.name}</td>
+            <td>${c.phone || '-'}</td>
+            <td>${c.email || '-'}</td>
+            <td>${c.tier}</td>
+            <td>${c.points}</td>
+            <td><button class="small-btn delete" onclick="Loyalty.deleteCustomer(${c.id})">Fshi</button></td>
           `;
           tbody.appendChild(row);
         });
-      };
+      },
 
-      const openModal = () => {
+      openModal() {
         document.getElementById('customer-form').reset();
         document.getElementById('customer-id').value = '';
-        document.getElementById('customer-points').value = 0;
-        App.openModal('customer-modal');
-      };
+        openModal('customer-modal');
+      },
 
-      const editCustomer = (id) => {
-        const customer = App.state.customers.find(c => c.id === id);
-        if (!customer) return;
-
-        document.getElementById('customer-id').value = customer.id;
-        document.getElementById('customer-name').value = customer.name;
-        document.getElementById('customer-phone').value = customer.phone || '';
-        document.getElementById('customer-email').value = customer.email || '';
-        document.getElementById('customer-tier').value = customer.tier || 'Standard';
-        document.getElementById('customer-points').value = customer.points || 0;
-        App.openModal('customer-modal');
-      };
-
-      const saveCustomer = () => {
-        const customer = {
-          id: document.getElementById('customer-id').value || App.makeId('c'),
+      saveCustomer() {
+        const cust = {
+          id: document.getElementById('customer-id').value || Date.now(),
           name: document.getElementById('customer-name').value.trim(),
           phone: document.getElementById('customer-phone').value.trim(),
           email: document.getElementById('customer-email').value.trim(),
           tier: document.getElementById('customer-tier').value,
-          points: Number(document.getElementById('customer-points').value || 0)
+          points: Number(document.getElementById('customer-points').value)
         };
 
-        if (!customer.name) {
-          App.showToast('Emri i klientit është i detyrueshëm.', 'danger');
+        if (!cust.name) {
+          App.showToast('Emri është i detyrueshëm!', 'danger');
           return;
         }
 
-        const index = App.state.customers.findIndex(c => c.id === customer.id);
-        if (index >= 0) App.state.customers[index] = customer;
-        else App.state.customers.push(customer);
+        const idx = App.state.customers.findIndex(c => c.id === cust.id);
+        if (idx >= 0) App.state.customers[idx] = cust;
+        else App.state.customers.push(cust);
 
-        App.saveState();
-        renderCustomers();
-        renderStats();
-        App.closeModal('customer-modal');
-        App.showToast('Klienti u ruajt me sukses.', 'success');
-      };
+        App.saveData();
+        this.renderTable();
+        this.renderStats();
+        closeModal('customer-modal');
+        App.showToast('Klienti u ruajt.', 'success');
+      },
 
-      const deleteCustomer = (id) => {
-        const customer = App.state.customers.find(c => c.id === id);
-        if (!customer) return;
-
-        if (!confirm('Jeni i sigurt që doni të fshini klientin?')) return;
-
+      deleteCustomer(id) {
+        if (!confirm('Fshi klientin?')) return;
         App.state.customers = App.state.customers.filter(c => c.id !== id);
-        App.saveState();
-        renderCustomers();
-        renderStats();
-        App.showToast(`Klienti "${customer.name}" u fshi.`, 'success');
-      };
+        App.saveData();
+        this.renderTable();
+        this.renderStats();
+        App.showToast('Klienti u fshi.', 'success');
+      }
+    };
 
-      return {
-        renderStats,
-        renderCustomers,
-        openModal,
-        editCustomer,
-        saveCustomer,
-        deleteCustomer
-      };
-    })();
-
-    const Settings = (() => {
-      const updateExchangeRate = () => {
-        const rate = parseFloat(document.getElementById('exchange-rate').value);
+    const Settings = {
+      updateRate() {
+        const rate = Number(document.getElementById('exchange-rate').value);
         if (isNaN(rate) || rate <= 0) {
-          App.showToast('Kursi duhet të jetë një numër pozitiv.', 'danger');
+          App.showToast('Kursi duhet të jetë pozitiv!', 'danger');
           return;
         }
-
         App.state.settings.exchangeRate = rate;
-        App.saveState();
-        App.updateCurrencyDisplay();
+        document.getElementById('exchange-rate-display').textContent = rate;
+        App.saveData();
         POS.updateTotals();
-        App.showToast('Kursi i këmbimit u përditësua me sukses.', 'success');
-      };
+        App.showToast('Kursi u përditësua.', 'success');
+      }
+    };
 
-      return {
-        updateExchangeRate
-      };
-    })();
+    function openModal(id) {
+      document.getElementById(id).classList.add('open');
+    }
 
-    function escapeHtml(value) {
-      return String(value || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('open');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
