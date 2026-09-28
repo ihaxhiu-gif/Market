@@ -1,256 +1,179 @@
 <!DOCTYPE html>
 <html lang="sq">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POS Market Ultra Pro</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Market Ultra</title>
   <style>
-    :root {
-      --bg: #0f172a;
-      --bg2: #111827;
-      --panel: #111b2d;
-      --panel2: #172337;
-      --line: rgba(148,163,184,0.22);
-      --primary: #38bdf8;
-      --primary2: #2563eb;
-      --success: #22c55e;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --purple: #8b5cf6;
-      --text: #e5eefc;
-      --textSoft: #9fb4d9;
-      --white: #ffffff;
-      --shadow: 0 16px 40px rgba(15,23,42,0.35);
-      --radius: 18px;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
-    html, body { height: 100%; }
-    body {
-      background:
-        radial-gradient(circle at top left, rgba(56,189,248,.18), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(139,92,246,.18), transparent 25%),
-        linear-gradient(135deg, var(--bg), var(--bg2));
-      color: var(--text);
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+      color: #e5eefc;
+      height: 100vh;
       overflow: hidden;
     }
 
-    button, input, select, textarea { font: inherit; }
-
-    .hidden { display: none !important; }
-
+    /* LOGIN */
     #login-screen {
-      position: fixed; inset: 0;
+      position: fixed;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      background:
-        linear-gradient(135deg, rgba(15,23,42,0.95), rgba(17,24,39,0.9)),
-        radial-gradient(circle at center, rgba(56,189,248,0.18), transparent 35%);
+      background: rgba(15, 23, 42, 0.95);
       z-index: 2000;
     }
 
     .login-box {
-      width: min(430px, 90vw);
-      background: rgba(17,27,45,0.82);
-      border: 1px solid var(--line);
-      border-radius: 28px;
-      padding: 28px 24px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      background: rgba(17, 27, 45, 0.95);
+      border: 1px solid rgba(148, 163, 184, 0.25);
+      border-radius: 20px;
+      padding: 40px;
+      width: 400px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
     }
 
-    .login-header {
+    .login-box h1 {
+      margin-bottom: 10px;
+      font-size: 2.2rem;
       text-align: center;
-      margin-bottom: 22px;
     }
 
-    .login-logo {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 12px;
-      border-radius: 18px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--primary), var(--purple));
-      color: white;
-      font-size: 1.8rem;
-      font-weight: 800;
-      box-shadow: 0 20px 28px rgba(56,189,248,.25);
+    .login-box p {
+      text-align: center;
+      color: #9fb4d9;
+      margin-bottom: 30px;
+      font-size: 0.95rem;
     }
 
-    .login-header h2 {
-      font-size: 2rem;
-      font-weight: 800;
-      letter-spacing: 0.02em;
+    .login-field {
+      margin-bottom: 15px;
     }
 
-    .login-header p {
-      margin-top: 8px;
-      color: var(--textSoft);
-      font-size: 0.9rem;
-    }
-
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-
-    .field {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-    }
-
-    .field label {
-      font-size: 0.76rem;
+    .login-field label {
+      display: block;
+      margin-bottom: 7px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      font-size: 0.85rem;
+      color: #9fb4d9;
       text-transform: uppercase;
-      color: var(--textSoft);
+      letter-spacing: 0.05em;
     }
 
-    .field input, .field select {
+    .login-field input,
+    .login-field select {
       width: 100%;
       padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.75);
-      color: var(--text);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5eefc;
+      font-size: 1rem;
       outline: none;
+      transition: all 0.2s;
     }
 
-    .field input:focus, .field select:focus {
-      border-color: rgba(56,189,248,0.8);
-      box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
+    .login-field input:focus,
+    .login-field select:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
     }
 
     .login-btn {
-      margin-top: 8px;
-      border: none;
-      border-radius: 12px;
-      padding: 13px 16px;
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
+      width: 100%;
+      padding: 13px;
+      margin-top: 10px;
+      background: linear-gradient(135deg, #38bdf8, #2563eb);
       color: white;
+      border: none;
+      border-radius: 10px;
       font-weight: 800;
+      font-size: 1rem;
       cursor: pointer;
-      transition: transform .15s ease;
+      transition: transform 0.15s;
     }
 
-    .login-btn:hover { transform: translateY(-1px); }
+    .login-btn:hover {
+      transform: translateY(-1px);
+    }
 
     .demo-users {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 10px;
-      margin-top: 18px;
+      margin-top: 20px;
     }
 
     .demo-user {
-      border: 1px solid var(--line);
-      background: rgba(148,163,184,0.06);
-      color: var(--text);
-      border-radius: 10px;
       padding: 10px 8px;
-      text-align: center;
+      background: rgba(148, 163, 184, 0.1);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 8px;
+      color: #38bdf8;
       cursor: pointer;
-      font-size: 0.8rem;
-      transition: .15s ease;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-align: center;
+      transition: all 0.2s;
     }
 
     .demo-user:hover {
-      background: rgba(56,189,248,0.08);
-      border-color: rgba(56,189,248,0.45);
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
     }
 
-    #app-shell {
+    /* APP */
+    #app-container {
       display: none;
       height: 100vh;
-      width: 100%;
     }
 
-    #app-shell.active {
+    #app-container.active {
       display: flex;
     }
 
     #sidebar {
       width: 260px;
-      background: linear-gradient(180deg, rgba(17,27,45,0.96), rgba(17,24,39,0.96));
-      border-right: 1px solid var(--line);
-      padding: 18px 14px 18px;
+      background: linear-gradient(180deg, rgba(17, 27, 45, 0.96), rgba(17, 24, 39, 0.96));
+      border-right: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 20px 12px;
       display: flex;
       flex-direction: column;
-      flex-shrink: 0;
+      overflow-y: auto;
     }
 
     .brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      font-size: 1.45rem;
+      text-align: center;
+      font-size: 1.4rem;
       font-weight: 800;
-      letter-spacing: 0.02em;
-      padding: 8px 8px 20px;
-      border-bottom: 1px solid var(--line);
-      margin-bottom: 14px;
-    }
-
-    .brand-badge {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--primary), var(--purple));
-      border-radius: 12px;
-      color: white;
-      font-weight: 800;
-      box-shadow: 0 18px 28px rgba(56,189,248,.2);
+      margin-bottom: 25px;
+      padding: 10px 0 15px 0;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
     }
 
     .nav {
       display: flex;
       flex-direction: column;
       gap: 8px;
-      margin-top: 12px;
+      margin-top: 15px;
     }
 
     .nav-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 12px 14px;
-      border-radius: 12px;
-      color: rgba(229,238,252,0.9);
+      padding: 12px 15px;
+      background: transparent;
       border: 1px solid transparent;
+      border-radius: 10px;
+      color: rgba(229, 238, 252, 0.9);
       cursor: pointer;
       font-weight: 700;
-      transition: .15s ease;
+      transition: all 0.15s;
     }
 
-    .nav-item:hover, .nav-item.active {
-      background: rgba(148,163,184,0.08);
-      border-color: rgba(56,189,248,0.18);
-      transform: translateX(1px);
-    }
-
-    .nav-item .icon {
-      width: 24px; height: 24px;
-      display: inline-grid;
-      place-items: center;
-      border-radius: 8px;
-      background: rgba(148,163,184,0.08);
-      font-size: 0.9rem;
-    }
-
-    .sidebar-footer {
-      margin-top: auto;
-      border-top: 1px solid var(--line);
-      padding-top: 16px;
-      color: var(--textSoft);
-      font-size: 0.82rem;
-      line-height: 1.7;
+    .nav-item:hover,
+    .nav-item.active {
+      background: rgba(148, 163, 184, 0.1);
+      border-color: rgba(56, 189, 248, 0.3);
     }
 
     #main {
@@ -261,15 +184,12 @@
     }
 
     #topbar {
+      background: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 18px 25px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 16px;
-      background: rgba(15,23,42,0.83);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--line);
-      padding: 18px 26px;
-      box-shadow: 0 12px 18px rgba(2,8,23,.12);
     }
 
     #section-title {
@@ -280,428 +200,181 @@
     .topbar-right {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 15px;
     }
 
-    .currency-badge {
-      background: rgba(139,92,246,0.12);
-      border: 1px solid rgba(139,92,246,.3);
-      border-radius: 10px;
-      padding: 6px 12px;
-      font-size: 0.85rem;
-      font-weight: 800;
-      color: #c4b5fd;
-    }
-
-    .user-pill {
-      padding: 8px 12px 8px 8px;
-      border-radius: 999px;
-      background: rgba(148,163,184,0.06);
-      border: 1px solid var(--line);
+    .user-info {
       display: flex;
       align-items: center;
       gap: 10px;
-      min-width: 180px;
+      padding: 8px 12px;
+      background: rgba(148, 163, 184, 0.08);
+      border-radius: 8px;
+      font-size: 0.9rem;
     }
-
-    .user-avatar {
-      width: 32px; height: 32px;
-      border-radius: 50%;
-      display: grid; place-items: center;
-      background: linear-gradient(135deg, var(--primary), var(--purple));
-      color: white;
-      font-weight: 800;
-    }
-
-    .user-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-
-    .user-meta .name { font-size: 0.86rem; font-weight: 700; }
-    .user-meta .role { font-size: 0.72rem; color: var(--textSoft); }
 
     .btn {
+      padding: 10px 16px;
       border: none;
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      transition: transform .15s ease, opacity .15s ease;
+      border-radius: 8px;
       cursor: pointer;
+      font-weight: 800;
+      transition: all 0.15s;
     }
 
-    .btn:hover { transform: translateY(-1px); opacity: 0.96; }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary2)); color: white; }
-    .btn-success { background: linear-gradient(135deg, var(--success), #16a34a); color: white; }
-    .btn-danger { background: linear-gradient(135deg, var(--danger), #b91c1c); color: white; }
-    .btn-warning { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
-    .btn-purple { background: linear-gradient(135deg, var(--purple), #7c3aed); color: white; }
-    .btn-ghost {
-      background: rgba(148,163,184,0.08);
-      border: 1px solid var(--line);
-      color: var(--text);
+    .btn-primary {
+      background: #38bdf8;
+      color: white;
     }
 
-    .content {
+    .btn-success {
+      background: #22c55e;
+      color: white;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      opacity: 0.9;
+    }
+
+    #content {
       flex: 1;
       overflow-y: auto;
-      padding: 22px;
-      background: rgba(15,23,42,0.56);
+      padding: 25px;
+      background: rgba(15, 23, 42, 0.55);
     }
 
     .view {
       display: none;
-      min-height: 100%;
     }
 
-    .view.active { display: block; }
+    .view.active {
+      display: block;
+    }
 
     .section-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-      flex-wrap: wrap;
+      margin-bottom: 20px;
+      gap: 15px;
     }
 
-    .section-head h3 { font-size: 1.55rem; font-weight: 800; }
+    .section-head h2 {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
 
-    .action-row { display: flex; gap: 10px; flex-wrap: wrap; }
+    .action-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(17, 27, 45, 0.9), rgba(17, 24, 39, 0.92));
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 15px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 16px;
-      margin-bottom: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
     }
 
     .stat-card {
-      background: linear-gradient(180deg, rgba(17,27,45,0.9), rgba(29,42,66,0.85));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(17, 27, 45, 0.9), rgba(29, 42, 66, 0.85));
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 12px;
       padding: 18px 16px;
-      box-shadow: var(--shadow);
     }
 
-    .stat-card .label {
-      color: var(--textSoft);
-      text-transform: uppercase;
-      font-size: 0.7rem;
+    .stat-label {
+      color: #9fb4d9;
+      font-size: 0.75rem;
       font-weight: 800;
+      text-transform: uppercase;
       letter-spacing: 0.08em;
       margin-bottom: 10px;
     }
 
-    .stat-card .value {
-      font-size: clamp(1.7rem, 3vw, 2.35rem);
+    .stat-value {
+      font-size: 2rem;
       font-weight: 900;
       color: white;
     }
 
-    .stat-card .meta {
-      color: var(--textSoft);
+    .stat-meta {
+      color: #9fb4d9;
+      font-size: 0.8rem;
       margin-top: 8px;
-      font-size: 0.78rem;
     }
 
-    .panel {
-      background: linear-gradient(180deg, rgba(17,27,45,0.9), rgba(17,24,39,0.92));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-      margin-bottom: 18px;
+    .table-wrap {
+      overflow-x: auto;
     }
-
-    .two-col {
-      display: grid;
-      grid-template-columns: 1.1fr 1.2fr;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(180px, 1fr));
-      gap: 12px;
-    }
-
-    .form-grid .full { grid-column: 1 / -1; }
-
-    .field input, .field select, .field textarea {
-      background: rgba(15,23,42,0.7);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      color: var(--text);
-      padding: 11px 12px;
-      width: 100%;
-      outline: none;
-    }
-
-    .field textarea { resize: vertical; min-height: 90px; }
-
-    .field input:focus, .field select:focus, .field textarea:focus {
-      border-color: rgba(56,189,248,0.7);
-      box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
-    }
-
-    .field label {
-      font-size: 0.78rem;
-      color: var(--textSoft);
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .table-wrap { overflow-x: auto; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 700px;
     }
 
-    th, td {
+    table th,
+    table td {
       padding: 12px 10px;
-      border-bottom: 1px solid var(--line);
       text-align: left;
-      vertical-align: middle;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
     }
 
-    th {
-      color: var(--textSoft);
-      font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background: rgba(148,163,184,0.04);
-    }
-
-    tbody tr:hover { background: rgba(148,163,184,0.03); }
-
-    .status-badge {
-      display: inline-block;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 0.7rem;
+    table th {
+      background: rgba(148, 163, 184, 0.05);
       font-weight: 800;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .status-good { background: rgba(34,197,94,0.12); color: #86efac; }
-    .status-warn { background: rgba(245,158,11,0.12); color: #fbbf24; }
-    .status-bad { background: rgba(239,68,68,0.12); color: #fca5a5; }
-
-    .small-btn {
-      border: none;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-weight: 800;
-      color: white;
-      cursor: pointer;
-      margin-right: 6px;
       font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #9fb4d9;
     }
 
-    .small-btn.edit { background: linear-gradient(135deg, var(--primary), var(--primary2)); }
-    .small-btn.delete { background: linear-gradient(135deg, var(--danger), #b91c1c); }
-    .small-btn.success { background: linear-gradient(135deg, var(--success), #16a34a); }
-
-    .search-input {
-      min-width: 240px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.7);
-      color: var(--text);
+    table tbody tr:hover {
+      background: rgba(148, 163, 184, 0.03);
     }
 
-    .pos-layout {
-      display: grid;
-      grid-template-columns: 1.4fr 0.92fr;
-      gap: 18px;
-      min-height: calc(100vh - 170px);
+    .btn-sm {
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      margin-right: 5px;
     }
 
-    .pos-shell, .cart-shell {
-      background: linear-gradient(180deg, rgba(17,27,45,0.92), rgba(17,24,39,0.94));
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-
-    .pos-search {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.7);
-      color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 14px;
-    }
-
-    .product-card {
-      background: linear-gradient(180deg, rgba(20,31,52,0.95), rgba(17,24,39,0.98));
-      border: 1px solid var(--line);
-      padding: 14px 12px;
-      border-radius: 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
-    }
-
-    .product-card:hover {
-      transform: translateY(-2px);
-      border-color: rgba(56,189,248,0.45);
-      box-shadow: 0 8px 18px rgba(11,18,32,0.18);
-    }
-
-    .product-card h4 {
-      font-size: 0.95rem;
-      min-height: 42px;
-      line-height: 1.25;
-      margin-bottom: 8px;
-    }
-
-    .product-card .price {
-      color: var(--primary);
-      font-weight: 800;
-      font-size: 1.1rem;
-      margin-bottom: 6px;
-    }
-
-    .product-card .stock { color: var(--textSoft); font-size: 0.76rem; }
-
-    .cart-table-wrap {
-      margin-top: 14px;
-      max-height: 370px;
-      overflow-y: auto;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(15,23,42,0.46);
-    }
-
-    #cart-items { width: 100%; border-collapse: collapse; }
-
-    #cart-items td {
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: middle;
-      font-size: 0.9rem;
-    }
-
-    .qty-input {
-      width: 60px;
-      padding: 8px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.7);
-      color: var(--text);
-    }
-
-    .totals-box {
-      margin-top: 18px;
-      background: rgba(148,163,184,0.04);
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .totals-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 14px;
-      margin-bottom: 8px;
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
-
-    .totals-row.grand {
-      border-top: 1px solid var(--line);
-      padding-top: 12px;
-      margin-top: 12px;
-      color: #9ae6b4;
-      font-size: 1.2rem;
-      font-weight: 900;
-    }
-
-    .totals-row input {
-      width: 86px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.7);
-      color: var(--text);
-    }
-
-    .payment-section {
-      background: rgba(56,189,248,0.1);
-      border: 1px solid rgba(56,189,248,0.3);
-      border-radius: 12px;
-      padding: 12px;
-      margin-top: 14px;
-    }
-
-    .payment-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 8px;
-      align-items: center;
-    }
-
-    .payment-row label { font-size: 0.8rem; font-weight: 700; }
-
-    .payment-row input {
-      width: 100px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid var(--line);
-      background: rgba(15,23,42,0.7);
-      color: var(--text);
-    }
-
-    .checkout-row {
-      display: flex;
-      gap: 8px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .checkout-row > * { flex: 1; }
-
+    /* MODAL */
     .modal {
+      display: none;
       position: fixed;
       inset: 0;
-      display: none;
+      background: rgba(0, 0, 0, 0.7);
       align-items: center;
       justify-content: center;
-      background: rgba(2,8,23,0.74);
       z-index: 1500;
-      padding: 20px;
     }
 
-    .modal.open { display: flex; }
+    .modal.open {
+      display: flex;
+    }
 
-    .modal-card {
-      width: min(700px, 92vw);
-      background: linear-gradient(180deg, rgba(17,27,45,0.96), rgba(14,20,33,0.98));
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      border-radius: 20px;
-      padding: 20px;
-      max-height: 90vh;
+    .modal-content {
+      background: rgba(17, 27, 45, 0.96);
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 15px;
+      padding: 25px;
+      width: min(600px, 90vw);
+      max-height: 85vh;
       overflow-y: auto;
     }
 
@@ -709,94 +382,246 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 18px;
-    }
-
-    .modal-head h3 { font-size: 1.4rem; font-weight: 800; }
-
-    .close-modal {
-      border: none;
-      background: rgba(148,163,184,0.08);
-      color: var(--text);
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    .margin-badge {
-      background: rgba(34,197,94,0.12);
-      color: #86efac;
-      padding: 4px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
       font-weight: 800;
     }
 
+    .close-btn {
+      background: none;
+      border: none;
+      color: #e5eefc;
+      font-size: 2rem;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #9fb4d9;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5eefc;
+      outline: none;
+    }
+
+    .form-group textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .modal-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    /* TOAST */
     #toast-container {
       position: fixed;
-      right: 20px;
       bottom: 20px;
+      right: 20px;
       z-index: 3000;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
     }
 
     .toast {
       padding: 12px 16px;
-      border-radius: 12px;
+      border-radius: 8px;
       color: white;
-      min-width: 220px;
-      box-shadow: 0 18px 28px rgba(2,8,23,0.4);
-      animation: toastIn .2s ease;
+      margin-bottom: 10px;
       font-weight: 700;
+      animation: slideIn 0.3s ease;
     }
 
-    .toast.success { background: linear-gradient(135deg, var(--success), #16a34a); }
-    .toast.danger { background: linear-gradient(135deg, var(--danger), #b91c1c); }
-    .toast.info { background: linear-gradient(135deg, var(--primary), var(--primary2)); }
-
-    @keyframes toastIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+    .toast.success {
+      background: #22c55e;
     }
 
-    @media (max-width: 980px) {
-      body { overflow: auto; }
-      #app-shell.active { display: block; }
-      #sidebar { width: 100%; }
-      .pos-layout, .two-col { grid-template-columns: 1fr; }
-      .form-grid { grid-template-columns: 1fr; }
-      .demo-users { grid-template-columns: 1fr; }
+    .toast.danger {
+      background: #ef4444;
+    }
+
+    .toast.info {
+      background: #38bdf8;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+
+    .form-grid.full {
+      grid-column: 1 / -1;
+    }
+
+    .pos-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+      height: calc(100vh - 180px);
+    }
+
+    .pos-left,
+    .pos-right {
+      background: rgba(17, 27, 45, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 15px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5eefc;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .product-card {
+      background: linear-gradient(180deg, rgba(20, 31, 52, 0.95), rgba(17, 24, 39, 0.98));
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 10px;
+      padding: 12px 10px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .product-card h4 {
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      line-height: 1.3;
+      min-height: 35px;
+    }
+
+    .product-card .price {
+      color: #38bdf8;
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+    }
+
+    .product-card .stock {
+      color: #9fb4d9;
+      font-size: 0.75rem;
+    }
+
+    .cart-table {
+      overflow-y: auto;
+      flex: 1;
+      margin-bottom: 15px;
+    }
+
+    .cart-table table {
+      margin: 0;
+    }
+
+    .totals-box {
+      background: rgba(148, 163, 184, 0.05);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 15px;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .totals-row.grand {
+      border-top: 1px solid rgba(148, 163, 184, 0.2);
+      padding-top: 10px;
+      margin-top: 10px;
+      font-size: 1.1rem;
+      color: #86efac;
+    }
+
+    .qty-input {
+      width: 60px;
+      padding: 6px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      border-radius: 6px;
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5eefc;
+    }
+
+    .hidden {
+      display: none !important;
     }
   </style>
 </head>
 <body>
 
+  <!-- LOGIN SCREEN -->
   <div id="login-screen">
     <div class="login-box">
-      <div class="login-header">
-        <div class="login-logo">P</div>
-        <h2>POS Market Ultra Pro</h2>
-        <p>Kycu në sistem</p>
-      </div>
+      <h1>POS Market</h1>
+      <p>Kycu në sistem</p>
 
-      <form id="login-form" class="login-form" onsubmit="handleLogin(event)">
-        <div class="field">
-          <label for="username">Përdoruesi</label>
-          <input id="username" type="text" value="admin" />
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="login-field">
+          <label>Përdoruesi</label>
+          <input id="username" type="text" value="admin" required>
         </div>
 
-        <div class="field">
-          <label for="password">Fjalëkalimi</label>
-          <input id="password" type="password" value="admin" />
+        <div class="login-field">
+          <label>Fjalëkalimi</label>
+          <input id="password" type="password" value="admin" required>
         </div>
 
-        <div class="field">
-          <label for="role">Roli</label>
-          <select id="role">
+        <div class="login-field">
+          <label>Roli</label>
+          <select id="role" required>
             <option value="admin">Admin</option>
             <option value="cashier">Kasier</option>
             <option value="manager">Menaxher</option>
@@ -807,146 +632,106 @@
       </form>
 
       <div class="demo-users">
-        <div class="demo-user" onclick="fillDemoUser('admin','admin','admin')">Admin</div>
-        <div class="demo-user" onclick="fillDemoUser('cashier','cashier','cashier')">Kasier</div>
-        <div class="demo-user" onclick="fillDemoUser('manager','manager','manager')">Menaxher</div>
+        <div class="demo-user" onclick="setDemo('admin', 'admin', 'admin')">Admin</div>
+        <div class="demo-user" onclick="setDemo('cashier', 'cashier', 'cashier')">Kasier</div>
+        <div class="demo-user" onclick="setDemo('manager', 'manager', 'manager')">Menaxher</div>
       </div>
     </div>
   </div>
 
-  <div id="app-shell">
+  <!-- APP CONTAINER -->
+  <div id="app-container">
+    <!-- SIDEBAR -->
     <aside id="sidebar">
-      <div class="brand">
-        <div class="brand-badge">P</div>
-        <div>POS Ultra</div>
-      </div>
+      <div class="brand">POS Ultra</div>
 
       <nav class="nav">
-        <div class="nav-item active" data-target="pos-view"><span class="icon">🛒</span> Kasa</div>
-        <div class="nav-item" data-target="inventory-view"><span class="icon">📦</span> Stoku</div>
-        <div class="nav-item" data-target="suppliers-view"><span class="icon">🚚</span> Furnizuesit</div>
-        <div class="nav-item" data-target="reports-view"><span class="icon">📊</span> Raportet</div>
-        <div class="nav-item" data-target="loyalty-view"><span class="icon">🎁</span> Loyalty</div>
-        <div class="nav-item" data-target="settings-view"><span class="icon">⚙️</span> Cilësimet</div>
+        <div class="nav-item active" onclick="showView('pos')">🛒 Kasa</div>
+        <div class="nav-item" onclick="showView('inventory')">📦 Stoku</div>
+        <div class="nav-item" onclick="showView('suppliers')">🚚 Furnizuesit</div>
+        <div class="nav-item" onclick="showView('reports')">📊 Raportet</div>
+        <div class="nav-item" onclick="showView('settings')">⚙️ Cilësimet</div>
       </nav>
-
-      <div class="sidebar-footer">
-        <div>Version: 7.0 Pro</div>
-        <div id="sidebar-user">Admin</div>
-      </div>
     </aside>
 
+    <!-- MAIN CONTENT -->
     <main id="main">
       <header id="topbar">
         <h2 id="section-title">Kasa</h2>
 
         <div class="topbar-right">
-          <div class="currency-badge">
-            <span id="currency-display">ALL</span> / <span id="exchange-rate-display">100</span>
+          <div class="user-info">
+            <span id="user-display">Admin</span>
+            <button class="btn btn-danger" onclick="handleLogout()">Dil</button>
           </div>
-
-          <div class="user-pill">
-            <div class="user-avatar" id="user-avatar">A</div>
-            <div class="user-meta">
-              <div class="name" id="user-name">Admin</div>
-              <div class="role" id="user-role">Admin</div>
-            </div>
-          </div>
-
-          <button class="btn btn-danger" onclick="handleLogout()">Dil</button>
         </div>
       </header>
 
-      <div class="content">
-        <section id="pos-view" class="view active">
+      <div id="content">
+        <!-- POS VIEW -->
+        <div id="pos" class="view active">
           <div class="section-head">
-            <h3>Kasa (POS)</h3>
+            <h2>Kasa (POS)</h2>
             <div class="action-row">
-              <button class="btn btn-ghost" onclick="POS.clearCart()">Pastro karte</button>
-              <button class="btn btn-success" onclick="POS.checkout()">Kryej shitjen</button>
+              <button class="btn btn-primary" onclick="POS.clearCart()">Pastro</button>
+              <button class="btn btn-success" onclick="POS.checkout()">Kryej</button>
             </div>
           </div>
 
-          <div class="pos-layout">
-            <div class="pos-shell">
-              <input type="text" id="barcode-input" class="pos-search" placeholder="Skano barcode ose kërko produkt..." autofocus />
-              <div class="product-grid" id="product-grid"></div>
+          <div class="pos-grid">
+            <div class="pos-left">
+              <input type="text" class="search-input" id="barcode-search" placeholder="Skano barcode..." oninput="POS.search(this.value)" autofocus>
+              <div class="product-grid" id="product-list"></div>
             </div>
 
-            <div class="cart-shell">
-              <h3>Fatura e shitjes</h3>
+            <div class="pos-right">
+              <h3>Fatura</h3>
 
-              <div class="cart-table-wrap">
+              <div class="cart-table">
                 <table>
                   <thead>
                     <tr>
                       <th>Produkt</th>
                       <th>Sasi</th>
                       <th>Çmim</th>
-                      <th>Anulo</th>
+                      <th></th>
                     </tr>
                   </thead>
-                  <tbody id="cart-items"></tbody>
+                  <tbody id="cart-list"></tbody>
                 </table>
               </div>
 
               <div class="totals-box">
                 <div class="totals-row">
                   <span>Nëntotali</span>
-                  <span id="cart-subtotal">0 ALL</span>
+                  <span id="subtotal">0 ALL</span>
                 </div>
                 <div class="totals-row">
                   <span>Zbritje</span>
-                  <input type="number" id="cart-discount" min="0" value="0" oninput="POS.updateTotals()" />
-                </div>
-                <div class="totals-row">
-                  <span>Totali për pagese</span>
-                  <span id="cart-total">0 ALL</span>
+                  <input type="number" id="discount" min="0" value="0" style="width: 80px; padding: 4px;" oninput="POS.updateTotals()">
                 </div>
                 <div class="totals-row grand">
-                  <span>Totali në EUR</span>
-                  <span id="cart-total-eur">0 €</span>
+                  <span>Totali</span>
+                  <span id="total">0 ALL</span>
                 </div>
               </div>
 
-              <div class="payment-section">
-                <div class="payment-row">
-                  <label>Klienti pagoi (ALL)</label>
-                  <input type="number" id="payment-all" min="0" value="0" oninput="POS.calculateChange()" />
-                </div>
-                <div class="payment-row">
-                  <label>Këmbimi (EUR)</label>
-                  <input type="number" id="payment-eur" min="0" value="0" oninput="POS.calculateChange()" />
-                </div>
-                <div class="payment-row">
-                  <span style="font-weight:800; color:#86efac;">Ndryshimi: <span id="change-amount">0 ALL</span></span>
-                </div>
-              </div>
-
-              <div class="checkout-row">
-                <button class="btn btn-success" onclick="POS.checkout()">Kryej shitjen</button>
-                <button class="btn btn-purple" onclick="POS.printLastInvoice()">Printo faturë</button>
-              </div>
+              <button class="btn btn-success" style="width: 100%; padding: 12px;" onclick="POS.checkout()">Kryej Shitjen</button>
             </div>
           </div>
-        </section>
+        </div>
 
-        <section id="inventory-view" class="view">
+        <!-- INVENTORY VIEW -->
+        <div id="inventory" class="view">
           <div class="section-head">
-            <h3>Menaxhimi i stokut</h3>
-            <div class="action-row">
-              <button class="btn btn-primary" onclick="Inventory.openProductModal()">Shto produkt</button>
-            </div>
+            <h2>Menaxhimi i Stokut</h2>
+            <button class="btn btn-primary" onclick="openProductModal()">Shto Produkt</button>
           </div>
 
           <div class="stats-grid" id="inventory-stats"></div>
 
           <div class="panel">
-            <div class="section-head">
-              <h3 style="font-size:1.2rem;">Lista e produkteve</h3>
-              <input type="text" id="inventory-search" class="search-input" placeholder="Kërko produkt..." oninput="Inventory.filterProducts(this.value)" />
-            </div>
-
+            <h3 style="margin-bottom: 15px;">Produktet</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -954,8 +739,6 @@
                     <th>#</th>
                     <th>Emri</th>
                     <th>Barcode</th>
-                    <th>Kategoria</th>
-                    <th>Njësia</th>
                     <th>Çmim Shitje</th>
                     <th>Çmim Blerjeje</th>
                     <th>Fitim %</th>
@@ -963,49 +746,21 @@
                     <th>Veprime</th>
                   </tr>
                 </thead>
-                <tbody id="inventory-table-body"></tbody>
+                <tbody id="products-list"></tbody>
               </table>
             </div>
           </div>
-        </section>
+        </div>
 
-        <section id="suppliers-view" class="view">
+        <!-- SUPPLIERS VIEW -->
+        <div id="suppliers" class="view">
           <div class="section-head">
-            <h3>Furnizuesit</h3>
-            <div class="action-row">
-              <button class="btn btn-primary" onclick="Suppliers.openModal()">Shto furnizues</button>
-            </div>
-          </div>
-
-          <div class="two-col">
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:14px;">Faturat e hapura</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Nr. Fature</th>
-                      <th>Furnizues</th>
-                      <th>Vlera</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody id="supplier-invoices-body"></tbody>
-                </table>
-              </div>
-            </div>
-
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:14px;">Statistikat</h3>
-              <div class="stats-grid" id="supplier-stats"></div>
-            </div>
+            <h2>Furnizuesit</h2>
+            <button class="btn btn-primary" onclick="openSupplierModal()">Shto Furnizues</button>
           </div>
 
           <div class="panel">
-            <div class="section-head">
-              <h3 style="font-size:1.2rem;">Lista e furnizuesve</h3>
-            </div>
-
+            <h3 style="margin-bottom: 15px;">Lista e Furnizuesve</h3>
             <div class="table-wrap">
               <table>
                 <thead>
@@ -1014,1524 +769,70 @@
                     <th>Emri</th>
                     <th>Telefoni</th>
                     <th>Email</th>
-                    <th>Qyteti</th>
                     <th>Veprime</th>
                   </tr>
                 </thead>
-                <tbody id="supplier-table-body"></tbody>
+                <tbody id="suppliers-list"></tbody>
               </table>
             </div>
           </div>
-        </section>
+        </div>
 
-        <section id="reports-view" class="view">
+        <!-- REPORTS VIEW -->
+        <div id="reports" class="view">
           <div class="section-head">
-            <h3>Raportet & Bilanci</h3>
-            <div class="action-row">
-              <button class="btn btn-purple" onclick="Reports.generateDemoReport()">Gjenero raport</button>
-            </div>
+            <h2>Raportet</h2>
           </div>
 
-          <div class="stats-grid" id="report-stats"></div>
-
-          <div class="two-col">
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Shitjet e 7 ditëve</h3>
-              <div style="display:flex; align-items:center; justify-content:center; height:200px; color:var(--textSoft);">Grafiku (të dhëna në raporte)</div>
-            </div>
-
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Produktet më të shitur</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Produkt</th>
-                      <th>Sasi</th>
-                      <th>Vlera Shitje</th>
-                      <th>Fitim</th>
-                    </tr>
-                  </thead>
-                  <tbody id="top-products-body"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <div class="stats-grid" id="reports-stats"></div>
 
           <div class="panel">
-            <h3 style="font-size:1.2rem; margin-bottom:16px;">Historia e shitjeve</h3>
+            <h3 style="margin-bottom: 15px;">Historia e Shitjeve</h3>
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
-                    <th>Nr. Fature</th>
+                    <th>Fatura</th>
                     <th>Data</th>
-                    <th>Produkte</th>
                     <th>Totali</th>
-                    <th>Zbritje</th>
                     <th>Fitim</th>
-                    <th>Status</th>
-                    <th>Printo</th>
                   </tr>
                 </thead>
-                <tbody id="sales-history-body"></tbody>
+                <tbody id="sales-list"></tbody>
               </table>
             </div>
           </div>
-        </section>
+        </div>
 
-        <section id="loyalty-view" class="view">
+        <!-- SETTINGS VIEW -->
+        <div id="settings" class="view">
           <div class="section-head">
-            <h3>Programi i Besnikërisë</h3>
-            <div class="action-row">
-              <button class="btn btn-primary" onclick="Loyalty.openModal()">Shto klient</button>
-            </div>
+            <h2>Cilësimet</h2>
           </div>
-
-          <div class="stats-grid" id="loyalty-stats"></div>
 
           <div class="panel">
-            <div class="section-head">
-              <h3 style="font-size:1.2rem;">Lista e klientëve</h3>
-            </div>
-
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Emri</th>
-                    <th>Telefoni</th>
-                    <th>Email</th>
-                    <th>Leveli</th>
-                    <th>Pikat</th>
-                    <th>Veprime</th>
-                  </tr>
-                </thead>
-                <tbody id="customer-table-body"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <section id="settings-view" class="view">
-          <div class="section-head">
-            <h3>Cilësimet</h3>
-          </div>
-
-          <div class="two-col">
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Kursi i këmbimit</h3>
-              <div class="field">
-                <label>Kursi ALL → EUR</label>
-                <div style="display:flex; gap:8px;">
-                  <input type="number" id="exchange-rate" min="0" step="0.01" value="100" style="flex:1;" />
-                  <button class="btn btn-success" onclick="Settings.updateExchangeRate()">Përditëso</button>
-                </div>
-              </div>
-              <div style="margin-top:12px; padding:12px; background:rgba(148,163,184,0.06); border-radius:10px; font-size:0.85rem; color:var(--textSoft);">
-                <strong>Përditëso çdo ditë:</strong> Vendos kursin e ri.
-              </div>
-            </div>
-
-            <div class="panel">
-              <h3 style="font-size:1.2rem; margin-bottom:16px;">Përdoruesit</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Emri</th>
-                      <th>Roli</th>
-                      <th>Username</th>
-                    </tr>
-                  </thead>
-                  <tbody id="users-table-body"></tbody>
-                </table>
-              </div>
+            <h3>Kursi i Këmbimit</h3>
+            <div class="form-group">
+              <label>ALL → EUR</label>
+              <input type="number" id="exchange-rate" value="100" min="1" step="0.01">
+              <button class="btn btn-success" style="margin-top: 10px;" onclick="saveExchangeRate()">Ruaj</button>
             </div>
           </div>
 
           <div class="panel">
-            <h3 style="font-size:1.2rem; margin-bottom:16px;">Opsione të tjera</h3>
-            <div style="display:flex; flex-direction:column; gap:12px;">
-              <button class="btn btn-primary" onclick="resetDemoData()">Rivendos demo</button>
-              <button class="btn btn-warning" onclick="exportData()">Eksporto JSON</button>
-              <button class="btn btn-purple" onclick="importData()">Importo JSON</button>
-              <input type="file" id="import-file" class="hidden" accept=".json" />
-            </div>
+            <h3>Të Dhënat</h3>
+            <button class="btn btn-primary" onclick="exportData()">Eksporto</button>
+            <button class="btn btn-primary" onclick="importData()">Importo</button>
+            <input type="file" id="import-file" class="hidden" accept=".json" onchange="handleImport(event)">
           </div>
-        </section>
+        </div>
       </div>
     </main>
   </div>
 
+  <!-- MODALS -->
   <div id="product-modal" class="modal">
-    <div class="modal-card">
+    <div class="modal-content">
       <div class="modal-head">
         <h3>Produkti</h3>
-        <button class="close-modal" type="button" onclick="closeModal('product-modal')">×</button>
-      </div>
-
-      <form id="product-form" onsubmit="Inventory.saveProduct(event)">
-        <input type="hidden" id="product-id" />
-        <div class="form-grid">
-          <div class="field">
-            <label>Emri</label>
-            <input id="product-name" required />
-          </div>
-
-          <div class="field">
-            <label>Barcode</label>
-            <input id="product-barcode" required />
-          </div>
-
-          <div class="field">
-            <label>Kategoria</label>
-            <select id="product-category">
-              <option value="Pije">Pije</option>
-              <option value="Ushqim">Ushqim</option>
-              <option value="Teknologji">Teknologji</option>
-              <option value="Kozmetikë">Kozmetikë</option>
-              <option value="Tjetër">Tjetër</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Njësia</label>
-            <select id="product-unit">
-              <option value="copë">copë</option>
-              <option value="kg">kg</option>
-              <option value="liter">liter</option>
-              <option value="metër">metër</option>
-              <option value="pakete">pakete</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label>Çmim Blerjeje (ALL)</label>
-            <input id="product-cost" type="number" min="0" required />
-          </div>
-
-          <div class="field">
-            <label>Çmim Shitje (ALL)</label>
-            <input id="product-price" type="number" min="0" required oninput="Inventory.calculateMargin()" />
-          </div>
-
-          <div class="field">
-            <label>Marzhina e fitimit %</label>
-            <input id="product-margin" type="number" min="0" value="0" readonly />
-          </div>
-
-          <div class="field">
-            <label>Sasia në stok</label>
-            <input id="product-stock" type="number" min="0" required />
-          </div>
-
-          <div class="field">
-            <label>Furnizues</label>
-            <select id="product-supplier"></select>
-          </div>
-
-          <div class="field full">
-            <label>Shënim</label>
-            <textarea id="product-description" rows="3"></textarea>
-          </div>
-        </div>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-          <button type="button" class="btn btn-ghost" onclick="closeModal('product-modal')">Anulo</button>
-          <button type="submit" class="btn btn-success">Ruaj</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div id="supplier-modal" class="modal">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3>Furnizuesi</h3>
-        <button class="close-modal" type="button" onclick="closeModal('supplier-modal')">×</button>
-      </div>
-
-      <form id="supplier-form" onsubmit="Suppliers.saveSupplier(event)">
-        <input type="hidden" id="supplier-id" />
-        <div class="form-grid">
-          <div class="field">
-            <label>Emri</label>
-            <input id="supplier-name" required />
-          </div>
-
-          <div class="field">
-            <label>Telefoni</label>
-            <input id="supplier-phone" />
-          </div>
-
-          <div class="field">
-            <label>Email</label>
-            <input id="supplier-email" type="email" />
-          </div>
-
-          <div class="field">
-            <label>Qyteti</label>
-            <input id="supplier-city" />
-          </div>
-
-          <div class="field full">
-            <label>Adresa</label>
-            <textarea id="supplier-address" rows="3"></textarea>
-          </div>
-        </div>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-          <button type="button" class="btn btn-ghost" onclick="closeModal('supplier-modal')">Anulo</button>
-          <button type="submit" class="btn btn-success">Ruaj</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div id="customer-modal" class="modal">
-    <div class="modal-card">
-      <div class="modal-head">
-        <h3>Klienti</h3>
-        <button class="close-modal" type="button" onclick="closeModal('customer-modal')">×</button>
-      </div>
-
-      <form id="customer-form" onsubmit="Loyalty.saveCustomer(event)">
-        <input type="hidden" id="customer-id" />
-        <div class="form-grid">
-          <div class="field">
-            <label>Emri</label>
-            <input id="customer-name" required />
-          </div>
-
-          <div class="field">
-            <label>Telefoni</label>
-            <input id="customer-phone" />
-          </div>
-
-          <div class="field">
-            <label>Email</label>
-            <input id="customer-email" type="email" />
-          </div>
-
-          <div class="field">
-            <label>Leveli</label>
-            <select id="customer-tier">
-              <option value="Standard">Standard</option>
-              <option value="Gold">Gold</option>
-              <option value="VIP">VIP</option>
-            </select>
-          </div>
-
-          <div class="field full">
-            <label>Pikat</label>
-            <input id="customer-points" type="number" min="0" value="0" />
-          </div>
-        </div>
-
-        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
-          <button type="button" class="btn btn-ghost" onclick="closeModal('customer-modal')">Anulo</button>
-          <button type="submit" class="btn btn-success">Ruaj</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <div id="toast-container"></div>
-
-  <script>
-    const STORAGE_KEYS = {
-      products: 'pos_products_v7',
-      suppliers: 'pos_suppliers_v7',
-      customers: 'pos_customers_v7',
-      sales: 'pos_sales_v7',
-      users: 'pos_users_v7',
-      settings: 'pos_settings_v7'
-    };
-
-    const DEFAULT_USERS = [
-      { username: 'admin', password: 'admin', role: 'admin', name: 'Admin' },
-      { username: 'cashier', password: 'cashier', role: 'cashier', name: 'Kasier' },
-      { username: 'manager', password: 'manager', role: 'manager', name: 'Menaxher' }
-    ];
-
-    let APP_STATE = {
-      user: null,
-      products: [],
-      suppliers: [],
-      customers: [],
-      sales: [],
-      users: [...DEFAULT_USERS],
-      cart: [],
-      settings: { exchangeRate: 100, currency: 'ALL' }
-    };
-
-    function fillDemoUser(username, password, role) {
-      document.getElementById('username').value = username;
-      document.getElementById('password').value = password;
-      document.getElementById('role').value = role;
-    }
-
-    function handleLogin(event) {
-      event.preventDefault();
-
-      const username = document.getElementById('username').value.trim();
-      const password = document.getElementById('password').value.trim();
-      const role = document.getElementById('role').value;
-
-      const user = APP_STATE.users.find(u =>
-        u.username.toLowerCase() === username.toLowerCase() &&
-        u.password === password &&
-        u.role === role
-      );
-
-      if (!user) {
-        showToast('Kredencialet nuk janë të sakta!', 'danger');
-        return;
-      }
-
-      APP_STATE.user = user;
-      sessionStorage.setItem('pos_logged_user', JSON.stringify({
-        username: user.username,
-        password: user.password,
-        role: user.role
-      }));
-
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('app-shell').classList.add('active');
-
-      const name = user.name || user.username;
-      document.getElementById('user-name').textContent = name;
-      document.getElementById('user-role').textContent = roleToText(user.role);
-      document.getElementById('sidebar-user').textContent = name;
-      document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
-
-      showToast(`Mirëseerdhët, ${name}!`, 'success');
-      renderAllViews();
-    }
-
-    function handleLogout() {
-      APP_STATE.user = null;
-      sessionStorage.removeItem('pos_logged_user');
-      document.getElementById('app-shell').classList.remove('active');
-      document.getElementById('login-screen').style.display = 'flex';
-      document.getElementById('login-form').reset();
-      document.getElementById('username').value = 'admin';
-      document.getElementById('password').value = 'admin';
-      document.getElementById('role').value = 'admin';
-      showToast('U çkyçët me sukses.', 'info');
-    }
-
-    function showToast(message, type = 'info') {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.textContent = message;
-      container.appendChild(toast);
-      setTimeout(() => toast.remove(), 2600);
-    }
-
-    function roleToText(role) {
-      const map = { admin: 'Admin', cashier: 'Kasier', manager: 'Menaxher' };
-      return map[role] || 'Admin';
-    }
-
-    function makeId(prefix = 'id') {
-      return prefix + '_' + Math.random().toString(36).slice(2, 10);
-    }
-
-    function escapeHtml(value) {
-      return String(value || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function closeModal(modalId) {
-      document.getElementById(modalId)?.classList.remove('open');
-    }
-
-    function openModal(modalId) {
-      document.getElementById(modalId)?.classList.add('open');
-    }
-
-    function saveState() {
-      localStorage.setItem(STORAGE_KEYS.products, JSON.stringify(APP_STATE.products));
-      localStorage.setItem(STORAGE_KEYS.suppliers, JSON.stringify(APP_STATE.suppliers));
-      localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(APP_STATE.customers));
-      localStorage.setItem(STORAGE_KEYS.sales, JSON.stringify(APP_STATE.sales));
-      localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(APP_STATE.users));
-      localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(APP_STATE.settings));
-    }
-
-    function updateCurrencyDisplay() {
-      document.getElementById('currency-display').textContent = APP_STATE.settings.currency || 'ALL';
-      document.getElementById('exchange-rate-display').textContent = APP_STATE.settings.exchangeRate || '100';
-    }
-
-    function getDefaultProducts() {
-      return [
-        { id: 'p1', barcode: '1001', name: 'Ujë Tepelene 1.5L', price: 70, cost: 50, stock: 50, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1', description: 'Ujë mineral' },
-        { id: 'p2', barcode: '1002', name: 'Buka e Boshit', price: 120, cost: 80, stock: 30, category: 'Ushqim', unit: 'copë', supplier: 'Furnizuesi 2', description: 'Buke artisane' },
-        { id: 'p3', barcode: '1003', name: 'Kafe Lavazza 250g', price: 500, cost: 350, stock: 15, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1', description: 'Kafe aromatike' },
-        { id: 'p4', barcode: '1004', name: 'Krem për duar', price: 380, cost: 250, stock: 20, category: 'Kozmetikë', unit: 'copë', supplier: 'Furnizuesi 3', description: 'Krem hidratues' },
-        { id: 'p5', barcode: '1005', name: 'USB 32GB', price: 1500, cost: 1000, stock: 12, category: 'Teknologji', unit: 'copë', supplier: 'Furnizuesi 4', description: 'Memorie USB' },
-        { id: 'p6', barcode: '1006', name: 'Mishi i freskët', price: 650, cost: 500, stock: 18, category: 'Ushqim', unit: 'kg', supplier: 'Furnizuesi 2', description: 'Mish premium' }
-      ];
-    }
-
-    function getDefaultSuppliers() {
-      return [
-        { id: 's1', name: 'Furnizuesi 1', phone: '044123456', email: 'f1@mail.com', city: 'Tiranë', address: 'Rr. Durrësit 25' },
-        { id: 's2', name: 'Furnizuesi 2', phone: '068765432', email: 'f2@mail.com', city: 'Shkodër', address: 'Rr. Pjeter Bogdani 10' },
-        { id: 's3', name: 'Furnizuesi 3', phone: '049111222', email: 'f3@mail.com', city: 'Vlorë', address: 'Rr. Bregdeti 8' },
-        { id: 's4', name: 'Furnizuesi 4', phone: '067998877', email: 'f4@mail.com', city: 'Korçë', address: 'Rr. Republika 13' }
-      ];
-    }
-
-    function getDefaultCustomers() {
-      return [
-        { id: 'c1', name: 'Arben Xhafa', phone: '067000111', email: 'arben@gmail.com', tier: 'VIP', points: 2500 },
-        { id: 'c2', name: 'Liridona Hoxha', phone: '068222333', email: 'liridona@gmail.com', tier: 'Gold', points: 980 },
-        { id: 'c3', name: 'Klaudio Balla', phone: '069111444', email: 'klaudio@gmail.com', tier: 'Standard', points: 420 }
-      ];
-    }
-
-    function buildDemoSales() {
-      const now = Date.now();
-      const day = 86400000;
-      return [
-        {
-          id: 'sale_1', receipt: '#INV-1010', date: new Date(now - 6 * day).toISOString(),
-          items: [{name:'Ujë Tepelene 1.5L', qty:2, price:70, cost:50},{name:'Kafe Lavazza 250g', qty:1, price:500, cost:350}],
-          subtotal: 640, discount: 30, total: 610, profit: 270, status: 'Paid'
-        },
-        {
-          id: 'sale_2', receipt: '#INV-1011', date: new Date(now - 4 * day).toISOString(),
-          items: [{name:'Buka e Boshit', qty:3, price:120, cost:80},{name:'USB 32GB', qty:1, price:1500, cost:1000}],
-          subtotal: 1860, discount: 100, total: 1760, profit: 540, status: 'Paid'
-        },
-        {
-          id: 'sale_3', receipt: '#INV-1012', date: new Date(now - 1 * day).toISOString(),
-          items: [{name:'Krem për duar', qty:2, price:380, cost:250}],
-          subtotal: 760, discount: 0, total: 760, profit: 260, status: 'Paid'
-        }
-      ];
-    }
-
-    function renderUsersTable() {
-      const tbody = document.getElementById('users-table-body');
-      if (!tbody) return;
-      tbody.innerHTML = '';
-
-      APP_STATE.users.forEach(user => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${escapeHtml(user.name)}</td>
-          <td>${roleToText(user.role)}</td>
-          <td>${escapeHtml(user.username)}</td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    function resetDemoData() {
-      if (!confirm('Deshironi të rivendosni të dhënat demo?')) return;
-      APP_STATE.products = getDefaultProducts();
-      APP_STATE.suppliers = getDefaultSuppliers();
-      APP_STATE.customers = getDefaultCustomers();
-      APP_STATE.sales = buildDemoSales();
-      saveState();
-      renderAllViews();
-      showToast('Të dhënat demo u rivendosën.', 'success');
-    }
-
-    function exportData() {
-      const payload = {
-        products: APP_STATE.products,
-        suppliers: APP_STATE.suppliers,
-        customers: APP_STATE.customers,
-        sales: APP_STATE.sales,
-        users: APP_STATE.users,
-        settings: APP_STATE.settings
-      };
-
-      const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'pos-export.json';
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('Të dhënat u eksportuan.', 'success');
-    }
-
-    function importData() {
-      document.getElementById('import-file').click();
-    }
-
-    function renderAllViews() {
-      POS.renderProductGrid();
-      POS.renderCart();
-      Inventory.renderStats();
-      Inventory.renderTable();
-      Suppliers.renderSuppliers();
-      Suppliers.renderInvoices();
-      Suppliers.renderStats();
-      Reports.renderStats();
-      Reports.renderTopProducts();
-      Reports.renderSalesHistory();
-      Loyalty.renderStats();
-      Loyalty.renderCustomers();
-      renderUsersTable();
-      Inventory.refreshSupplierOptions();
-    }
-
-    const POS = {
-      renderProductGrid(items = APP_STATE.products) {
-        const grid = document.getElementById('product-grid');
-        if (!grid) return;
-        grid.innerHTML = '';
-
-        items.forEach(item => {
-          const card = document.createElement('div');
-          card.className = 'product-card';
-          card.innerHTML = `
-            <h4>${escapeHtml(item.name)}</h4>
-            <div class="price">${Number(item.price).toFixed(0)} ALL</div>
-            <div style="font-size:0.75rem; color:var(--textSoft); margin-bottom:4px;">${item.unit}</div>
-            <div class="stock">Stok: ${item.stock}</div>
-          `;
-          card.addEventListener('click', () => POS.addToCart(item.id));
-          grid.appendChild(card);
-        });
-      },
-
-      handleSearch(query) {
-        const q = query.trim().toLowerCase();
-        if (!q) {
-          POS.renderProductGrid(APP_STATE.products);
-          return;
-        }
-
-        const match = APP_STATE.products.find(p => p.barcode.toLowerCase() === q);
-        if (match) {
-          POS.addToCart(match.id);
-          document.getElementById('barcode-input').value = '';
-          POS.renderProductGrid(APP_STATE.products);
-          return;
-        }
-
-        const filtered = APP_STATE.products.filter(p =>
-          p.name.toLowerCase().includes(q) ||
-          p.barcode.toLowerCase().includes(q) ||
-          (p.category || '').toLowerCase().includes(q)
-        );
-        POS.renderProductGrid(filtered);
-      },
-
-      addToCart(productId) {
-        const product = APP_STATE.products.find(p => p.id === productId);
-        if (!product) return;
-
-        if (product.stock <= 0) {
-          showToast('Produkti nuk është në stok!', 'danger');
-          return;
-        }
-
-        const existing = APP_STATE.cart.find(item => item.product.id === productId);
-        if (existing) {
-          if (existing.qty + 1 > product.stock) {
-            showToast('Nuk ka stok të mjaftueshëm!', 'danger');
-            return;
-          }
-          existing.qty++;
-        } else {
-          APP_STATE.cart.push({ product, qty: 1 });
-        }
-
-        POS.renderCart();
-      },
-
-      removeFromCart(index) {
-        APP_STATE.cart.splice(index, 1);
-        POS.renderCart();
-      },
-
-      clearCart() {
-        APP_STATE.cart = [];
-        POS.renderCart();
-      },
-
-      renderCart() {
-        const tbody = document.getElementById('cart-items');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        APP_STATE.cart.forEach((item, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${escapeHtml(item.product.name)}</td>
-            <td>
-              <input class="qty-input" type="number" min="1" max="${item.product.stock}" value="${item.qty}" onchange="POS.updateQty(${index}, this.value)" />
-            </td>
-            <td>${(item.product.price * item.qty).toFixed(0)}</td>
-            <td><button class="small-btn delete" onclick="POS.removeFromCart(${index})">X</button></td>
-          `;
-          tbody.appendChild(row);
-        });
-
-        POS.updateTotals();
-      },
-
-      updateQty(index, value) {
-        const qty = parseInt(value, 10);
-        const item = APP_STATE.cart[index];
-        if (!item) return;
-
-        if (isNaN(qty) || qty <= 0) {
-          POS.removeFromCart(index);
-          return;
-        }
-
-        if (qty > item.product.stock) {
-          showToast('Sasia tejkalon stokun!', 'danger');
-          POS.renderCart();
-          return;
-        }
-
-        item.qty = qty;
-        POS.renderCart();
-      },
-
-      updateTotals() {
-        const subtotal = APP_STATE.cart.reduce((sum, item) => sum + (item.product.price * item.qty), 0);
-        const discount = parseFloat(document.getElementById('cart-discount').value) || 0;
-        const total = Math.max(0, subtotal - discount);
-        const totalEur = total / APP_STATE.settings.exchangeRate;
-
-        document.getElementById('cart-subtotal').textContent = `${subtotal.toFixed(0)} ALL`;
-        document.getElementById('cart-total').textContent = `${total.toFixed(0)} ALL`;
-        document.getElementById('cart-total-eur').textContent = `${totalEur.toFixed(2)} €`;
-      },
-
-      calculateChange() {
-        const total = parseFloat(document.getElementById('cart-total').textContent) || 0;
-        const paidAll = parseFloat(document.getElementById('payment-all').value) || 0;
-        const paidEur = parseFloat(document.getElementById('payment-eur').value) || 0;
-
-        const paidAllValue = paidAll + (paidEur * APP_STATE.settings.exchangeRate);
-        const change = paidAllValue - total;
-
-        const changeEl = document.getElementById('change-amount');
-        if (change >= 0) {
-          changeEl.textContent = `${change.toFixed(0)} ALL`;
-          changeEl.style.color = '#86efac';
-        } else {
-          changeEl.textContent = `Mungon: ${Math.abs(change).toFixed(0)} ALL`;
-          changeEl.style.color = '#fca5a5';
-        }
-      },
-
-      checkout() {
-        if (APP_STATE.cart.length === 0) {
-          showToast('Karta është e bosh!', 'danger');
-          return;
-        }
-
-        const subtotal = APP_STATE.cart.reduce((sum, item) => sum + (item.product.price * item.qty), 0);
-        const discount = parseFloat(document.getElementById('cart-discount').value) || 0;
-        const total = Math.max(0, subtotal - discount);
-
-        const profit = APP_STATE.cart.reduce((sum, item) => {
-          const itemProfit = (item.product.price - item.product.cost) * item.qty;
-          return sum + itemProfit;
-        }, 0);
-
-        APP_STATE.cart.forEach(item => {
-          const product = APP_STATE.products.find(p => p.id === item.product.id);
-          if (product) {
-            product.stock = Math.max(0, Number(product.stock) - Number(item.qty));
-          }
-        });
-
-        const sale = {
-          id: makeId('sale'),
-          receipt: '#INV-' + Math.floor(1000 + Math.random() * 9000),
-          date: new Date().toISOString(),
-          items: APP_STATE.cart.map(item => ({
-            name: item.product.name,
-            qty: item.qty,
-            price: item.product.price,
-            cost: item.product.cost
-          })),
-          subtotal,
-          discount,
-          total,
-          profit,
-          status: 'Paid'
-        };
-
-        APP_STATE.sales.unshift(sale);
-        APP_STATE.cart = [];
-
-        document.getElementById('cart-discount').value = 0;
-        document.getElementById('payment-all').value = 0;
-        document.getElementById('payment-eur').value = 0;
-        document.getElementById('change-amount').textContent = '0 ALL';
-        document.getElementById('change-amount').style.color = '#86efac';
-
-        saveState();
-        POS.renderCart();
-        POS.renderProductGrid();
-        Inventory.renderStats();
-        Inventory.renderTable();
-        Reports.renderStats();
-        Reports.renderTopProducts();
-        Reports.renderSalesHistory();
-        showToast('Shitja u krye me sukses!', 'success');
-
-        POS.lastInvoice = sale;
-      },
-
-      printLastInvoice() {
-        const invoice = POS.lastInvoice;
-        if (!invoice) {
-          showToast('Nuk ka faturë për t’u printuar.', 'danger');
-          return;
-        }
-
-        const win = window.open('', '_blank', 'width=420,height=800');
-        const itemsHtml = invoice.items.map(item => `
-          <tr>
-            <td>${escapeHtml(item.name)}</td>
-            <td>${item.qty}</td>
-            <td>${Number(item.price).toFixed(0)}</td>
-            <td>${(item.qty * item.price).toFixed(0)}</td>
-          </tr>
-        `).join('');
-
-        win.document.write(`
-          <html>
-            <head>
-              <title>${invoice.receipt}</title>
-              <style>
-                body { font-family: Arial, sans-serif; padding: 18px; color: #111; }
-                h2 { text-align: center; margin-bottom: 8px; }
-                table { width: 100%; border-collapse: collapse; margin-top: 12px; }
-                th, td { padding: 6px 4px; border-bottom: 1px solid #ddd; font-size: 0.85rem; }
-                th { text-align: left; }
-                .totals { margin-top: 16px; }
-                .totals div { display: flex; justify-content: space-between; margin: 4px 0; font-weight: 600; }
-                .profit-line { color: green; }
-              </style>
-            </head>
-            <body>
-              <h2 style="font-size:1.3rem; margin-bottom:2px;">POS Market Ultra Pro</h2>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Fatura: ${invoice.receipt}</p>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Data: ${new Date(invoice.date).toLocaleString('sq-AL')}</p>
-              <hr style="margin:8px 0;" />
-              <table>
-                <thead><tr><th>Produkti</th><th>Sasi</th><th>Çmim</th><th>Totali</th></tr></thead>
-                <tbody>${itemsHtml}</tbody>
-              </table>
-              <hr style="margin:8px 0;" />
-              <div class="totals">
-                <div><span>Nëntotali</span><span>${Number(invoice.subtotal).toFixed(0)} ALL</span></div>
-                <div><span>Zbritje</span><span>${Number(invoice.discount).toFixed(0)} ALL</span></div>
-                <div><strong><span>Totali</span><span>${Number(invoice.total).toFixed(0)} ALL</span></strong></div>
-                <div class="profit-line"><strong><span>Fitim</span><span>${Number(invoice.profit).toFixed(0)} ALL</span></strong></div>
-              </div>
-            </body>
-          </html>
-        `);
-
-        win.document.close();
-        win.focus();
-        setTimeout(() => win.print(), 400);
-      }
-    };
-
-    const Inventory = {
-      calculateMargin() {
-        const cost = Number(document.getElementById('product-cost').value || 0);
-        const price = Number(document.getElementById('product-price').value || 0);
-
-        if (cost > 0) {
-          document.getElementById('product-margin').value = ((price - cost) / cost * 100).toFixed(2);
-        }
-      },
-
-      renderStats() {
-        const stats = document.getElementById('inventory-stats');
-        if (!stats) return;
-
-        const totalProducts = APP_STATE.products.length;
-        const totalStock = APP_STATE.products.reduce((sum, p) => sum + Number(p.stock || 0), 0);
-        const lowStock = APP_STATE.products.filter(p => Number(p.stock) <= 5).length;
-        const totalValue = APP_STATE.products.reduce((sum, p) => sum + (Number(p.price || 0) * Number(p.stock || 0)), 0);
-        const totalCost = APP_STATE.products.reduce((sum, p) => sum + (Number(p.cost || 0) * Number(p.stock || 0)), 0);
-        const potentialProfit = totalValue - totalCost;
-
-        stats.innerHTML = `
-          <div class="stat-card">
-            <div class="label">Produkte</div>
-            <div class="value">${totalProducts}</div>
-            <div class="meta">Total produkteve</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Sasia totale</div>
-            <div class="value">${totalStock}</div>
-            <div class="meta">Në magazinë</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Me stok të ulët</div>
-            <div class="value">${lowStock}</div>
-            <div class="meta">Kritike</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Vlera e stokut</div>
-            <div class="value">${totalValue.toFixed(0)} ALL</div>
-            <div class="meta">Vlera shitjeje</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Fitim potencial</div>
-            <div class="value">${potentialProfit.toFixed(0)} ALL</div>
-            <div class="meta">${((potentialProfit / totalValue * 100) || 0).toFixed(1)}% margin</div>
-          </div>
-        `;
-      },
-
-      renderTable(items = APP_STATE.products) {
-        const tbody = document.getElementById('inventory-table-body');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        items.forEach((product, index) => {
-          const margin = product.cost > 0 ? ((product.price - product.cost) / product.cost * 100).toFixed(1) : 0;
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${escapeHtml(product.name)}</td>
-            <td>${escapeHtml(product.barcode)}</td>
-            <td>${escapeHtml(product.category || 'Tjetër')}</td>
-            <td>${escapeHtml(product.unit || 'copë')}</td>
-            <td>${Number(product.price).toFixed(0)} ALL</td>
-            <td>${Number(product.cost).toFixed(0)} ALL</td>
-            <td><span class="margin-badge">${margin}%</span></td>
-            <td><span class="status-badge ${Number(product.stock) <= 5 ? 'status-warn' : 'status-good'}">${product.stock}</span></td>
-            <td>
-              <button class="small-btn edit" onclick="Inventory.editProduct('${product.id}')">Edit</button>
-              <button class="small-btn delete" onclick="Inventory.deleteProduct('${product.id}')">Delete</button>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
-      },
-
-      filterProducts(query) {
-        const q = query.trim().toLowerCase();
-        if (!q) return Inventory.renderTable(APP_STATE.products);
-
-        const filtered = APP_STATE.products.filter(p =>
-          p.name.toLowerCase().includes(q) ||
-          p.barcode.toLowerCase().includes(q) ||
-          (p.category || '').toLowerCase().includes(q)
-        );
-        Inventory.renderTable(filtered);
-      },
-
-      openProductModal() {
-        document.getElementById('product-form').reset();
-        document.getElementById('product-id').value = '';
-        openModal('product-modal');
-      },
-
-      editProduct(id) {
-        const product = APP_STATE.products.find(p => p.id === id);
-        if (!product) return;
-
-        document.getElementById('product-id').value = product.id;
-        document.getElementById('product-name').value = product.name;
-        document.getElementById('product-barcode').value = product.barcode;
-        document.getElementById('product-price').value = product.price;
-        document.getElementById('product-cost').value = product.cost || 0;
-        document.getElementById('product-stock').value = product.stock;
-        document.getElementById('product-category').value = product.category || 'Pije';
-        document.getElementById('product-unit').value = product.unit || 'copë';
-        document.getElementById('product-supplier').value = product.supplier || '';
-        document.getElementById('product-description').value = product.description || '';
-        Inventory.calculateMargin();
-
-        openModal('product-modal');
-      },
-
-      saveProduct(event) {
-        event.preventDefault();
-
-        const product = {
-          id: document.getElementById('product-id').value || makeId('p'),
-          name: document.getElementById('product-name').value.trim(),
-          barcode: document.getElementById('product-barcode').value.trim(),
-          price: Number(document.getElementById('product-price').value || 0),
-          cost: Number(document.getElementById('product-cost').value || 0),
-          stock: Number(document.getElementById('product-stock').value || 0),
-          category: document.getElementById('product-category').value || 'Tjetër',
-          unit: document.getElementById('product-unit').value || 'copë',
-          supplier: document.getElementById('product-supplier').value || 'N/A',
-          description: document.getElementById('product-description').value.trim()
-        };
-
-        if (!product.name || !product.barcode) {
-          showToast('Emri dhe barcode-i janë të detyrueshëm.', 'danger');
-          return;
-        }
-
-        const index = APP_STATE.products.findIndex(p => p.id === product.id);
-        if (index >= 0) APP_STATE.products[index] = product;
-        else APP_STATE.products.push(product);
-
-        saveState();
-        Inventory.renderStats();
-        Inventory.renderTable();
-        POS.renderProductGrid();
-        closeModal('product-modal');
-        showToast('Produkti u ruajt me sukses.', 'success');
-      },
-
-      deleteProduct(id) {
-        const product = APP_STATE.products.find(p => p.id === id);
-        if (!product) return;
-
-        if (!confirm('Jeni i sigurt që doni të fshini produktin?')) return;
-
-        APP_STATE.products = APP_STATE.products.filter(p => p.id !== id);
-        saveState();
-        Inventory.renderStats();
-        Inventory.renderTable();
-        POS.renderProductGrid();
-        showToast(`Produkti "${product.name}" u fshi.`, 'success');
-      },
-
-      refreshSupplierOptions() {
-        const select = document.getElementById('product-supplier');
-        if (!select) return;
-        select.innerHTML = '';
-        APP_STATE.suppliers.forEach(s => {
-          const option = document.createElement('option');
-          option.value = s.name;
-          option.textContent = s.name;
-          select.appendChild(option);
-        });
-      }
-    };
-
-    const Suppliers = {
-      renderSuppliers() {
-        const tbody = document.getElementById('supplier-table-body');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        APP_STATE.suppliers.forEach((supplier, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${escapeHtml(supplier.name)}</td>
-            <td>${escapeHtml(supplier.phone || '-')}</td>
-            <td>${escapeHtml(supplier.email || '-')}</td>
-            <td>${escapeHtml(supplier.city || '-')}</td>
-            <td>
-              <button class="small-btn edit" onclick="Suppliers.editSupplier('${supplier.id}')">Edit</button>
-              <button class="small-btn delete" onclick="Suppliers.deleteSupplier('${supplier.id}')">Delete</button>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
-      },
-
-      renderInvoices() {
-        const tbody = document.getElementById('supplier-invoices-body');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        const arr = [
-          { nr: 'F-1001', supplier: 'Furnizuesi 1', value: 18500, status: 'Në pritje' },
-          { nr: 'F-1002', supplier: 'Furnizuesi 3', value: 9200, status: 'Paguar' },
-          { nr: 'F-1003', supplier: 'Furnizuesi 4', value: 24500, status: 'Në pritje' }
-        ];
-
-        arr.forEach(item => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${item.nr}</td>
-            <td>${item.supplier}</td>
-            <td>${Number(item.value).toFixed(0)} ALL</td>
-            <td><span class="status-badge ${item.status === 'Paguar' ? 'status-good' : 'status-warn'}">${item.status}</span></td>
-          `;
-          tbody.appendChild(row);
-        });
-      },
-
-      renderStats() {
-        const stats = document.getElementById('supplier-stats');
-        if (!stats) return;
-
-        stats.innerHTML = `
-          <div class="stat-card">
-            <div class="label">Furnizues</div>
-            <div class="value">${APP_STATE.suppliers.length}</div>
-            <div class="meta">Total furnizuesish</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Fatura të hapura</div>
-            <div class="value">2</div>
-            <div class="meta">Në pritje</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Vlera</div>
-            <div class="value">52200 ALL</div>
-            <div class="meta">Vlera totale</div>
-          </div>
-        `;
-      },
-
-      openModal() {
-        document.getElementById('supplier-form').reset();
-        document.getElementById('supplier-id').value = '';
-        openModal('supplier-modal');
-      },
-
-      editSupplier(id) {
-        const supplier = APP_STATE.suppliers.find(s => s.id === id);
-        if (!supplier) return;
-
-        document.getElementById('supplier-id').value = supplier.id;
-        document.getElementById('supplier-name').value = supplier.name;
-        document.getElementById('supplier-phone').value = supplier.phone || '';
-        document.getElementById('supplier-email').value = supplier.email || '';
-        document.getElementById('supplier-city').value = supplier.city || '';
-        document.getElementById('supplier-address').value = supplier.address || '';
-        openModal('supplier-modal');
-      },
-
-      saveSupplier(event) {
-        event.preventDefault();
-
-        const supplier = {
-          id: document.getElementById('supplier-id').value || makeId('s'),
-          name: document.getElementById('supplier-name').value.trim(),
-          phone: document.getElementById('supplier-phone').value.trim(),
-          email: document.getElementById('supplier-email').value.trim(),
-          city: document.getElementById('supplier-city').value.trim(),
-          address: document.getElementById('supplier-address').value.trim()
-        };
-
-        if (!supplier.name) {
-          showToast('Emri i furnizuesit është i detyrueshëm.', 'danger');
-          return;
-        }
-
-        const index = APP_STATE.suppliers.findIndex(s => s.id === supplier.id);
-        if (index >= 0) APP_STATE.suppliers[index] = supplier;
-        else APP_STATE.suppliers.push(supplier);
-
-        saveState();
-        Suppliers.renderSuppliers();
-        Suppliers.renderStats();
-        Inventory.refreshSupplierOptions();
-        closeModal('supplier-modal');
-        showToast('Furnizuesi u ruajt me sukses.', 'success');
-      },
-
-      deleteSupplier(id) {
-        const supplier = APP_STATE.suppliers.find(s => s.id === id);
-        if (!supplier) return;
-
-        if (!confirm('Jeni i sigurt që doni të fshini furnizuesin?')) return;
-
-        APP_STATE.suppliers = APP_STATE.suppliers.filter(s => s.id !== id);
-        saveState();
-        Suppliers.renderSuppliers();
-        Suppliers.renderStats();
-        Inventory.refreshSupplierOptions();
-        showToast(`Furnizuesi "${supplier.name}" u fshi.`, 'success');
-      }
-    };
-
-    const Reports = {
-      renderStats() {
-        const stats = document.getElementById('report-stats');
-        if (!stats) return;
-
-        const totalSales = APP_STATE.sales.reduce((sum, sale) => sum + Number(sale.total || 0), 0);
-        const totalProfit = APP_STATE.sales.reduce((sum, sale) => sum + Number(sale.profit || 0), 0);
-        const avgTicket = APP_STATE.sales.length ? totalSales / APP_STATE.sales.length : 0;
-        const totalDiscounts = APP_STATE.sales.reduce((sum, sale) => sum + Number(sale.discount || 0), 0);
-        const todayValue = APP_STATE.sales.filter(sale => {
-          const d = new Date(sale.date);
-          const t = new Date();
-          return d.toDateString() === t.toDateString();
-        }).reduce((sum, sale) => sum + Number(sale.total || 0), 0);
-
-        stats.innerHTML = `
-          <div class="stat-card">
-            <div class="label">Shitjet totale</div>
-            <div class="value">${totalSales.toFixed(0)} ALL</div>
-            <div class="meta">Të gjitha faturat</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Fitimi total</div>
-            <div class="value">${totalProfit.toFixed(0)} ALL</div>
-            <div class="meta">${((totalProfit / totalSales * 100) || 0).toFixed(1)}% margin</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Mesatarja</div>
-            <div class="value">${avgTicket.toFixed(0)} ALL</div>
-            <div class="meta">Për faturë</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Zbritjet</div>
-            <div class="value">${totalDiscounts.toFixed(0)} ALL</div>
-            <div class="meta">Totali zbritjesh</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Ditore</div>
-            <div class="value">${todayValue.toFixed(0)} ALL</div>
-            <div class="meta">Shitjet e sotme</div>
-          </div>
-        `;
-      },
-
-      renderTopProducts() {
-        const body = document.getElementById('top-products-body');
-        if (!body) return;
-        body.innerHTML = '';
-
-        const map = new Map();
-
-        APP_STATE.sales.forEach(sale => {
-          sale.items.forEach(item => {
-            const key = item.name;
-            const current = map.get(key) || { qty: 0, total: 0, profit: 0 };
-            current.qty += Number(item.qty || 0);
-            current.total += Number(item.qty || 0) * Number(item.price || 0);
-            current.profit += (Number(item.price || 0) - Number(item.cost || 0)) * Number(item.qty || 0);
-            map.set(key, current);
-          });
-        });
-
-        const rows = [...map.entries()].sort((a, b) => b[1].qty - a[1].qty).slice(0, 5);
-
-        rows.forEach(([name, data]) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${escapeHtml(name)}</td>
-            <td>${data.qty}</td>
-            <td>${data.total.toFixed(0)} ALL</td>
-            <td><span class="margin-badge">${data.profit.toFixed(0)} ALL</span></td>
-          `;
-          body.appendChild(row);
-        });
-      },
-
-      renderSalesHistory() {
-        const body = document.getElementById('sales-history-body');
-        if (!body) return;
-
-        body.innerHTML = '';
-        APP_STATE.sales.forEach(sale => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${escapeHtml(sale.receipt)}</td>
-            <td>${new Date(sale.date).toLocaleDateString('sq-AL')}</td>
-            <td>${sale.items.map(item => `${item.name} (${item.qty})`).join(', ')}</td>
-            <td>${Number(sale.total).toFixed(0)} ALL</td>
-            <td>${Number(sale.discount).toFixed(0)} ALL</td>
-            <td><span class="margin-badge">${Number(sale.profit).toFixed(0)} ALL</span></td>
-            <td><span class="status-badge status-good">${sale.status}</span></td>
-            <td><button class="small-btn success" onclick="Reports.printSale('${sale.receipt}')">Print</button></td>
-          `;
-          body.appendChild(row);
-        });
-      },
-
-      printSale(receipt) {
-        const sale = APP_STATE.sales.find(s => s.receipt === receipt);
-        if (!sale) return;
-
-        const win = window.open('', '_blank', 'width=420,height=800');
-        const itemsHtml = sale.items.map(item => `
-          <tr>
-            <td>${escapeHtml(item.name)}</td>
-            <td>${item.qty}</td>
-            <td>${Number(item.price).toFixed(0)}</td>
-            <td>${(item.qty * item.price).toFixed(0)}</td>
-          </tr>
-        `).join('');
-
-        win.document.write(`
-          <html>
-            <head>
-              <style>
-                body { font-family: Arial, sans-serif; padding: 18px; color: #111; }
-                table { width: 100%; border-collapse: collapse; }
-                th, td { padding: 6px 4px; border-bottom: 1px solid #ddd; text-align: left; font-size: 0.85rem; }
-                .totals { margin-top: 16px; }
-                .totals div { display: flex; justify-content: space-between; margin: 4px 0; font-weight: 600; }
-              </style>
-            </head>
-            <body>
-              <h2 style="text-align:center; font-size:1.3rem; margin-bottom:8px;">POS Market Ultra Pro</h2>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Fatura: ${sale.receipt}</p>
-              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Data: ${new Date(sale.date).toLocaleString('sq-AL')}</p>
-              <hr style="margin:8px 0;" />
-              <table>
-                <thead><tr><th>Produkti</th><th>Sasi</th><th>Çmim</th><th>Totali</th></tr></thead>
-                <tbody>${itemsHtml}</tbody>
-              </table>
-              <hr style="margin:8px 0;" />
-              <div class="totals">
-                <div><span>Nëntotali</span><span>${Number(sale.subtotal).toFixed(0)} ALL</span></div>
-                <div><span>Zbritje</span><span>${Number(sale.discount).toFixed(0)} ALL</span></div>
-                <div><strong><span>Totali</span><span>${Number(sale.total).toFixed(0)} ALL</span></strong></div>
-                <div style="color:green;"><strong><span>Fitim</span><span>${Number(sale.profit).toFixed(0)} ALL</span></strong></div>
-              </div>
-            </body>
-          </html>
-        `);
-
-        win.document.close();
-        win.focus();
-        setTimeout(() => win.print(), 400);
-      },
-
-      generateDemoReport() {
-        APP_STATE.sales.unshift({
-          id: makeId('sale'),
-          receipt: '#INV-' + Math.floor(2000 + Math.random() * 9000),
-          date: new Date().toISOString(),
-          items: [
-            { name: 'Mishi i freskët', qty: 2, price: 650, cost: 500 },
-            { name: 'Buka e Boshit', qty: 3, price: 120, cost: 80 }
-          ],
-          subtotal: 1660,
-          discount: 50,
-          total: 1610,
-          profit: 500,
-          status: 'Paid'
-        });
-
-        saveState();
-        Reports.renderStats();
-        Reports.renderTopProducts();
-        Reports.renderSalesHistory();
-        showToast('Raporti u krijua me sukses.', 'success');
-      }
-    };
-
-    const Loyalty = {
-      renderStats() {
-        const stats = document.getElementById('loyalty-stats');
-        if (!stats) return;
-
-        const vip = APP_STATE.customers.filter(c => c.tier === 'VIP').length;
-        const gold = APP_STATE.customers.filter(c => c.tier === 'Gold').length;
-        const totalPoints = APP_STATE.customers.reduce((sum, c) => sum + Number(c.points || 0), 0);
-
-        stats.innerHTML = `
-          <div class="stat-card">
-            <div class="label">VIP</div>
-            <div class="value">${vip}</div>
-            <div class="meta">Klientë VIP</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Gold</div>
-            <div class="value">${gold}</div>
-            <div class="meta">Klientë Gold</div>
-          </div>
-          <div class="stat-card">
-            <div class="label">Pikat totale</div>
-            <div class="value">${totalPoints}</div>
-            <div class="meta">Pikat në sistem</div>
-          </div>
-        `;
-      },
-
-      renderCustomers() {
-        const tbody = document.getElementById('customer-table-body');
-        if (!tbody) return;
-        tbody.innerHTML = '';
-
-        APP_STATE.customers.forEach((customer, index) => {
-          const row = document.createElement('tr');
-          row.innerHTML = `
-            <td>${index + 1}</td>
-            <td>${escapeHtml(customer.name)}</td>
-            <td>${escapeHtml(customer.phone || '-')}</td>
-            <td>${escapeHtml(customer.email || '-')}</td>
-            <td>${escapeHtml(customer.tier || 'Standard')}</td>
-            <td>${Number(customer.points || 0)}</td>
-            <td>
-              <button class="small-btn edit" onclick="Loyalty.editCustomer('${customer.id}')">Edit</button>
-              <button class="small-btn delete" onclick="Loyalty.deleteCustomer('${customer.id}')">Delete</button>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
-      },
-
-      openModal() {
-        document.getElementById('customer-form').reset();
-        document.getElementById('customer-id').value = '';
-        document.getElementById('customer-points').value = 0;
-        openModal('customer-modal');
-      },
-
-      editCustomer(id) {
-        const customer = APP_STATE.customers.find(c => c.id === id);
-        if (!customer) return;
-
-        document.getElementById('customer-id').value = customer.id;
-        document.getElementById('customer-name').value = customer.name;
-        document.getElementById('customer-phone').value = customer.phone || '';
-        document.getElementById('customer-email').value = customer.email || '';
-        document.getElementById('customer-tier').value = customer.tier || 'Standard';
-        document.getElementById('customer-points').value = customer.points || 0;
-        openModal('customer-modal');
-      },
-
-      saveCustomer(event) {
-        event.preventDefault();
-
-        const customer = {
-          id: document.getElementById('customer-id').value || makeId('c'),
-          name: document.getElementById('customer-name').value.trim(),
-          phone: document.getElementById('customer-phone').value.trim(),
-          email: document.getElementById('customer-email').value.trim(),
-          tier: document.getElementById('customer-tier').value,
-          points: Number(document.getElementById('customer-points').value || 0)
-        };
-
-        if (!customer.name) {
-          showToast('Emri i klientit është i detyrueshëm.', 'danger');
-          return;
-        }
-
-        const index = APP_STATE.customers.findIndex(c => c.id === customer.id);
-        if (index >= 0) APP_STATE.customers[index] = customer;
-        else APP_STATE.customers.push(customer);
-
-        saveState();
-        Loyalty.renderCustomers();
-        Loyalty.renderStats();
-        closeModal('customer-modal');
-        showToast('Klienti u ruajt me sukses.', 'success');
-      },
-
-      deleteCustomer(id) {
-        const customer = APP_STATE.customers.find(c => c.id === id);
-        if (!customer) return;
-
-        if (!confirm('Jeni i sigurt që doni të fshini klientin?')) return;
-
-        APP_STATE.customers = APP_STATE.customers.filter(c => c.id !== id);
-        saveState();
-        Loyalty.renderCustomers();
-        Loyalty.renderStats();
-        showToast(`Klienti "${customer.name}" u fshi.`, 'success');
-      }
-    };
-
-    const Settings = {
-      updateExchangeRate() {
-        const rate = parseFloat(document.getElementById('exchange-rate').value);
-        if (isNaN(rate) || rate <= 0) {
-          showToast('Kursi duhet të jetë një numër pozitiv.', 'danger');
-          return;
-        }
-
-        APP_STATE.settings.exchangeRate = rate;
-        saveState();
-        updateCurrencyDisplay();
-        POS.updateTotals();
-        showToast('Kursi i këmbimit u përditësua me sukses.', 'success');
-      }
-    };
-
-    function initApp() {
-      try {
-        const savedUsers = localStorage.getItem(STORAGE_KEYS.users);
-        if (savedUsers) {
-          APP_STATE.users = JSON.parse(savedUsers);
-        } else {
-          APP_STATE.users = [...DEFAULT_USERS];
-          localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(APP_STATE.users));
-        }
-
-        const savedProducts = localStorage.getItem(STORAGE_KEYS.products);
-        APP_STATE.products = savedProducts ? JSON.parse(savedProducts) : getDefaultProducts();
-
-        const savedSuppliers = localStorage.getItem(STORAGE_KEYS.suppliers);
-        APP_STATE.suppliers = savedSuppliers ? JSON.parse(savedSuppliers) : getDefaultSuppliers();
-
-        const savedCustomers = localStorage.getItem(STORAGE_KEYS.customers);
-        APP_STATE.customers = savedCustomers ? JSON.parse(savedCustomers) : getDefaultCustomers();
-
-        const savedSales = localStorage.getItem(STORAGE_KEYS.sales);
-        APP_STATE.sales = savedSales ? JSON.parse(savedSales) : buildDemoSales();
-
-        const savedSettings = localStorage.getItem(STORAGE_KEYS.settings);
-        APP_STATE.settings = savedSettings ? JSON.parse(savedSettings) : { exchangeRate: 100, currency: 'ALL' };
-
-        updateCurrencyDisplay();
-        renderUsersTable();
-        renderAllViews();
-
-        const savedLogin = sessionStorage.getItem('pos_logged_user');
-        if (savedLogin) {
-          try {
-            const obj = JSON.parse(savedLogin);
-            const loggedUser = APP_STATE.users.find(u =>
-              u.username === obj.username &&
-              u.password === obj.password &&
-              u.role === obj.role
-            );
-            if (loggedUser) {
-              APP_STATE.user = loggedUser;
-              document.getElementById('login-screen').style.display = 'none';
-              document.getElementById('app-shell').classList.add('active');
-              const name = loggedUser.name || loggedUser.username;
-              document.getElementById('user-name').textContent = name;
-              document.getElementById('user-role').textContent = roleToText(loggedUser.role);
-              document.getElementById('sidebar-user').textContent = name;
-              document.getElementById('user-avatar').textContent = name.charAt(0).toUpperCase();
-            }
-          } catch (e) {
-            sessionStorage.removeItem('pos_logged_user');
-          }
-        }
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-          item.addEventListener('click', () => {
-            showSection(item.dataset.target);
-          });
-        });
-
-        document.getElementById('barcode-input').addEventListener('input', function() {
-          POS.handleSearch(this.value);
-        });
-
-        document.getElementById('import-file').addEventListener('change', (e) => {
-          const file = e.target.files[0];
-          if (!file) return;
-          const reader = new FileReader();
-          reader.onload = (ev) => {
-            try {
-              const json = JSON.parse(ev.target.result);
-              if (json.products) APP_STATE.products = json.products;
-              if (json.suppliers) APP_STATE.suppliers = json.suppliers;
-              if (json.customers) APP_STATE.customers = json.customers;
-              if (
+        <button class="close-btn"
