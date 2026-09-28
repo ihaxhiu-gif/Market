@@ -3,473 +3,740 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>POS Market Ultra - No Login</title>
+  <title>POS Market Ultra Pro Advanced</title>
   <style>
-    :root{
-      --bg:#0f172a;
-      --bg2:#111827;
-      --panel:#0f172a;
-      --panel2:#172337;
-      --line:rgba(148,163,184,0.22);
-      --primary:#38bdf8;
-      --primary2:#2563eb;
-      --success:#22c55e;
-      --danger:#ef4444;
-      --warning:#f59e0b;
-      --purple:#8b5cf6;
-      --text:#e5eefc;
-      --textSoft:#9fb4d9;
-      --shadow:0 18px 38px rgba(2,8,23,.35);
-      --radius:18px;
+    :root {
+      --bg: #0f172a;
+      --bg-2: #111827;
+      --panel: #111b2d;
+      --panel-2: #172337;
+      --line: rgba(148, 163, 184, 0.2);
+      --line-strong: rgba(148, 163, 184, 0.35);
+      --primary: #38bdf8;
+      --primary-2: #2563eb;
+      --success: #22c55e;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --purple: #8b5cf6;
+      --text: #e5eefc;
+      --text-soft: #9fb4d9;
+      --shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
+      --radius: 18px;
     }
 
-    *{box-sizing:border-box;padding:0;margin:0;font-family:"Segoe UI", Tahoma, Geneva, Verdana, sans-serif;}
-    html,body{height:100%;}
-    body{
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; }
+    html, body { height: 100%; }
+    body {
       background:
-        radial-gradient(circle at top left, rgba(56,189,248,.14), transparent 35%),
-        linear-gradient(135deg, var(--bg), var(--bg2));
-      color:var(--text);
-      overflow:hidden;
+        radial-gradient(circle at top left, rgba(56,189,248,.18), transparent 38%),
+        radial-gradient(circle at bottom right, rgba(139,92,246,.18), transparent 30%),
+        linear-gradient(135deg, var(--bg), var(--bg-2));
+      color: var(--text);
+      overflow: hidden;
+    }
+    a { text-decoration: none; color: inherit; }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+
+    #app-shell {
+      display: flex;
+      height: 100vh;
+      width: 100%;
     }
 
-    button,input,select,textarea{font:inherit;}
-    button{cursor:pointer;}
-    input,select,textarea{
-      width:100%;
-      padding:11px 12px;
-      border:1px solid var(--line);
-      border-radius:10px;
-      background:rgba(15,23,42,.72);
-      color:var(--text);
-      outline:none;
-    }
-    input:focus,select:focus,textarea:focus{
-      border-color:rgba(56,189,248,.75);
-      box-shadow:0 0 0 3px rgba(56,189,248,.12);
+    #sidebar {
+      width: 260px;
+      background: linear-gradient(180deg, rgba(17,27,45,0.96), rgba(17,24,39,0.96));
+      border-right: 1px solid var(--line);
+      padding: 18px 14px 18px;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
     }
 
-    #app{
-      display:flex;
-      width:100%;
-      height:100vh;
+    .brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      padding: 8px 8px 20px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 14px;
     }
 
-    #sidebar{
-      width:260px;
-      background:linear-gradient(180deg, rgba(17,27,45,.96), rgba(17,24,39,.96));
-      border-right:1px solid var(--line);
-      padding:18px 14px;
-      flex-shrink:0;
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      border-radius: 12px;
+      box-shadow: 0 18px 28px rgba(59,130,246,0.25);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: white;
     }
 
-    .brand{
-      text-align:center;
-      font-weight:800;
-      font-size:1.5rem;
-      margin-bottom:22px;
-      padding-bottom:15px;
-      border-bottom:1px solid var(--line);
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
     }
 
-    .nav{display:flex;flex-direction:column;gap:8px;}
-    .nav-item{
-      width:100%;
-      text-align:left;
-      padding:12px 14px;
-      border-radius:10px;
-      background:transparent;
-      border:1px solid transparent;
-      color:var(--text);
-      font-weight:700;
-      transition:.15s ease;
-    }
-    .nav-item:hover,.nav-item.active{
-      background:rgba(148,163,184,.08);
-      border-color:rgba(56,189,248,.22);
-      transform:translateX(1px);
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: rgba(229,238,252,0.9);
+      border: 1px solid transparent;
+      transition: 0.16s ease;
+      font-weight: 700;
+      user-select: none;
+      cursor: pointer;
     }
 
-    #main{
-      flex:1;
-      display:flex;
-      flex-direction:column;
-      overflow:hidden;
+    .nav-item:hover, .nav-item.active {
+      background: rgba(148,163,184,0.08);
+      border-color: rgba(56,189,248,0.18);
+      transform: translateX(1px);
     }
 
-    #topbar{
-      background:rgba(15,23,42,.85);
-      border-bottom:1px solid var(--line);
-      padding:18px 26px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      box-shadow:0 12px 18px rgba(2,8,23,.12);
+    .nav-item .icon {
+      width: 24px;
+      height: 24px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(148,163,184,0.08);
+      font-size: 0.9rem;
     }
 
-    #section-title{
-      font-size:1.9rem;
-      font-weight:800;
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--text-soft);
+      font-size: 0.82rem;
+      line-height: 1.7;
     }
 
-    .topbar-right{
-      display:flex;
-      align-items:center;
-      gap:12px;
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
     }
 
-    .user-pill{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:rgba(148,163,184,.06);
-      border:1px solid var(--line);
-      border-radius:999px;
-      padding:8px 12px 8px 8px;
-    }
-    .avatar{
-      width:32px;height:32px;border-radius:50%;
-      display:grid;place-items:center;
-      background:linear-gradient(135deg, var(--primary), var(--purple));
-      color:#fff;font-weight:800;
-    }
-    .user-meta{display:flex;flex-direction:column;line-height:1.1;}
-    .user-name{font-size:.84rem;font-weight:700;}
-    .user-role{font-size:.7rem;color:var(--textSoft);}
-
-    .content{
-      flex:1;
-      overflow-y:auto;
-      padding:22px;
-      background:rgba(15,23,42,.55);
+    #topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      background: rgba(15, 23, 42, 0.83);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      padding: 18px 26px;
+      box-shadow: 0 12px 18px rgba(2,8,23,.12);
     }
 
-    .view{display:none;}
-    .view.active{display:block;}
-
-    .section-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:18px;
-      flex-wrap:wrap;
-    }
-    .section-head h3{
-      font-size:1.55rem;
-      font-weight:800;
+    #section-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
     }
 
-    .panel{
-      background:linear-gradient(180deg, rgba(17,27,45,.9), rgba(17,24,39,.92));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;
-      margin-bottom:18px;
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
     }
 
-    .stats-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(170px, 1fr));
-      gap:16px;
-      margin-bottom:18px;
+    .currency-badge {
+      background: rgba(139, 92, 246, 0.12);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #c4b5fd;
     }
 
-    .stat-card{
-      background:linear-gradient(180deg, rgba(17,27,45,.9), rgba(29,42,66,.85));
-      border:1px solid var(--line);
-      border-radius:14px;
-      padding:18px 16px;
-    }
-    .stat-label{
-      color:var(--textSoft);
-      text-transform:uppercase;
-      font-size:.7rem;
-      font-weight:800;
-      letter-spacing:.08em;
-      margin-bottom:10px;
-    }
-    .stat-value{
-      font-size:clamp(1.5rem,2.5vw,2.3rem);
-      font-weight:900;
-      color:#fff;
-    }
-    .stat-meta{
-      color:var(--textSoft);
-      margin-top:8px;
-      font-size:.8rem;
+    .user-pill {
+      padding: 8px 12px 8px 8px;
+      border-radius: 999px;
+      background: rgba(148,163,184,0.06);
+      border: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 180px;
     }
 
-    .table-wrap{overflow-x:auto;}
-    table{
-      width:100%;
-      min-width:700px;
-      border-collapse:collapse;
-    }
-    th,td{
-      padding:11px 10px;
-      border-bottom:1px solid var(--line);
-      text-align:left;
-      vertical-align:middle;
-    }
-    th{
-      color:var(--textSoft);
-      font-size:.72rem;
-      letter-spacing:.08em;
-      text-transform:uppercase;
-      background:rgba(148,163,184,.04);
-    }
-    tbody tr:hover{background:rgba(148,163,184,.03);}
-
-    .btn{
-      border:none;
-      border-radius:10px;
-      padding:10px 14px;
-      font-weight:800;
-      letter-spacing:.02em;
-      transition:transform .15s ease, opacity .15s ease;
-    }
-    .btn:hover{transform:translateY(-1px);opacity:.96;}
-    .btn-primary{background:linear-gradient(135deg, var(--primary), var(--primary2)); color:white;}
-    .btn-success{background:linear-gradient(135deg, var(--success), #16a34a); color:white;}
-    .btn-danger{background:linear-gradient(135deg, var(--danger), #b91c1c); color:white;}
-    .btn-purple{background:linear-gradient(135deg, var(--purple), #7c3aed); color:white;}
-    .btn-warning{background:linear-gradient(135deg, var(--warning), #d97706); color:white;}
-
-    .pos-layout{
-      display:grid;
-      grid-template-columns:1.42fr .96fr;
-      gap:18px;
-      min-height:calc(100vh - 170px);
-    }
-    .pos-shell,.cart-shell{
-      background:linear-gradient(180deg, rgba(17,27,45,.92), rgba(17,24,39,.94));
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px;
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--purple));
+      display: grid;
+      place-items: center;
+      color: white;
+      font-weight: 800;
     }
 
-    .pos-search{
-      width:100%;
-      margin-bottom:16px;
-      padding:12px 14px;
-      border-radius:10px;
-      border:1px solid var(--line);
-      background:rgba(15,23,42,.7);
-      color:var(--text);
+    .user-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
     }
 
-    .product-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
-      gap:12px;
-    }
-    .product-card{
-      background:linear-gradient(180deg, rgba(20,31,52,.95), rgba(17,24,39,.98));
-      border:1px solid var(--line);
-      border-radius:12px;
-      text-align:center;
-      padding:12px 10px;
-      cursor:pointer;
-      transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease;
-    }
-    .product-card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(56,189,248,.42);
-      box-shadow:0 8px 18px rgba(11,18,32,.18);
-    }
-    .product-card h4{
-      font-size:.9rem;
-      line-height:1.25;
-      min-height:42px;
-      margin-bottom:8px;
-    }
-    .product-card .price{
-      color:var(--primary);
-      font-weight:800;
-      font-size:1.1rem;
-      margin-bottom:5px;
-    }
-    .product-card .stock{
-      color:var(--textSoft);
-      font-size:.76rem;
+    .user-meta .name {
+      font-size: 0.86rem;
+      font-weight: 700;
     }
 
-    .cart-table-wrap{
-      max-height:370px;
-      overflow-y:auto;
-      border:1px solid var(--line);
-      border-radius:12px;
-      background:rgba(15,23,42,.46);
-      margin-top:14px;
-    }
-    .qty-input{
-      width:60px;
-      padding:7px 8px;
-      border-radius:8px;
-      border:1px solid var(--line);
-      background:rgba(15,23,42,.72);
-      color:var(--text);
+    .user-meta .role {
+      font-size: 0.72rem;
+      color: var(--text-soft);
     }
 
-    .totals-box{
-      background:rgba(148,163,184,.04);
-      border:1px solid var(--line);
-      border-radius:12px;
-      padding:14px;
-      margin-top:18px;
-    }
-    .totals-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:14px;
-      margin-bottom:8px;
-      font-weight:700;
-      font-size:.95rem;
-    }
-    .totals-row.grand{
-      border-top:1px solid var(--line);
-      padding-top:12px;
-      margin-top:12px;
-      font-size:1.2rem;
-      color:#9ae6b4;
-      font-weight:900;
+    .btn {
+      border: none;
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      transition: transform .15s ease, opacity .15s ease;
     }
 
-    .modal{
-      position:fixed;
-      inset:0;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background:rgba(2,8,23,.74);
-      z-index:1500;
-      padding:20px;
-    }
-    .modal.open{display:flex;}
-    .modal-card{
-      width:min(700px, 92vw);
-      max-height:90vh;
-      overflow-y:auto;
-      background:linear-gradient(180deg, rgba(17,27,45,.96), rgba(14,20,33,.98));
-      border:1px solid var(--line);
-      border-radius:20px;
-      box-shadow:var(--shadow);
-      padding:20px;
-    }
-    .modal-head{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
-    }
-    .modal-head h3{
-      font-size:1.5rem;
-      font-weight:800;
-    }
-    .close-modal{
-      background:rgba(148,163,184,.08);
-      border:none;
-      color:var(--text);
-      border-radius:10px;
-      width:36px;height:36px;
-      font-size:1.2rem;
-      cursor:pointer;
+    .btn:hover { transform: translateY(-1px); opacity: 0.96; }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: white; }
+    .btn-success { background: linear-gradient(135deg, var(--success), #16a34a); color: white; }
+    .btn-danger { background: linear-gradient(135deg, var(--danger), #b91c1c); color: white; }
+    .btn-warning { background: linear-gradient(135deg, var(--warning), #d97706); color: white; }
+    .btn-purple { background: linear-gradient(135deg, var(--purple), #7c3aed); color: white; }
+    .btn-ghost {
+      background: rgba(148,163,184,0.08);
+      border: 1px solid var(--line);
+      color: var(--text);
     }
 
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:7px;
-      margin-bottom:14px;
-    }
-    .field label{
-      font-size:.78rem;
-      font-weight:700;
-      letter-spacing:.06em;
-      text-transform:uppercase;
-      color:var(--textSoft);
+    .content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 22px;
+      background: rgba(15,23,42,0.55);
     }
 
-    .form-grid{
-      display:grid;
-      grid-template-columns:repeat(2, minmax(180px, 1fr));
-      gap:12px;
-    }
-    .form-grid .full{grid-column:1 / -1;}
-
-    .modal-actions{
-      display:flex;
-      justify-content:flex-end;
-      gap:10px;
-      margin-top:18px;
+    .view {
+      display: none;
+      min-height: 100%;
     }
 
-    .hidden{display:none !important;}
+    .view.active { display: block; }
 
-    #toast-container{
-      position:fixed;
-      right:20px;
-      bottom:20px;
-      z-index:3000;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
     }
-    .toast{
-      min-width:220px;
-      padding:12px 16px;
-      border-radius:12px;
-      color:#fff;
-      font-weight:700;
-      box-shadow:0 18px 28px rgba(2,8,23,.4);
-      animation:toastIn .2s ease;
+
+    .section-head h3 {
+      font-size: 1.55rem;
+      font-weight: 800;
     }
-    .toast.success{background:linear-gradient(135deg, var(--success), #16a34a);}
-    .toast.danger{background:linear-gradient(135deg, var(--danger), #b91c1c);}
-    .toast.info{background:linear-gradient(135deg, var(--primary), var(--primary2));}
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .stat-card {
+      background: linear-gradient(180deg, rgba(17,27,45,0.9), rgba(29,42,66,0.85));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
+    }
+
+    .stat-card .label {
+      color: var(--text-soft);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      margin-bottom: 10px;
+    }
+
+    .stat-card .value {
+      font-size: clamp(1.7rem, 3vw, 2.35rem);
+      font-weight: 900;
+      color: white;
+    }
+
+    .stat-card .meta {
+      color: var(--text-soft);
+      margin-top: 8px;
+      font-size: 0.78rem;
+    }
+
+    .panel {
+      background: linear-gradient(180deg, rgba(17,27,45,0.9), rgba(17,24,39,0.92));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
+      padding: 18px;
+      margin-bottom: 18px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.1fr 1.2fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(180px, 1fr));
+      gap: 12px;
+    }
+
+    .form-grid .full { grid-column: 1 / -1; }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      margin-bottom: 14px;
+    }
+
+    .field label {
+      font-size: 0.78rem;
+      color: var(--text-soft);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .field input, .field select, .field textarea {
+      background: rgba(15,23,42,0.7);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: var(--text);
+      padding: 11px 12px;
+      width: 100%;
+      outline: none;
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 84px;
+    }
+
+    .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: rgba(56,189,248,0.7);
+      box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--text-soft);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(148,163,184,0.04);
+    }
+
+    tbody tr:hover {
+      background: rgba(148,163,184,0.03);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .status-good { background: rgba(34,197,94,0.12); color: #86efac; }
+    .status-warn { background: rgba(245,158,11,0.12); color: #fbbf24; }
+    .status-bad { background: rgba(239,68,68,0.12); color: #fca5a5; }
+
+    .small-btn {
+      border: none;
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-weight: 800;
+      color: white;
+      cursor: pointer;
+      margin-right: 6px;
+      font-size: 0.75rem;
+    }
+
+    .small-btn.edit { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
+    .small-btn.delete { background: linear-gradient(135deg, var(--danger), #b91c1c); }
+    .small-btn.success { background: linear-gradient(135deg, var(--success), #16a34a); }
+
+    .search-input {
+      min-width: 240px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,0.7);
+      color: var(--text);
+    }
+
+    .pos-layout {
+      display: grid;
+      grid-template-columns: 1.4fr 0.92fr;
+      gap: 18px;
+      min-height: calc(100vh - 170px);
+    }
+
+    .pos-shell, .cart-shell {
+      background: linear-gradient(180deg, rgba(17,27,45,0.92), rgba(17,24,39,0.94));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
+      padding: 18px;
+    }
+
+    .pos-search {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,0.7);
+      color: var(--text);
+      margin-bottom: 16px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
+    }
+
+    .product-card {
+      background: linear-gradient(180deg, rgba(20,31,52,0.95), rgba(17,24,39,0.98));
+      border: 1px solid var(--line);
+      padding: 14px 12px;
+      border-radius: 14px;
+      text-align: center;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(56,189,248,0.45);
+      box-shadow: 0 8px 18px rgba(11,18,32,0.18);
+    }
+
+    .product-card h4 {
+      font-size: 0.95rem;
+      min-height: 42px;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .product-card .price {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 1.1rem;
+      margin-bottom: 6px;
+    }
+
+    .product-card .stock {
+      color: var(--text-soft);
+      font-size: 0.76rem;
+    }
+
+    .cart-table-wrap {
+      margin-top: 14px;
+      max-height: 370px;
+      overflow-y: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(15,23,42,0.46);
+    }
+
+    #cart-items {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    #cart-items td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+      font-size: 0.9rem;
+    }
+
+    .qty-input {
+      width: 60px;
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,0.7);
+      color: var(--text);
+    }
+
+    .totals-box {
+      margin-top: 18px;
+      background: rgba(148,163,184,0.04);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 8px;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .totals-row.grand {
+      border-top: 1px solid var(--line);
+      padding-top: 12px;
+      margin-top: 12px;
+      color: #9ae6b4;
+      font-size: 1.2rem;
+      font-weight: 900;
+    }
+
+    .totals-row input {
+      width: 86px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,0.7);
+      color: var(--text);
+    }
+
+    .payment-section {
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 14px;
+    }
+
+    .payment-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      align-items: center;
+    }
+
+    .payment-row label {
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .payment-row input {
+      width: 100px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(15,23,42,0.7);
+      color: var(--text);
+    }
+
+    .checkout-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .checkout-row > * { flex: 1; }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(2, 8, 23, 0.74);
+      z-index: 1500;
+      padding: 20px;
+    }
+
+    .modal.open { display: flex; }
+
+    .modal-card {
+      width: min(700px, 92vw);
+      background: linear-gradient(180deg, rgba(17,27,45,0.96), rgba(14,20,33,0.98));
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.35);
+      border-radius: 20px;
+      padding: 20px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: fadeUp .2s ease;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .modal-head h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+    }
+
+    .close-modal {
+      border: none;
+      background: rgba(148,163,184,0.08);
+      color: var(--text);
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    #toast-container {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      padding: 12px 16px;
+      border-radius: 12px;
+      color: white;
+      min-width: 220px;
+      box-shadow: 0 18px 28px rgba(2,8,23,0.4);
+      animation: toastIn .2s ease;
+      font-weight: 700;
+    }
+
+    .toast.success { background: linear-gradient(135deg, var(--success), #16a34a); }
+    .toast.danger { background: linear-gradient(135deg, var(--danger), #b91c1c); }
+    .toast.info { background: linear-gradient(135deg, var(--primary), var(--primary-2)); }
 
     @keyframes toastIn {
-      from{opacity:0;transform:translateY(10px);}
-      to{opacity:1;transform:translateY(0);}
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (max-width:980px){
-      body{overflow:auto;}
-      #app{display:block;}
-      #sidebar{width:100%;}
-      .pos-layout{grid-template-columns:1fr;}
-      .form-grid{grid-template-columns:1fr;}
+    .margin-badge {
+      background: rgba(34, 197, 94, 0.12);
+      color: #86efac;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    @media (max-width: 980px) {
+      body { overflow: auto; }
+      #app-shell { display: block; }
+      #sidebar { width: 100%; }
+      .pos-layout, .two-col { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <div id="app">
+  <div id="app-shell">
     <aside id="sidebar">
-      <div class="brand">POS Ultra</div>
+      <div class="brand">
+        <div class="brand-badge">P</div>
+        <div>POS Ultra Pro</div>
+      </div>
+
       <nav class="nav">
-        <button class="nav-item active" data-view="pos-view">🛒 Kasa</button>
-        <button class="nav-item" data-view="inventory-view">📦 Stoku</button>
-        <button class="nav-item" data-view="suppliers-view">🚚 Furnizuesit</button>
-        <button class="nav-item" data-view="reports-view">📊 Raportet</button>
-        <button class="nav-item" data-view="settings-view">⚙️ Cilësimet</button>
+        <div class="nav-item active" data-target="pos-view"><span class="icon">🛒</span> Kasa</div>
+        <div class="nav-item" data-target="inventory-view"><span class="icon">📦</span> Stoku</div>
+        <div class="nav-item" data-target="suppliers-view"><span class="icon">🚚</span> Furnizuesit</div>
+        <div class="nav-item" data-target="reports-view"><span class="icon">📊</span> Raportet</div>
+        <div class="nav-item" data-target="loyalty-view"><span class="icon">🎁</span> Loyalty</div>
+        <div class="nav-item" data-target="settings-view"><span class="icon">⚙️</span> Cilësimet</div>
       </nav>
+
+      <div class="sidebar-footer">
+        <div>Version: 7.0 Pro Advanced</div>
+        <div id="sidebar-user">Admin</div>
+      </div>
     </aside>
 
     <main id="main">
       <header id="topbar">
         <h2 id="section-title">Kasa</h2>
+
         <div class="topbar-right">
+          <div class="currency-badge">
+            <span id="currency-display">ALL</span> /
+            <span id="exchange-rate-display">100</span>
+          </div>
+
           <div class="user-pill">
-            <div class="avatar">A</div>
+            <div class="user-avatar" id="user-avatar">A</div>
             <div class="user-meta">
-              <div class="user-name">Admin</div>
-              <div class="user-role">POS</div>
+              <div class="name" id="user-name">Admin</div>
+              <div class="role" id="user-role">Admin</div>
             </div>
           </div>
+
+          <button class="btn btn-danger" id="logout-btn">Dil</button>
         </div>
       </header>
 
@@ -477,20 +744,21 @@
         <section id="pos-view" class="view active">
           <div class="section-head">
             <h3>Kasa (POS)</h3>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="btn btn-primary" onclick="POS.clearCart()">Pastro</button>
+            <div class="action-row">
+              <button class="btn btn-ghost" id="clear-cart-btn">Pastro karte</button>
               <button class="btn btn-success" onclick="POS.checkout()">Kryej shitjen</button>
             </div>
           </div>
 
           <div class="pos-layout">
             <div class="pos-shell">
-              <input type="text" class="pos-search" id="barcode-search" placeholder="Skano barcode ose kërko produkt..." autofocus oninput="POS.search(this.value)">
-              <div id="product-grid" class="product-grid"></div>
+              <input type="text" id="barcode-input" class="pos-search" placeholder="Skano barcode ose kërko produkt..." autofocus />
+              <div class="product-grid" id="product-grid"></div>
             </div>
 
             <div class="cart-shell">
-              <h3>Fatura</h3>
+              <h3>Fatura e shitjes</h3>
+
               <div class="cart-table-wrap">
                 <table>
                   <thead>
@@ -498,7 +766,7 @@
                       <th>Produkt</th>
                       <th>Sasi</th>
                       <th>Çmim</th>
-                      <th>Fshi</th>
+                      <th>Anulo</th>
                     </tr>
                   </thead>
                   <tbody id="cart-items"></tbody>
@@ -512,30 +780,36 @@
                 </div>
                 <div class="totals-row">
                   <span>Zbritje</span>
-                  <input type="number" id="cart-discount" min="0" value="0" style="width:90px;" oninput="POS.updateTotals()" />
+                  <input type="number" id="cart-discount" min="0" value="0" />
                 </div>
-                <div class="totals-row grand">
-                  <span>Totali</span>
+                <div class="totals-row">
+                  <span>Totali për pagese</span>
                   <span id="cart-total">0 ALL</span>
                 </div>
+                <div class="totals-row grand">
+                  <span>Totali në EUR</span>
+                  <span id="cart-total-eur">0 €</span>
+                </div>
               </div>
 
-              <div style="margin-top:16px;">
-                <div class="field">
+              <div class="payment-section">
+                <div class="payment-row">
                   <label>Klienti pagoi (ALL)</label>
-                  <input id="payment-all" type="number" min="0" value="0" oninput="POS.calculateChange()">
+                  <input type="number" id="payment-all" min="0" value="0" />
                 </div>
-                <div class="field">
+                <div class="payment-row">
                   <label>Këmbimi (EUR)</label>
-                  <input id="payment-eur" type="number" min="0" value="0" oninput="POS.calculateChange()">
+                  <input type="number" id="payment-eur" min="0" value="0" />
                 </div>
-                <div class="field">
-                  <label>Ndryshimi</label>
-                  <div id="change-display" style="font-weight:800; color:#86efac;">0 ALL</div>
+                <div class="payment-row">
+                  <span style="font-weight:800; color:#86efac;">Ndryshimi: <span id="change-amount">0 ALL</span></span>
                 </div>
               </div>
 
-              <button class="btn btn-success" style="width:100%; margin-top:10px;" onclick="POS.checkout()">Kryej shitjen</button>
+              <div class="checkout-row">
+                <button class="btn btn-success" onclick="POS.checkout()">Kryej shitjen</button>
+                <button class="btn btn-purple" onclick="POS.printLastInvoice()">Printo faturë</button>
+              </div>
             </div>
           </div>
         </section>
@@ -543,13 +817,19 @@
         <section id="inventory-view" class="view">
           <div class="section-head">
             <h3>Menaxhimi i stokut</h3>
-            <button class="btn btn-primary" onclick="openProductModal()">Shto produkt</button>
+            <div class="action-row">
+              <button class="btn btn-primary" id="add-product-btn">Shto produkt</button>
+            </div>
           </div>
 
           <div class="stats-grid" id="inventory-stats"></div>
 
           <div class="panel">
-            <h3 style="margin-bottom:14px;">Lista e produkteve</h3>
+            <div class="section-head">
+              <h3 style="font-size:1.2rem;">Lista e produkteve</h3>
+              <input type="text" id="inventory-search" class="search-input" placeholder="Kërko produkt..." />
+            </div>
+
             <div class="table-wrap">
               <table>
                 <thead>
@@ -557,7 +837,8 @@
                     <th>#</th>
                     <th>Emri</th>
                     <th>Barcode</th>
-                    <th>Njësi</th>
+                    <th>Kategoria</th>
+                    <th>Njësia</th>
                     <th>Çmim Shitje</th>
                     <th>Çmim Blerjeje</th>
                     <th>Fitim %</th>
@@ -565,7 +846,7 @@
                     <th>Veprime</th>
                   </tr>
                 </thead>
-                <tbody id="inventory-items"></tbody>
+                <tbody id="inventory-table-body"></tbody>
               </table>
             </div>
           </div>
@@ -574,11 +855,40 @@
         <section id="suppliers-view" class="view">
           <div class="section-head">
             <h3>Furnizuesit</h3>
-            <button class="btn btn-primary" onclick="openSupplierModal()">Shto furnizues</button>
+            <div class="action-row">
+              <button class="btn btn-primary" id="add-supplier-btn">Shto furnizues</button>
+            </div>
+          </div>
+
+          <div class="two-col">
+            <div class="panel">
+              <h3 style="font-size:1.2rem; margin-bottom:14px;">Faturat e hapura</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nr. Fature</th>
+                      <th>Furnizues</th>
+                      <th>Vlera</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="supplier-invoices-body"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 style="font-size:1.2rem; margin-bottom:14px;">Statistikat</h3>
+              <div class="stats-grid" id="supplier-stats"></div>
+            </div>
           </div>
 
           <div class="panel">
-            <h3 style="margin-bottom:14px;">Lista e furnizuesve</h3>
+            <div class="section-head">
+              <h3 style="font-size:1.2rem;">Lista e furnizuesve</h3>
+            </div>
+
             <div class="table-wrap">
               <table>
                 <thead>
@@ -587,10 +897,11 @@
                     <th>Emri</th>
                     <th>Telefoni</th>
                     <th>Email</th>
+                    <th>Qyteti</th>
                     <th>Veprime</th>
                   </tr>
                 </thead>
-                <tbody id="suppliers-items"></tbody>
+                <tbody id="supplier-table-body"></tbody>
               </table>
             </div>
           </div>
@@ -599,24 +910,90 @@
         <section id="reports-view" class="view">
           <div class="section-head">
             <h3>Raportet & Bilanci</h3>
+            <div class="action-row">
+              <button class="btn btn-purple" onclick="Reports.generateDemoReport()">Gjenero raport</button>
+            </div>
           </div>
 
-          <div class="stats-grid" id="reports-stats"></div>
+          <div class="stats-grid" id="report-stats"></div>
+
+          <div class="two-col">
+            <div class="panel">
+              <h3 style="font-size:1.2rem; margin-bottom:16px;">Shitjet e 7 ditëve</h3>
+              <div style="display:flex; align-items:center; justify-content:center; height:200px; color:var(--text-soft);">
+                Grafiku (të dhëna në raporte)
+              </div>
+            </div>
+
+            <div class="panel">
+              <h3 style="font-size:1.2rem; margin-bottom:16px;">Produktet më të shitur</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Produkt</th>
+                      <th>Sasi</th>
+                      <th>Vlera Shitje</th>
+                      <th>Fitim</th>
+                    </tr>
+                  </thead>
+                  <tbody id="top-products-body"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
           <div class="panel">
-            <h3 style="margin-bottom:14px;">Historia e shitjeve</h3>
+            <h3 style="font-size:1.2rem; margin-bottom:16px;">Historia e shitjeve</h3>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Nr. Fature</th>
+                    <th>Data</th>
+                    <th>Produkte</th>
+                    <th>Totali</th>
+                    <th>Zbritje</th>
+                    <th>Fitim</th>
+                    <th>Status</th>
+                    <th>Printo</th>
+                  </tr>
+                </thead>
+                <tbody id="sales-history-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="loyalty-view" class="view">
+          <div class="section-head">
+            <h3>Programi i Besnikërisë</h3>
+            <div class="action-row">
+              <button class="btn btn-primary" id="add-customer-btn">Shto klient</button>
+            </div>
+          </div>
+
+          <div class="stats-grid" id="loyalty-stats"></div>
+
+          <div class="panel">
+            <div class="section-head">
+              <h3 style="font-size:1.2rem;">Lista e klientëve</h3>
+            </div>
+
             <div class="table-wrap">
               <table>
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Data</th>
-                    <th>Totali</th>
-                    <th>Fitim</th>
-                    <th>Zbritje</th>
+                    <th>Emri</th>
+                    <th>Telefoni</th>
+                    <th>Email</th>
+                    <th>Leveli</th>
+                    <th>Pikat</th>
+                    <th>Veprime</th>
                   </tr>
                 </thead>
-                <tbody id="sales-items"></tbody>
+                <tbody id="customer-table-body"></tbody>
               </table>
             </div>
           </div>
@@ -627,21 +1004,45 @@
             <h3>Cilësimet</h3>
           </div>
 
-          <div class="panel">
-            <h3 style="margin-bottom:14px;">Kursi i këmbimit</h3>
-            <div class="field">
-              <label>ALL → EUR</label>
-              <input id="exchange-rate" type="number" min="1" step="0.01" value="100">
+          <div class="two-col">
+            <div class="panel">
+              <h3 style="font-size:1.2rem; margin-bottom:16px;">Kursi i këmbimit</h3>
+              <div class="field">
+                <label>Kursi ALL → EUR</label>
+                <div style="display:flex; gap:8px;">
+                  <input type="number" id="exchange-rate" min="0" step="0.01" value="100" style="flex:1;" />
+                  <button class="btn btn-success" onclick="Settings.updateExchangeRate()">Përditëso</button>
+                </div>
+              </div>
+              <div style="margin-top:12px; padding:12px; background:rgba(148,163,184,0.06); border-radius:10px; font-size:0.85rem; color:var(--text-soft);">
+                <strong>Përditëso çdo ditë:</strong> Vendos kursin e ri të këmbimit midis ALL dhe EUR.
+              </div>
             </div>
-            <button class="btn btn-success" onclick="Settings.saveExchangeRate()">Ruaj kursin</button>
+
+            <div class="panel">
+              <h3 style="font-size:1.2rem; margin-bottom:16px;">Përdoruesit</h3>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Emri</th>
+                      <th>Roli</th>
+                      <th>Username</th>
+                    </tr>
+                  </thead>
+                  <tbody id="users-table-body"></tbody>
+                </table>
+              </div>
+            </div>
           </div>
 
           <div class="panel">
-            <h3 style="margin-bottom:14px;">Eksport / Import</h3>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="btn btn-primary" onclick="App.exportData()">Eksporto JSON</button>
+            <h3 style="font-size:1.2rem; margin-bottom:16px;">Opsione të tjera</h3>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <button class="btn btn-primary" onclick="App.resetDemoData()">Rivendos demo</button>
+              <button class="btn btn-warning" onclick="App.exportData()">Eksporto JSON</button>
               <button class="btn btn-purple" onclick="App.importData()">Importo JSON</button>
-              <input type="file" id="import-file" class="hidden" accept=".json" onchange="App.handleImport(event)">
+              <input type="file" id="import-file" class="hidden" accept=".json" />
             </div>
           </div>
         </section>
@@ -652,29 +1053,21 @@
   <div id="product-modal" class="modal">
     <div class="modal-card">
       <div class="modal-head">
-        <h3>Shto produkt</h3>
-        <button class="close-modal" type="button" onclick="closeModal('product-modal')">×</button>
+        <h3>Produkti</h3>
+        <button class="close-modal" type="button" data-close="product-modal">×</button>
       </div>
-      <form onsubmit="Inventory.saveProduct(event)">
+
+      <form id="product-form">
+        <input type="hidden" id="product-id" />
         <div class="form-grid">
           <div class="field">
             <label>Emri</label>
-            <input id="product-name" type="text" required>
+            <input id="product-name" required />
           </div>
 
           <div class="field">
             <label>Barcode</label>
-            <input id="product-barcode" type="text" required>
-          </div>
-
-          <div class="field">
-            <label>Njësi</label>
-            <select id="product-unit">
-              <option value="copë">copë</option>
-              <option value="kg">kg</option>
-              <option value="liter">liter</option>
-              <option value="pakete">pakete</option>
-            </select>
+            <input id="product-barcode" required />
           </div>
 
           <div class="field">
@@ -689,28 +1082,49 @@
           </div>
 
           <div class="field">
+            <label>Njësia</label>
+            <select id="product-unit">
+              <option value="copë">copë</option>
+              <option value="kg">kg</option>
+              <option value="liter">liter</option>
+              <option value="metër">metër</option>
+              <option value="pakete">pakete</option>
+            </select>
+          </div>
+
+          <div class="field">
             <label>Çmim Blerjeje (ALL)</label>
-            <input id="product-cost" type="number" min="0" required>
+            <input id="product-cost" type="number" min="0" required />
           </div>
 
           <div class="field">
             <label>Çmim Shitje (ALL)</label>
-            <input id="product-price" type="number" min="0" required>
+            <input id="product-price" type="number" min="0" required onchange="Inventory.calculateMargin()" />
           </div>
 
           <div class="field">
-            <label>Stok</label>
-            <input id="product-stock" type="number" min="0" required>
+            <label>Marzhina e fitimit %</label>
+            <input id="product-margin" type="number" min="0" value="0" readonly />
+          </div>
+
+          <div class="field">
+            <label>Sasia në stok</label>
+            <input id="product-stock" type="number" min="0" required />
           </div>
 
           <div class="field">
             <label>Furnizues</label>
             <select id="product-supplier"></select>
           </div>
+
+          <div class="field full">
+            <label>Shënim</label>
+            <textarea id="product-description" rows="3"></textarea>
+          </div>
         </div>
 
-        <div class="modal-actions">
-          <button type="button" class="btn btn-primary" onclick="closeModal('product-modal')">Anulo</button>
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+          <button type="button" class="btn btn-ghost" data-close="product-modal">Anulo</button>
           <button type="submit" class="btn btn-success">Ruaj</button>
         </div>
       </form>
@@ -720,28 +1134,89 @@
   <div id="supplier-modal" class="modal">
     <div class="modal-card">
       <div class="modal-head">
-        <h3>Shto furnizues</h3>
-        <button class="close-modal" type="button" onclick="closeModal('supplier-modal')">×</button>
+        <h3>Furnizuesi</h3>
+        <button class="close-modal" type="button" data-close="supplier-modal">×</button>
       </div>
 
-      <form onsubmit="Suppliers.saveSupplier(event)">
-        <div class="field">
-          <label>Emri</label>
-          <input id="supplier-name" type="text" required>
+      <form id="supplier-form">
+        <input type="hidden" id="supplier-id" />
+        <div class="form-grid">
+          <div class="field">
+            <label>Emri</label>
+            <input id="supplier-name" required />
+          </div>
+
+          <div class="field">
+            <label>Telefoni</label>
+            <input id="supplier-phone" />
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input id="supplier-email" type="email" />
+          </div>
+
+          <div class="field">
+            <label>Qyteti</label>
+            <input id="supplier-city" />
+          </div>
+
+          <div class="field full">
+            <label>Adresa</label>
+            <textarea id="supplier-address" rows="3"></textarea>
+          </div>
         </div>
 
-        <div class="field">
-          <label>Telefoni</label>
-          <input id="supplier-phone" type="text">
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+          <button type="button" class="btn btn-ghost" data-close="supplier-modal">Anulo</button>
+          <button type="submit" class="btn btn-success">Ruaj</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div id="customer-modal" class="modal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Klienti</h3>
+        <button class="close-modal" type="button" data-close="customer-modal">×</button>
+      </div>
+
+      <form id="customer-form">
+        <input type="hidden" id="customer-id" />
+        <div class="form-grid">
+          <div class="field">
+            <label>Emri</label>
+            <input id="customer-name" required />
+          </div>
+
+          <div class="field">
+            <label>Telefoni</label>
+            <input id="customer-phone" />
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input id="customer-email" type="email" />
+          </div>
+
+          <div class="field">
+            <label>Leveli</label>
+            <select id="customer-tier">
+              <option value="Standard">Standard</option>
+              <option value="Gold">Gold</option>
+              <option value="VIP">VIP</option>
+            </select>
+          </div>
+
+          <div class="field full">
+            <label>Pikat</label>
+            <input id="customer-points" type="number" min="0" value="0" />
+          </div>
         </div>
 
-        <div class="field">
-          <label>Email</label>
-          <input id="supplier-email" type="email">
-        </div>
-
-        <div class="modal-actions">
-          <button type="button" class="btn btn-primary" onclick="closeModal('supplier-modal')">Anulo</button>
+        <div style="display:flex; gap:10px; justify-content:flex-end; margin-top:20px;">
+          <button type="button" class="btn btn-ghost" data-close="customer-modal">Anulo</button>
           <button type="submit" class="btn btn-success">Ruaj</button>
         </div>
       </form>
@@ -752,204 +1227,385 @@
 
   <script>
     const STORAGE_KEYS = {
-      products: 'pos_products',
-      suppliers: 'pos_suppliers',
-      sales: 'pos_sales',
-      settings: 'pos_settings'
+      products: 'pos_products_v7',
+      suppliers: 'pos_suppliers_v7',
+      customers: 'pos_customers_v7',
+      sales: 'pos_sales_v7',
+      users: 'pos_users_v7',
+      settings: 'pos_settings_v7'
     };
 
-    const App = {
-      state: {
+    const App = (() => {
+      const state = {
+        user: { name: 'Admin', role: 'Admin' },
         products: [],
         suppliers: [],
+        customers: [],
         sales: [],
-        exchangeRate: 100
-      },
+        users: [],
+        cart: [],
+        settings: { exchangeRate: 100, currency: 'ALL' }
+      };
 
-      init() {
-        this.loadData();
-        this.bindNav();
-        this.renderAll();
-      },
+      const init = () => {
+        const savedUsers = localStorage.getItem(STORAGE_KEYS.users);
+        state.users = savedUsers ? JSON.parse(savedUsers) : getDefaultUsers();
 
-      bindNav() {
-        document.querySelectorAll('.nav-item').forEach(button => {
+        const savedProducts = localStorage.getItem(STORAGE_KEYS.products);
+        state.products = savedProducts ? JSON.parse(savedProducts) : getDefaultProducts();
+
+        const savedSuppliers = localStorage.getItem(STORAGE_KEYS.suppliers);
+        state.suppliers = savedSuppliers ? JSON.parse(savedSuppliers) : getDefaultSuppliers();
+
+        const savedCustomers = localStorage.getItem(STORAGE_KEYS.customers);
+        state.customers = savedCustomers ? JSON.parse(savedCustomers) : getDefaultCustomers();
+
+        const savedSales = localStorage.getItem(STORAGE_KEYS.sales);
+        state.sales = savedSales ? JSON.parse(savedSales) : buildDemoSales();
+
+        const savedSettings = localStorage.getItem(STORAGE_KEYS.settings);
+        state.settings = savedSettings ? JSON.parse(savedSettings) : { exchangeRate: 100, currency: 'ALL' };
+
+        bindEvents();
+        renderUsersTable();
+        updateCurrencyDisplay();
+        renderViews();
+        showSection('pos-view');
+      };
+
+      const bindEvents = () => {
+        document.getElementById('logout-btn').addEventListener('click', () => {
+          showToast('U çkyçët me sukses.', 'info');
+        });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+          item.addEventListener('click', () => showSection(item.dataset.target));
+        });
+
+        document.getElementById('barcode-input').addEventListener('input', function(){
+          POS.handleSearch(this.value);
+        });
+
+        document.getElementById('inventory-search').addEventListener('input', function(){
+          Inventory.filterProducts(this.value);
+        });
+
+        document.getElementById('cart-discount').addEventListener('input', function(){
+          POS.updateTotals();
+        });
+
+        document.getElementById('payment-all').addEventListener('input', POS.calculateChange);
+        document.getElementById('payment-eur').addEventListener('input', POS.calculateChange);
+
+        document.getElementById('clear-cart-btn').addEventListener('click', POS.clearCart);
+
+        document.getElementById('add-product-btn').addEventListener('click', () => {
+          Inventory.openProductModal();
+        });
+
+        document.getElementById('add-supplier-btn').addEventListener('click', () => {
+          Suppliers.openModal();
+        });
+
+        document.getElementById('add-customer-btn').addEventListener('click', () => {
+          Loyalty.openModal();
+        });
+
+        document.getElementById('import-file').addEventListener('change', (e) => {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            try {
+              const json = JSON.parse(ev.target.result);
+              if (json.products) state.products = json.products;
+              if (json.suppliers) state.suppliers = json.suppliers;
+              if (json.customers) state.customers = json.customers;
+              if (json.sales) state.sales = json.sales;
+              saveState();
+              renderViews();
+              showToast('Importimi u krye me sukses.', 'success');
+            } catch(err) {
+              showToast('Skedari JSON nuk është valid.', 'danger');
+            }
+          };
+          reader.readAsText(file);
+        });
+
+        document.querySelectorAll('[data-close]').forEach(button => {
           button.addEventListener('click', () => {
-            const view = button.dataset.view;
-            document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-            button.classList.add('active');
-
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById(view).classList.add('active');
-
-            const map = {
-              'pos-view': 'Kasa',
-              'inventory-view': 'Stoku',
-              'suppliers-view': 'Furnizuesit',
-              'reports-view': 'Raportet & Bilanci',
-              'settings-view': 'Cilësimet'
-            };
-
-            document.getElementById('section-title').textContent = map[view] || 'POS';
+            const modalId = button.getAttribute('data-close');
+            closeModal(modalId);
           });
         });
-      },
 
-      loadData() {
-        const products = localStorage.getItem(STORAGE_KEYS.products);
-        const suppliers = localStorage.getItem(STORAGE_KEYS.suppliers);
-        const sales = localStorage.getItem(STORAGE_KEYS.sales);
-        const settings = localStorage.getItem(STORAGE_KEYS.settings);
-
-        this.state.products = products ? JSON.parse(products) : [
-          { id: 1, barcode: '1001', name: 'Ujë Tepelene 1.5L', price: 70, cost: 50, stock: 50, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1' },
-          { id: 2, barcode: '1002', name: 'Buka e Boshit', price: 120, cost: 80, stock: 30, category: 'Ushqim', unit: 'copë', supplier: 'Furnizuesi 2' },
-          { id: 3, barcode: '1003', name: 'Kafe Lavazza 250g', price: 500, cost: 350, stock: 15, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1' },
-          { id: 4, barcode: '1004', name: 'Mish i freskët', price: 650, cost: 500, stock: 18, category: 'Ushqim', unit: 'kg', supplier: 'Furnizuesi 2' }
-        ];
-
-        this.state.suppliers = suppliers ? JSON.parse(suppliers) : [
-          { id: 1, name: 'Furnizuesi 1', phone: '044123456', email: 'f1@mail.com' },
-          { id: 2, name: 'Furnizuesi 2', phone: '068765432', email: 'f2@mail.com' }
-        ];
-
-        this.state.sales = sales ? JSON.parse(sales) : [];
-
-        const parsedSettings = settings ? JSON.parse(settings) : {};
-        this.state.exchangeRate = parsedSettings.exchangeRate || 100;
-        document.getElementById('exchange-rate').value = this.state.exchangeRate;
-        this.refreshSupplierOptions();
-      },
-
-      saveData() {
-        localStorage.setItem(STORAGE_KEYS.products, JSON.stringify(this.state.products));
-        localStorage.setItem(STORAGE_KEYS.suppliers, JSON.stringify(this.state.suppliers));
-        localStorage.setItem(STORAGE_KEYS.sales, JSON.stringify(this.state.sales));
-        localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify({ exchangeRate: this.state.exchangeRate }));
-      },
-
-      refreshSupplierOptions() {
-        const select = document.getElementById('product-supplier');
-        if (!select) return;
-
-        select.innerHTML = '';
-
-        this.state.suppliers.forEach(s => {
-          const option = document.createElement('option');
-          option.value = s.name;
-          option.textContent = s.name;
-          select.appendChild(option);
+        document.getElementById('product-form').addEventListener('submit', (event) => {
+          event.preventDefault();
+          Inventory.saveProduct();
         });
-      },
 
-      renderAll() {
-        POS.renderProducts();
+        document.getElementById('supplier-form').addEventListener('submit', (event) => {
+          event.preventDefault();
+          Suppliers.saveSupplier();
+        });
+
+        document.getElementById('customer-form').addEventListener('submit', (event) => {
+          event.preventDefault();
+          Loyalty.saveCustomer();
+        });
+      };
+
+      const getDefaultUsers = () => [
+        { username: 'admin', password: 'admin', role: 'admin', name: 'Admin' },
+        { username: 'cashier', password: 'cashier', role: 'cashier', name: 'Kasier' },
+        { username: 'manager', password: 'manager', role: 'manager', name: 'Menaxher' }
+      ];
+
+      const getDefaultProducts = () => [
+        { id: 'p1', barcode: '1001', name: 'Ujë Tepelene 1.5L', price: 70, cost: 50, stock: 50, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1', description: 'Ujë mineral' },
+        { id: 'p2', barcode: '1002', name: 'Buka e Boshit', price: 120, cost: 80, stock: 30, category: 'Ushqim', unit: 'copë', supplier: 'Furnizuesi 2', description: 'Buke artisane' },
+        { id: 'p3', barcode: '1003', name: 'Kafe Lavazza 250g', price: 500, cost: 350, stock: 15, category: 'Pije', unit: 'copë', supplier: 'Furnizuesi 1', description: 'Kafe aromatike' },
+        { id: 'p4', barcode: '1004', name: 'Krem për duar', price: 380, cost: 250, stock: 20, category: 'Kozmetikë', unit: 'copë', supplier: 'Furnizuesi 3', description: 'Krem hidratues' },
+        { id: 'p5', barcode: '1005', name: 'USB 32GB', price: 1500, cost: 1000, stock: 12, category: 'Teknologji', unit: 'copë', supplier: 'Furnizuesi 4', description: 'Memorie USB' },
+        { id: 'p6', barcode: '1006', name: 'Mishi i freskët', price: 650, cost: 500, stock: 18, category: 'Ushqim', unit: 'kg', supplier: 'Furnizuesi 2', description: 'Mish premium' }
+      ];
+
+      const getDefaultSuppliers = () => [
+        { id: 's1', name: 'Furnizuesi 1', phone: '044123456', email: 'f1@mail.com', city: 'Tiranë', address: 'Rr. Durrësit 25' },
+        { id: 's2', name: 'Furnizuesi 2', phone: '068765432', email: 'f2@mail.com', city: 'Shkodër', address: 'Rr. Pjeter Bogdani 10' },
+        { id: 's3', name: 'Furnizuesi 3', phone: '049111222', email: 'f3@mail.com', city: 'Vlorë', address: 'Rr. Bregdeti 8' },
+        { id: 's4', name: 'Furnizuesi 4', phone: '067998877', email: 'f4@mail.com', city: 'Korçë', address: 'Rr. Republika 13' }
+      ];
+
+      const getDefaultCustomers = () => [
+        { id: 'c1', name: 'Arben Xhafa', phone: '067000111', email: 'arben@gmail.com', tier: 'VIP', points: 2500 },
+        { id: 'c2', name: 'Liridona Hoxha', phone: '068222333', email: 'liridona@gmail.com', tier: 'Gold', points: 980 },
+        { id: 'c3', name: 'Klaudio Balla', phone: '069111444', email: 'klaudio@gmail.com', tier: 'Standard', points: 420 }
+      ];
+
+      const buildDemoSales = () => {
+        const now = Date.now();
+        const day = 86400000;
+        return [
+          {
+            id: 'sale_1', receipt: '#INV-1010', date: new Date(now - 6 * day).toISOString(),
+            items: [{name:'Ujë Tepelene 1.5L', qty:2, price:70, cost:50},{name:'Kafe Lavazza 250g', qty:1, price:500, cost:350}],
+            subtotal: 640, discount: 30, total: 610, profit: 270, status: 'Paid'
+          },
+          {
+            id: 'sale_2', receipt: '#INV-1011', date: new Date(now - 4 * day).toISOString(),
+            items: [{name:'Buka e Boshit', qty:3, price:120, cost:80},{name:'USB 32GB', qty:1, price:1500, cost:1000}],
+            subtotal: 1860, discount: 100, total: 1760, profit: 540, status: 'Paid'
+          },
+          {
+            id: 'sale_3', receipt: '#INV-1012', date: new Date(now - 1 * day).toISOString(),
+            items: [{name:'Krem për duar', qty:2, price:380, cost:250}],
+            subtotal: 760, discount: 0, total: 760, profit: 260, status: 'Paid'
+          }
+        ];
+      };
+
+      const renderViews = () => {
+        POS.renderProductGrid();
         POS.renderCart();
         Inventory.renderStats();
         Inventory.renderTable();
-        Suppliers.renderTable();
+        Suppliers.renderSuppliers();
+        Suppliers.renderInvoices();
+        Suppliers.renderStats();
         Reports.renderStats();
-        Reports.renderSales();
-        this.refreshSupplierOptions();
-      },
+        Reports.renderTopProducts();
+        Reports.renderSalesHistory();
+        Loyalty.renderStats();
+        Loyalty.renderCustomers();
+        renderUsersTable();
+        Inventory.refreshSupplierOptions();
+      };
 
-      showToast(msg, type='info') {
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        toast.textContent = msg;
-        document.getElementById('toast-container').appendChild(toast);
-        setTimeout(() => toast.remove(), 2600);
-      },
+      const saveState = () => {
+        localStorage.setItem(STORAGE_KEYS.products, JSON.stringify(state.products));
+        localStorage.setItem(STORAGE_KEYS.suppliers, JSON.stringify(state.suppliers));
+        localStorage.setItem(STORAGE_KEYS.customers, JSON.stringify(state.customers));
+        localStorage.setItem(STORAGE_KEYS.sales, JSON.stringify(state.sales));
+        localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(state.users));
+        localStorage.setItem(STORAGE_KEYS.settings, JSON.stringify(state.settings));
+      };
 
-      exportData() {
+      const showSection = (sectionId) => {
+        document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+        const target = document.getElementById(sectionId);
+        if (target) target.classList.add('active');
+
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+        const selected = document.querySelector('.nav-item[data-target="' + sectionId + '"]');
+        if (selected) selected.classList.add('active');
+
+        const map = {
+          'pos-view': 'Kasa',
+          'inventory-view': 'Stoku & Produktet',
+          'suppliers-view': 'Furnizuesit',
+          'reports-view': 'Raportet & Bilanci',
+          'loyalty-view': 'Klientët (Loyalty)',
+          'settings-view': 'Cilësimet'
+        };
+
+        document.getElementById('section-title').textContent = map[sectionId] || 'POS Market Ultra Pro';
+      };
+
+      const renderUsersTable = () => {
+        const tbody = document.getElementById('users-table-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
+        state.users.forEach(user => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${escapeHtml(user.name)}</td>
+            <td>${roleToText(user.role)}</td>
+            <td>${escapeHtml(user.username)}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      };
+
+      const roleToText = (role) => {
+        const map = { admin: 'Admin', cashier: 'Kasier', manager: 'Menaxher' };
+        return map[role] || 'Admin';
+      };
+
+      const makeId = (prefix = 'id') => `${prefix}_${Math.random().toString(36).slice(2, 10)}`;
+
+      const exportData = () => {
         const payload = {
-          products: this.state.products,
-          suppliers: this.state.suppliers,
-          sales: this.state.sales,
-          exchangeRate: this.state.exchangeRate
+          products: state.products,
+          suppliers: state.suppliers,
+          customers: state.customers,
+          sales: state.sales,
+          users: state.users,
+          settings: state.settings
         };
 
         const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'pos-backup.json';
+        a.download = 'pos-export.json';
         a.click();
         URL.revokeObjectURL(url);
-        this.showToast('Të dhënat u eksportuan.', 'success');
-      },
+        showToast('Të dhënat u eksportuan.', 'success');
+      };
 
-      importData() {
+      const importData = () => {
         document.getElementById('import-file').click();
-      },
+      };
 
-      handleImport(event) {
-        const file = event.target.files[0];
-        if (!file) return;
+      const resetDemoData = () => {
+        if (!confirm('Deshironi të rivendosni të dhënat demo?')) return;
+        state.products = getDefaultProducts();
+        state.suppliers = getDefaultSuppliers();
+        state.customers = getDefaultCustomers();
+        state.sales = buildDemoSales();
+        saveState();
+        renderViews();
+        showToast('Të dhënat demo u rivendosën.', 'success');
+      };
 
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          try {
-            const data = JSON.parse(e.target.result);
+      const openModal = (id) => {
+        const modal = document.getElementById(id);
+        if (modal) modal.classList.add('open');
+      };
 
-            if (data.products) this.state.products = data.products;
-            if (data.suppliers) this.state.suppliers = data.suppliers;
-            if (data.sales) this.state.sales = data.sales;
-            if (data.exchangeRate) this.state.exchangeRate = data.exchangeRate;
+      const closeModal = (id) => {
+        const modal = document.getElementById(id);
+        if (modal) modal.classList.remove('open');
+      };
 
-            document.getElementById('exchange-rate').value = this.state.exchangeRate;
-            this.saveData();
-            this.renderAll();
-            this.showToast('Importimi u krye me sukses.', 'success');
-          } catch (err) {
-            this.showToast('Skedari JSON nuk është valid.', 'danger');
-          }
-        };
-        reader.readAsText(file);
-      }
-    };
+      const showToast = (message, type = 'info') => {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+      };
 
-    const POS = {
-      cart: [],
+      const updateCurrencyDisplay = () => {
+        document.getElementById('currency-display').textContent = state.settings.currency || 'ALL';
+        document.getElementById('exchange-rate-display').textContent = state.settings.exchangeRate || '100';
+      };
 
-      search(query) {
-        const q = query.trim().toLowerCase();
-        const items = !q
-          ? App.state.products
-          : App.state.products.filter(p =>
-              p.name.toLowerCase().includes(q) ||
-              p.barcode.toLowerCase().includes(q) ||
-              (p.category || '').toLowerCase().includes(q)
-            );
-        this.renderProducts(items);
-      },
+      return {
+        state,
+        init,
+        showSection,
+        showToast,
+        saveState,
+        renderViews,
+        makeId,
+        exportData,
+        importData,
+        resetDemoData,
+        roleToText,
+        openModal,
+        closeModal,
+        updateCurrencyDisplay
+      };
+    })();
 
-      renderProducts(items = App.state.products) {
+    const POS = (() => {
+      const getCart = () => App.state.cart;
+
+      const renderProductGrid = (items = App.state.products) => {
         const grid = document.getElementById('product-grid');
+        if (!grid) return;
         grid.innerHTML = '';
 
-        items.forEach(product => {
+        items.forEach(item => {
           const card = document.createElement('div');
           card.className = 'product-card';
           card.innerHTML = `
-            <h4>${product.name}</h4>
-            <div class="price">${product.price} ALL</div>
-            <div class="stock">Stok: ${product.stock} ${product.unit || 'copë'}</div>
+            <h4>${escapeHtml(item.name)}</h4>
+            <div class="price">${Number(item.price).toFixed(0)} ALL</div>
+            <div style="font-size:0.75rem; color:var(--text-soft); margin-bottom:4px;">${item.unit}</div>
+            <div class="stock">Stok: ${item.stock}</div>
           `;
-          card.onclick = () => this.addToCart(product.id);
+          card.addEventListener('click', () => addToCart(item.id));
           grid.appendChild(card);
         });
-      },
+      };
 
-      addToCart(productId) {
+      const handleSearch = (query) => {
+        const q = query.trim().toLowerCase();
+        if (!q) {
+          renderProductGrid(App.state.products);
+          return;
+        }
+
+        const match = App.state.products.find(p => p.barcode.toLowerCase() === q);
+        if (match) {
+          addToCart(match.id);
+          document.getElementById('barcode-input').value = '';
+          renderProductGrid(App.state.products);
+          return;
+        }
+
+        const filtered = App.state.products.filter(p =>
+          p.name.toLowerCase().includes(q) ||
+          p.barcode.toLowerCase().includes(q) ||
+          (p.category || '').toLowerCase().includes(q)
+        );
+        renderProductGrid(filtered);
+      };
+
+      const addToCart = (productId) => {
         const product = App.state.products.find(p => p.id === productId);
         if (!product) return;
+
         if (product.stock <= 0) {
           App.showToast('Produkti nuk është në stok!', 'danger');
           return;
         }
 
-        const existing = this.cart.find(item => item.id === productId);
+        const existing = getCart().find(item => item.product.id === productId);
         if (existing) {
           if (existing.qty + 1 > product.stock) {
             App.showToast('Nuk ka stok të mjaftueshëm!', 'danger');
@@ -957,377 +1613,880 @@
           }
           existing.qty++;
         } else {
-          this.cart.push({ ...product, qty: 1 });
+          getCart().push({ product, qty: 1 });
         }
 
-        this.renderCart();
-      },
+        renderCart();
+      };
 
-      removeFromCart(productId) {
-        this.cart = this.cart.filter(item => item.id !== productId);
-        this.renderCart();
-      },
+      const removeFromCart = (index) => {
+        getCart().splice(index, 1);
+        renderCart();
+      };
 
-      clearCart() {
-        this.cart = [];
-        this.renderCart();
-      },
+      const clearCart = () => {
+        App.state.cart = [];
+        renderCart();
+      };
 
-      renderCart() {
+      const renderCart = () => {
         const tbody = document.getElementById('cart-items');
+        if (!tbody) return;
         tbody.innerHTML = '';
 
-        this.cart.forEach(item => {
+        getCart().forEach((item, index) => {
           const row = document.createElement('tr');
           row.innerHTML = `
-            <td>${item.name}</td>
+            <td>${escapeHtml(item.product.name)}</td>
             <td>
-              <input class="qty-input" type="number" min="1" max="${item.stock}" value="${item.qty}" onchange="POS.updateQty(${item.id}, this.value)">
+              <input class="qty-input" type="number" min="1" max="${item.product.stock}" value="${item.qty}" onchange="POS.updateQty(${index}, this.value)" />
             </td>
-            <td>${(item.price * item.qty).toFixed(0)} ALL</td>
-            <td><button class="btn btn-danger" style="padding:7px 10px;" onclick="POS.removeFromCart(${item.id})">X</button></td>
+            <td>${(item.product.price * item.qty).toFixed(0)}</td>
+            <td><button class="small-btn delete" onclick="POS.removeFromCart(${index})">X</button></td>
           `;
           tbody.appendChild(row);
         });
 
-        this.updateTotals();
-      },
+        updateTotals();
+      };
 
-      updateQty(productId, qty) {
-        const item = this.cart.find(i => i.id === productId);
+      const updateQty = (index, value) => {
+        const qty = parseInt(value, 10);
+        const item = getCart()[index];
         if (!item) return;
 
-        const amount = parseInt(qty, 10);
-        if (isNaN(amount) || amount <= 0) {
-          this.removeFromCart(productId);
+        if (isNaN(qty) || qty <= 0) {
+          removeFromCart(index);
           return;
         }
 
-        const product = App.state.products.find(p => p.id === productId);
-        if (product && amount > product.stock) {
-          item.qty = product.stock;
+        if (qty > item.product.stock) {
           App.showToast('Sasia tejkalon stokun!', 'danger');
-        } else {
-          item.qty = amount;
+          renderCart();
+          return;
         }
 
-        this.renderCart();
-      },
+        item.qty = qty;
+        renderCart();
+      };
 
-      updateTotals() {
-        const subtotal = this.cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const updateTotals = () => {
+        const subtotal = getCart().reduce((sum, item) => sum + (item.product.price * item.qty), 0);
         const discount = parseFloat(document.getElementById('cart-discount').value) || 0;
         const total = Math.max(0, subtotal - discount);
+        const totalEur = total / App.state.settings.exchangeRate;
 
         document.getElementById('cart-subtotal').textContent = `${subtotal.toFixed(0)} ALL`;
         document.getElementById('cart-total').textContent = `${total.toFixed(0)} ALL`;
-      },
+        document.getElementById('cart-total-eur').textContent = `${totalEur.toFixed(2)} €`;
+      };
 
-      calculateChange() {
+      const calculateChange = () => {
         const total = parseFloat(document.getElementById('cart-total').textContent) || 0;
         const paidAll = parseFloat(document.getElementById('payment-all').value) || 0;
         const paidEur = parseFloat(document.getElementById('payment-eur').value) || 0;
 
-        const totalInAll = paidAll + (paidEur * App.state.exchangeRate);
-        const change = totalInAll - total;
+        const paidAllValue = paidAll + (paidEur * App.state.settings.exchangeRate);
+        const change = paidAllValue - total;
 
-        const el = document.getElementById('change-display');
-        el.textContent = `${change.toFixed(0)} ALL`;
-        el.style.color = change >= 0 ? '#86efac' : '#fca5a5';
-      },
+        const display = document.getElementById('change-amount');
+        display.textContent = `${change.toFixed(0)} ALL`;
+        display.style.color = change >= 0 ? '#86efac' : '#fca5a5';
+      };
 
-      checkout() {
-        if (this.cart.length === 0) {
-          App.showToast('Karta është bosh!', 'danger');
+      const checkout = () => {
+        if (getCart().length === 0) {
+          App.showToast('Karta është e bosh!', 'danger');
           return;
         }
 
-        const subtotal = this.cart.reduce((sum, item) => sum + item.price * item.qty, 0);
+        const subtotal = getCart().reduce((sum, item) => sum + (item.product.price * item.qty), 0);
         const discount = parseFloat(document.getElementById('cart-discount').value) || 0;
         const total = Math.max(0, subtotal - discount);
 
-        const profit = this.cart.reduce((sum, item) => {
-          const product = App.state.products.find(p => p.id === item.id);
-          return sum + ((item.price - product.cost) * item.qty);
+        const profit = getCart().reduce((sum, item) => {
+          const itemProfit = (item.product.price - item.product.cost) * item.qty;
+          return sum + itemProfit;
         }, 0);
 
-        this.cart.forEach(item => {
-          const product = App.state.products.find(p => p.id === item.id);
+        getCart().forEach(item => {
+          const product = App.state.products.find(p => p.id === item.product.id);
           if (product) {
-            product.stock = Math.max(0, product.stock - item.qty);
+            product.stock = Math.max(0, Number(product.stock) - Number(item.qty));
           }
         });
 
-        App.state.sales.push({
-          id: App.state.sales.length + 1,
-          receipt: `F-${App.state.sales.length + 1}`,
+        const sale = {
+          id: App.makeId('sale'),
+          receipt: '#INV-' + Math.floor(1000 + Math.random() * 9000),
           date: new Date().toISOString(),
+          items: getCart().map(item => ({
+            name: item.product.name,
+            qty: item.qty,
+            price: item.product.price,
+            cost: item.product.cost
+          })),
           subtotal,
           discount,
           total,
-          profit
-        });
+          profit,
+          status: 'Paid'
+        };
 
-        App.saveData();
-        this.cart = [];
+        App.state.sales.unshift(sale);
+        App.state.cart = [];
         document.getElementById('cart-discount').value = 0;
         document.getElementById('payment-all').value = 0;
         document.getElementById('payment-eur').value = 0;
-        document.getElementById('change-display').textContent = '0 ALL';
-        document.getElementById('change-display').style.color = '#86efac';
+        document.getElementById('change-amount').textContent = '0 ALL';
+        document.getElementById('change-amount').style.color = '#86efac';
 
-        this.renderCart();
-        this.renderProducts();
+        App.saveState();
+        renderCart();
+        renderProductGrid();
         Inventory.renderStats();
         Inventory.renderTable();
         Reports.renderStats();
-        Reports.renderSales();
-
+        Reports.renderTopProducts();
+        Reports.renderSalesHistory();
         App.showToast('Shitja u krye me sukses!', 'success');
-      }
-    };
 
-    const Inventory = {
-      renderStats() {
+        POS.lastInvoice = sale;
+      };
+
+      const printLastInvoice = () => {
+        const invoice = POS.lastInvoice;
+        if (!invoice) {
+          App.showToast('Nuk ka faturë për t'u printuar.', 'danger');
+          return;
+        }
+
+        const win = window.open('', '_blank', 'width=420,height=800');
+        const itemsHtml = invoice.items.map(item => `
+          <tr>
+            <td>${escapeHtml(item.name)}</td>
+            <td>${item.qty}</td>
+            <td>${Number(item.price).toFixed(0)}</td>
+            <td>${(item.qty * item.price).toFixed(0)}</td>
+          </tr>
+        `).join('');
+
+        win.document.write(`
+          <html>
+            <head>
+              <title>${invoice.receipt}</title>
+              <style>
+                body { font-family: Arial, sans-serif; padding: 18px; color: #111; }
+                h2 { text-align: center; margin-bottom: 8px; }
+                table { width: 100%; border-collapse: collapse; margin-top: 12px; }
+                th, td { padding: 6px 4px; border-bottom: 1px solid #ddd; font-size: 0.85rem; }
+                th { text-align: left; }
+                .totals { margin-top: 16px; }
+                .totals div { display: flex; justify-content: space-between; margin: 4px 0; font-weight: 600; }
+                .profit-line { color: green; }
+              </style>
+            </head>
+            <body>
+              <h2 style="font-size:1.3rem; margin-bottom:2px;">POS Market Ultra Pro</h2>
+              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Fatura: ${invoice.receipt}</p>
+              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Data: ${new Date(invoice.date).toLocaleString('sq-AL')}</p>
+              <hr style="margin:8px 0;" />
+              <table>
+                <thead><tr><th>Produkti</th><th>Sasi</th><th>Çmim</th><th>Totali</th></tr></thead>
+                <tbody>${itemsHtml}</tbody>
+              </table>
+              <hr style="margin:8px 0;" />
+              <div class="totals">
+                <div><span>Nëntotali</span><span>${Number(invoice.subtotal).toFixed(0)} ALL</span></div>
+                <div><span>Zbritje</span><span>${Number(invoice.discount).toFixed(0)} ALL</span></div>
+                <div><strong><span>Totali</span><span>${Number(invoice.total).toFixed(0)} ALL</span></strong></div>
+                <div class="profit-line"><strong><span>Fitim</span><span>${Number(invoice.profit).toFixed(0)} ALL</span></strong></div>
+              </div>
+            </body>
+          </html>
+        `);
+
+        win.document.close();
+        win.focus();
+        setTimeout(() => win.print(), 400);
+      };
+
+      return {
+        renderProductGrid,
+        handleSearch,
+        addToCart,
+        removeFromCart,
+        clearCart,
+        renderCart,
+        updateQty,
+        updateTotals,
+        calculateChange,
+        checkout,
+        printLastInvoice,
+        lastInvoice: null
+      };
+    })();
+
+    const Inventory = (() => {
+      const calculateMargin = () => {
+        const cost = Number(document.getElementById('product-cost').value || 0);
+        const price = Number(document.getElementById('product-price').value || 0);
+
+        if (cost > 0) {
+          const margin = ((price - cost) / cost * 100).toFixed(2);
+          document.getElementById('product-margin').value = margin;
+        }
+      };
+
+      const renderStats = () => {
+        const stats = document.getElementById('inventory-stats');
+        if (!stats) return;
+
         const totalProducts = App.state.products.length;
-        const totalStock = App.state.products.reduce((sum, p) => sum + p.stock, 0);
-        const totalValue = App.state.products.reduce((sum, p) => sum + (p.price * p.stock), 0);
+        const totalStock = App.state.products.reduce((sum, p) => sum + Number(p.stock || 0), 0);
+        const lowStock = App.state.products.filter(p => Number(p.stock) <= 5).length;
+        const totalValue = App.state.products.reduce((sum, p) => sum + (Number(p.price || 0) * Number(p.stock || 0)), 0);
+        const totalCost = App.state.products.reduce((sum, p) => sum + (Number(p.cost || 0) * Number(p.stock || 0)), 0);
+        const potentialProfit = totalValue - totalCost;
 
-        const stats = `
+        stats.innerHTML = `
           <div class="stat-card">
-            <div class="stat-label">Produkte</div>
-            <div class="stat-value">${totalProducts}</div>
-            <div class="stat-meta">Totali i produkteve</div>
+            <div class="label">Produkte</div>
+            <div class="value">${totalProducts}</div>
+            <div class="meta">Total produkteve</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Sasia totale</div>
-            <div class="stat-value">${totalStock}</div>
-            <div class="stat-meta">Në magazinë</div>
+            <div class="label">Sasia totale</div>
+            <div class="value">${totalStock}</div>
+            <div class="meta">Në magazinë</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Vlera stokut</div>
-            <div class="stat-value">${totalValue} ALL</div>
-            <div class="stat-meta">Vlera e produkteve</div>
+            <div class="label">Me stok të ulët</div>
+            <div class="value">${lowStock}</div>
+            <div class="meta">Kritike</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Vlera e stokut</div>
+            <div class="value">${totalValue.toFixed(0)} ALL</div>
+            <div class="meta">Vlera shitjeje</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Fitim potencial</div>
+            <div class="value">${potentialProfit.toFixed(0)} ALL</div>
+            <div class="meta">${((potentialProfit / totalValue * 100) || 0).toFixed(1)}% margin</div>
           </div>
         `;
+      };
 
-        document.getElementById('inventory-stats').innerHTML = stats;
-      },
+      const renderTable = (items = App.state.products) => {
+        const tbody = document.getElementById('inventory-table-body');
+        if (!tbody) return;
 
-      renderTable() {
-        const tbody = document.getElementById('inventory-items');
         tbody.innerHTML = '';
-
-        App.state.products.forEach((product, index) => {
-          const margin = product.cost > 0 ? (((product.price - product.cost) / product.cost) * 100).toFixed(1) : 0;
-
+        items.forEach((product, index) => {
+          const margin = product.cost > 0 ? ((product.price - product.cost) / product.cost * 100).toFixed(1) : 0;
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${product.name}</td>
-            <td>${product.barcode}</td>
-            <td>${product.unit || 'copë'}</td>
-            <td>${product.price} ALL</td>
-            <td>${product.cost} ALL</td>
-            <td>${margin}%</td>
-            <td>${product.stock}</td>
+            <td>${escapeHtml(product.name)}</td>
+            <td>${escapeHtml(product.barcode)}</td>
+            <td>${escapeHtml(product.category || 'Tjetër')}</td>
+            <td>${escapeHtml(product.unit || 'copë')}</td>
+            <td>${Number(product.price).toFixed(0)} ALL</td>
+            <td>${Number(product.cost).toFixed(0)} ALL</td>
+            <td><span class="margin-badge">${margin}%</span></td>
+            <td><span class="status-badge ${Number(product.stock) <= 5 ? 'status-warn' : 'status-good'}">${product.stock}</span></td>
             <td>
-              <button class="btn btn-danger" style="padding:7px 10px;" onclick="Inventory.deleteProduct(${product.id})">Fshi</button>
+              <button class="small-btn edit" onclick="Inventory.editProduct('${product.id}')">Edit</button>
+              <button class="small-btn delete" onclick="Inventory.deleteProduct('${product.id}')">Delete</button>
             </td>
           `;
           tbody.appendChild(row);
         });
-      },
+      };
 
-      saveProduct(event) {
-        event.preventDefault();
+      const filterProducts = (query) => {
+        const q = query.trim().toLowerCase();
+        if (!q) return renderTable(App.state.products);
 
-        const name = document.getElementById('product-name').value.trim();
-        const barcode = document.getElementById('product-barcode').value.trim();
-        const unit = document.getElementById('product-unit').value;
-        const category = document.getElementById('product-category').value;
-        const cost = Number(document.getElementById('product-cost').value);
-        const price = Number(document.getElementById('product-price').value);
-        const stock = Number(document.getElementById('product-stock').value);
-        const supplier = document.getElementById('product-supplier').value || 'N/A';
+        const filtered = App.state.products.filter(p =>
+          p.name.toLowerCase().includes(q) ||
+          p.barcode.toLowerCase().includes(q) ||
+          (p.category || '').toLowerCase().includes(q)
+        );
+        renderTable(filtered);
+      };
 
-        if (!name || !barcode || !cost || !price || !stock) {
-          App.showToast('Plotësoni të gjitha fushat!', 'danger');
+      const openProductModal = () => {
+        document.getElementById('product-form').reset();
+        document.getElementById('product-id').value = '';
+        App.openModal('product-modal');
+      };
+
+      const editProduct = (id) => {
+        const product = App.state.products.find(p => p.id === id);
+        if (!product) return;
+
+        document.getElementById('product-id').value = product.id;
+        document.getElementById('product-name').value = product.name;
+        document.getElementById('product-barcode').value = product.barcode;
+        document.getElementById('product-price').value = product.price;
+        document.getElementById('product-cost').value = product.cost || 0;
+        document.getElementById('product-stock').value = product.stock;
+        document.getElementById('product-category').value = product.category || 'Pije';
+        document.getElementById('product-unit').value = product.unit || 'copë';
+        document.getElementById('product-supplier').value = product.supplier || '';
+        document.getElementById('product-description').value = product.description || '';
+        calculateMargin();
+
+        App.openModal('product-modal');
+      };
+
+      const saveProduct = () => {
+        const product = {
+          id: document.getElementById('product-id').value || App.makeId('p'),
+          name: document.getElementById('product-name').value.trim(),
+          barcode: document.getElementById('product-barcode').value.trim(),
+          price: Number(document.getElementById('product-price').value || 0),
+          cost: Number(document.getElementById('product-cost').value || 0),
+          stock: Number(document.getElementById('product-stock').value || 0),
+          category: document.getElementById('product-category').value || 'Tjetër',
+          unit: document.getElementById('product-unit').value || 'copë',
+          supplier: document.getElementById('product-supplier').value || 'N/A',
+          description: document.getElementById('product-description').value.trim()
+        };
+
+        if (!product.name || !product.barcode) {
+          App.showToast('Emri dhe barcode-i janë të detyrueshëm.', 'danger');
           return;
         }
 
-        const product = {
-          id: App.state.products.length ? App.state.products[App.state.products.length - 1].id + 1 : 1,
-          name,
-          barcode,
-          unit,
-          category,
-          cost,
-          price,
-          stock,
-          supplier
-        };
+        const index = App.state.products.findIndex(p => p.id === product.id);
+        if (index >= 0) {
+          App.state.products[index] = product;
+        } else {
+          App.state.products.push(product);
+        }
 
-        App.state.products.push(product);
-        App.saveData();
-        this.renderStats();
-        this.renderTable();
-        POS.renderProducts();
-        App.refreshSupplierOptions();
-        closeModal('product-modal');
-        App.showToast('Produkti u shtua me sukses!', 'success');
-      },
+        App.saveState();
+        renderStats();
+        renderTable();
+        POS.renderProductGrid();
+        App.closeModal('product-modal');
+        App.showToast('Produkti u ruajt me sukses.', 'success');
+      };
 
-      deleteProduct(productId) {
-        App.state.products = App.state.products.filter(p => p.id !== productId);
-        App.saveData();
-        this.renderStats();
-        this.renderTable();
-        POS.renderProducts();
-        App.showToast('Produkti u fshi.', 'success');
-      }
-    };
+      const deleteProduct = (id) => {
+        const product = App.state.products.find(p => p.id === id);
+        if (!product) return;
 
-    const Suppliers = {
-      renderTable() {
-        const tbody = document.getElementById('suppliers-items');
+        if (!confirm('Jeni i sigurt që doni të fshini produktin?')) return;
+
+        App.state.products = App.state.products.filter(p => p.id !== id);
+        App.saveState();
+        renderStats();
+        renderTable();
+        POS.renderProductGrid();
+        App.showToast(`Produkti "${product.name}" u fshi.`, 'success');
+      };
+
+      const refreshSupplierOptions = () => {
+        const select = document.getElementById('product-supplier');
+        if (!select) return;
+        select.innerHTML = '';
+
+        App.state.suppliers.forEach(s => {
+          const option = document.createElement('option');
+          option.value = s.name;
+          option.textContent = s.name;
+          select.appendChild(option);
+        });
+      };
+
+      return {
+        calculateMargin,
+        renderStats,
+        renderTable,
+        filterProducts,
+        openProductModal,
+        editProduct,
+        saveProduct,
+        deleteProduct,
+        refreshSupplierOptions
+      };
+    })();
+
+    const Suppliers = (() => {
+      const renderSuppliers = () => {
+        const tbody = document.getElementById('supplier-table-body');
+        if (!tbody) return;
         tbody.innerHTML = '';
 
         App.state.suppliers.forEach((supplier, index) => {
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${supplier.name}</td>
-            <td>${supplier.phone || '-'}</td>
-            <td>${supplier.email || '-'}</td>
-            <td><button class="btn btn-danger" style="padding:7px 10px;" onclick="Suppliers.deleteSupplier(${supplier.id})">Fshi</button></td>
+            <td>${escapeHtml(supplier.name)}</td>
+            <td>${escapeHtml(supplier.phone || '-')}</td>
+            <td>${escapeHtml(supplier.email || '-')}</td>
+            <td>${escapeHtml(supplier.city || '-')}</td>
+            <td>
+              <button class="small-btn edit" onclick="Suppliers.editSupplier('${supplier.id}')">Edit</button>
+              <button class="small-btn delete" onclick="Suppliers.deleteSupplier('${supplier.id}')">Delete</button>
+            </td>
           `;
           tbody.appendChild(row);
         });
+      };
 
-        App.refreshSupplierOptions();
-      },
+      const renderInvoices = () => {
+        const tbody = document.getElementById('supplier-invoices-body');
+        if (!tbody) return;
+        tbody.innerHTML = '';
 
-      saveSupplier(event) {
-        event.preventDefault();
+        const arr = [
+          { nr: 'F-1001', supplier: 'Furnizuesi 1', value: 18500, status: 'Në pritje' },
+          { nr: 'F-1002', supplier: 'Furnizuesi 3', value: 9200, status: 'Paguar' },
+          { nr: 'F-1003', supplier: 'Furnizuesi 4', value: 24500, status: 'Në pritje' }
+        ];
 
-        const name = document.getElementById('supplier-name').value.trim();
-        const phone = document.getElementById('supplier-phone').value.trim();
-        const email = document.getElementById('supplier-email').value.trim();
+        arr.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${item.nr}</td>
+            <td>${item.supplier}</td>
+            <td>${Number(item.value).toFixed(0)} ALL</td>
+            <td><span class="status-badge ${item.status === 'Paguar' ? 'status-good' : 'status-warn'}">${item.status}</span></td>
+          `;
+          tbody.appendChild(row);
+        });
+      };
 
-        if (!name) {
-          App.showToast('Emri i furnizuesit është i detyrueshëm!', 'danger');
+      const renderStats = () => {
+        const stats = document.getElementById('supplier-stats');
+        if (!stats) return;
+
+        const totalSuppliers = App.state.suppliers.length;
+
+        stats.innerHTML = `
+          <div class="stat-card">
+            <div class="label">Furnizues</div>
+            <div class="value">${totalSuppliers}</div>
+            <div class="meta">Total furnizuesish</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Fatura të hapura</div>
+            <div class="value">2</div>
+            <div class="meta">Në pritje</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Vlera</div>
+            <div class="value">52200 ALL</div>
+            <div class="meta">Vlera totale</div>
+          </div>
+        `;
+      };
+
+      const openModal = () => {
+        document.getElementById('supplier-form').reset();
+        document.getElementById('supplier-id').value = '';
+        App.openModal('supplier-modal');
+      };
+
+      const editSupplier = (id) => {
+        const supplier = App.state.suppliers.find(s => s.id === id);
+        if (!supplier) return;
+        document.getElementById('supplier-id').value = supplier.id;
+        document.getElementById('supplier-name').value = supplier.name;
+        document.getElementById('supplier-phone').value = supplier.phone || '';
+        document.getElementById('supplier-email').value = supplier.email || '';
+        document.getElementById('supplier-city').value = supplier.city || '';
+        document.getElementById('supplier-address').value = supplier.address || '';
+        App.openModal('supplier-modal');
+      };
+
+      const saveSupplier = () => {
+        const supplier = {
+          id: document.getElementById('supplier-id').value || App.makeId('s'),
+          name: document.getElementById('supplier-name').value.trim(),
+          phone: document.getElementById('supplier-phone').value.trim(),
+          email: document.getElementById('supplier-email').value.trim(),
+          city: document.getElementById('supplier-city').value.trim(),
+          address: document.getElementById('supplier-address').value.trim()
+        };
+
+        if (!supplier.name) {
+          App.showToast('Emri i furnizuesit është i detyrueshëm.', 'danger');
           return;
         }
 
-        const supplier = {
-          id: App.state.suppliers.length ? App.state.suppliers[App.state.suppliers.length - 1].id + 1 : 1,
-          name,
-          phone,
-          email
-        };
+        const index = App.state.suppliers.findIndex(s => s.id === supplier.id);
+        if (index >= 0) App.state.suppliers[index] = supplier;
+        else App.state.suppliers.push(supplier);
 
-        App.state.suppliers.push(supplier);
-        App.saveData();
-        this.renderTable();
-        closeModal('supplier-modal');
-        App.showToast('Furnizuesi u shtua me sukses!', 'success');
-      },
+        App.saveState();
+        renderSuppliers();
+        renderStats();
+        Inventory.refreshSupplierOptions();
+        App.closeModal('supplier-modal');
+        App.showToast('Furnizuesi u ruajt me sukses.', 'success');
+      };
 
-      deleteSupplier(supplierId) {
-        App.state.suppliers = App.state.suppliers.filter(s => s.id !== supplierId);
-        App.saveData();
-        this.renderTable();
-        App.showToast('Furnizuesi u fshi.', 'success');
-      }
-    };
+      const deleteSupplier = (id) => {
+        const supplier = App.state.suppliers.find(s => s.id === id);
+        if (!supplier) return;
 
-    const Reports = {
-      renderStats() {
-        const totalSales = App.state.sales.reduce((sum, s) => sum + s.total, 0);
-        const totalProfit = App.state.sales.reduce((sum, s) => sum + s.profit, 0);
-        const totalDiscount = App.state.sales.reduce((sum, s) => sum + s.discount, 0);
+        if (!confirm('Jeni i sigurt që doni të fshini furnizuesin?')) return;
 
-        const stats = `
+        App.state.suppliers = App.state.suppliers.filter(s => s.id !== id);
+        App.saveState();
+        renderSuppliers();
+        renderStats();
+        Inventory.refreshSupplierOptions();
+        App.showToast(`Furnizuesi "${supplier.name}" u fshi.`, 'success');
+      };
+
+      return {
+        renderSuppliers,
+        renderInvoices,
+        renderStats,
+        openModal,
+        editSupplier,
+        saveSupplier,
+        deleteSupplier
+      };
+    })();
+
+    const Reports = (() => {
+      const renderStats = () => {
+        const stats = document.getElementById('report-stats');
+        if (!stats) return;
+
+        const totalSales = App.state.sales.reduce((sum, sale) => sum + Number(sale.total || 0), 0);
+        const totalProfit = App.state.sales.reduce((sum, sale) => sum + Number(sale.profit || 0), 0);
+        const avgTicket = App.state.sales.length ? totalSales / App.state.sales.length : 0;
+        const totalDiscounts = App.state.sales.reduce((sum, sale) => sum + Number(sale.discount || 0), 0);
+        const todayValue = App.state.sales.filter(sale => {
+          const d = new Date(sale.date);
+          const t = new Date();
+          return d.toDateString() === t.toDateString();
+        }).reduce((sum, sale) => sum + Number(sale.total || 0), 0);
+
+        stats.innerHTML = `
           <div class="stat-card">
-            <div class="stat-label">Shitjet totale</div>
-            <div class="stat-value">${totalSales.toFixed(0)} ALL</div>
-            <div class="stat-meta">Totali i faturave</div>
+            <div class="label">Shitjet totale</div>
+            <div class="value">${totalSales.toFixed(0)} ALL</div>
+            <div class="meta">Të gjitha faturat</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Fitimi total</div>
-            <div class="stat-value">${totalProfit.toFixed(0)} ALL</div>
-            <div class="stat-meta">Fitimi i shitur</div>
+            <div class="label">Fitimi total</div>
+            <div class="value">${totalProfit.toFixed(0)} ALL</div>
+            <div class="meta">${((totalProfit / totalSales * 100) || 0).toFixed(1)}% margin</div>
           </div>
           <div class="stat-card">
-            <div class="stat-label">Zbritjet</div>
-            <div class="stat-value">${totalDiscount.toFixed(0)} ALL</div>
-            <div class="stat-meta">Totali i zbritjeve</div>
+            <div class="label">Mesatarja</div>
+            <div class="value">${avgTicket.toFixed(0)} ALL</div>
+            <div class="meta">Për faturë</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Zbritjet</div>
+            <div class="value">${totalDiscounts.toFixed(0)} ALL</div>
+            <div class="meta">Totali zbritjesh</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Ditore</div>
+            <div class="value">${todayValue.toFixed(0)} ALL</div>
+            <div class="meta">Shitjet e sotme</div>
           </div>
         `;
+      };
 
-        document.getElementById('reports-stats').innerHTML = stats;
-      },
+      const renderTopProducts = () => {
+        const body = document.getElementById('top-products-body');
+        if (!body) return;
+        body.innerHTML = '';
 
-      renderSales() {
-        const tbody = document.getElementById('sales-items');
+        const map = new Map();
+
+        App.state.sales.forEach(sale => {
+          sale.items.forEach(item => {
+            const key = item.name;
+            const current = map.get(key) || { qty: 0, total: 0, profit: 0 };
+            current.qty += Number(item.qty || 0);
+            current.total += Number(item.qty || 0) * Number(item.price || 0);
+            current.profit += (Number(item.price || 0) - Number(item.cost || 0)) * Number(item.qty || 0);
+            map.set(key, current);
+          });
+        });
+
+        const rows = [...map.entries()].sort((a, b) => b[1].qty - a[1].qty).slice(0, 5);
+
+        rows.forEach(([name, data]) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${escapeHtml(name)}</td>
+            <td>${data.qty}</td>
+            <td>${data.total.toFixed(0)} ALL</td>
+            <td><span class="margin-badge">${data.profit.toFixed(0)} ALL</span></td>
+          `;
+          body.appendChild(row);
+        });
+      };
+
+      const renderSalesHistory = () => {
+        const body = document.getElementById('sales-history-body');
+        if (!body) return;
+
+        body.innerHTML = '';
+        App.state.sales.forEach(sale => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${escapeHtml(sale.receipt)}</td>
+            <td>${new Date(sale.date).toLocaleDateString('sq-AL')}</td>
+            <td>${sale.items.map(item => `${item.name} (${item.qty})`).join(', ')}</td>
+            <td>${Number(sale.total).toFixed(0)} ALL</td>
+            <td>${Number(sale.discount).toFixed(0)} ALL</td>
+            <td><span class="margin-badge">${Number(sale.profit).toFixed(0)} ALL</span></td>
+            <td><span class="status-badge status-good">${sale.status}</span></td>
+            <td><button class="small-btn success" onclick="Reports.printSale('${sale.receipt}')">Print</button></td>
+          `;
+          body.appendChild(row);
+        });
+      };
+
+      const printSale = (receipt) => {
+        const sale = App.state.sales.find(s => s.receipt === receipt);
+        if (!sale) return;
+
+        const win = window.open('', '_blank', 'width=420,height=800');
+        const itemsHtml = sale.items.map(item => `
+          <tr>
+            <td>${escapeHtml(item.name)}</td>
+            <td>${item.qty}</td>
+            <td>${Number(item.price).toFixed(0)}</td>
+            <td>${(item.qty * item.price).toFixed(0)}</td>
+          </tr>
+        `).join('');
+
+        win.document.write(`
+          <html>
+            <head>
+              <style>
+                body { font-family: Arial, sans-serif; padding: 18px; color: #111; }
+                table { width: 100%; border-collapse: collapse; }
+                th, td { padding: 6px 4px; border-bottom: 1px solid #ddd; text-align: left; font-size: 0.85rem; }
+                .totals { margin-top: 16px; }
+                .totals div { display: flex; justify-content: space-between; margin: 4px 0; font-weight: 600; }
+              </style>
+            </head>
+            <body>
+              <h2 style="text-align:center; font-size:1.3rem; margin-bottom:8px;">POS Market Ultra Pro</h2>
+              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Fatura: ${sale.receipt}</p>
+              <p style="text-align:center; margin:2px 0; font-size:0.8rem;">Data: ${new Date(sale.date).toLocaleString('sq-AL')}</p>
+              <hr style="margin:8px 0;" />
+              <table>
+                <thead><tr><th>Produkti</th><th>Sasi</th><th>Çmim</th><th>Totali</th></tr></thead>
+                <tbody>${itemsHtml}</tbody>
+              </table>
+              <hr style="margin:8px 0;" />
+              <div class="totals">
+                <div><span>Nëntotali</span><span>${Number(sale.subtotal).toFixed(0)} ALL</span></div>
+                <div><span>Zbritje</span><span>${Number(sale.discount).toFixed(0)} ALL</span></div>
+                <div><strong><span>Totali</span><span>${Number(sale.total).toFixed(0)} ALL</span></strong></div>
+                <div style="color:green;"><strong><span>Fitim</span><span>${Number(sale.profit).toFixed(0)} ALL</span></strong></div>
+              </div>
+            </body>
+          </html>
+        `);
+
+        win.document.close();
+        win.focus();
+        setTimeout(() => win.print(), 400);
+      };
+
+      const generateDemoReport = () => {
+        App.state.sales.unshift({
+          id: App.makeId('sale'),
+          receipt: '#INV-' + Math.floor(2000 + Math.random() * 9000),
+          date: new Date().toISOString(),
+          items: [
+            { name: 'Mishi i freskët', qty: 2, price: 650, cost: 500 },
+            { name: 'Buka e Boshit', qty: 3, price: 120, cost: 80 }
+          ],
+          subtotal: 1660,
+          discount: 50,
+          total: 1610,
+          profit: 500,
+          status: 'Paid'
+        });
+
+        App.saveState();
+        renderStats();
+        renderTopProducts();
+        renderSalesHistory();
+        App.showToast('Raporti u krijua me sukses.', 'success');
+      };
+
+      return {
+        renderStats,
+        renderTopProducts,
+        renderSalesHistory,
+        printSale,
+        generateDemoReport
+      };
+    })();
+
+    const Loyalty = (() => {
+      const renderStats = () => {
+        const stats = document.getElementById('loyalty-stats');
+        if (!stats) return;
+
+        const vip = App.state.customers.filter(c => c.tier === 'VIP').length;
+        const gold = App.state.customers.filter(c => c.tier === 'Gold').length;
+        const totalPoints = App.state.customers.reduce((sum, c) => sum + Number(c.points || 0), 0);
+
+        stats.innerHTML = `
+          <div class="stat-card">
+            <div class="label">VIP</div>
+            <div class="value">${vip}</div>
+            <div class="meta">Klientë VIP</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Gold</div>
+            <div class="value">${gold}</div>
+            <div class="meta">Klientë Gold</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">Pikat totale</div>
+            <div class="value">${totalPoints}</div>
+            <div class="meta">Pikat në sistem</div>
+          </div>
+        `;
+      };
+
+      const renderCustomers = () => {
+        const tbody = document.getElementById('customer-table-body');
+        if (!tbody) return;
         tbody.innerHTML = '';
 
-        App.state.sales.forEach((sale, index) => {
+        App.state.customers.forEach((customer, index) => {
           const row = document.createElement('tr');
           row.innerHTML = `
             <td>${index + 1}</td>
-            <td>${new Date(sale.date).toLocaleDateString('sq-AL')}</td>
-            <td>${sale.total.toFixed(0)} ALL</td>
-            <td>${sale.profit.toFixed(0)} ALL</td>
-            <td>${sale.discount.toFixed(0)} ALL</td>
+            <td>${escapeHtml(customer.name)}</td>
+            <td>${escapeHtml(customer.phone || '-')}</td>
+            <td>${escapeHtml(customer.email || '-')}</td>
+            <td>${escapeHtml(customer.tier || 'Standard')}</td>
+            <td>${Number(customer.points || 0)}</td>
+            <td>
+              <button class="small-btn edit" onclick="Loyalty.editCustomer('${customer.id}')">Edit</button>
+              <button class="small-btn delete" onclick="Loyalty.deleteCustomer('${customer.id}')">Delete</button>
+            </td>
           `;
           tbody.appendChild(row);
         });
-      }
-    };
+      };
 
-    const Settings = {
-      saveExchangeRate() {
-        const rate = Number(document.getElementById('exchange-rate').value);
-        if (!rate || rate <= 0) {
-          App.showToast('Kursi duhet të jetë pozitiv!', 'danger');
+      const openModal = () => {
+        document.getElementById('customer-form').reset();
+        document.getElementById('customer-id').value = '';
+        document.getElementById('customer-points').value = 0;
+        App.openModal('customer-modal');
+      };
+
+      const editCustomer = (id) => {
+        const customer = App.state.customers.find(c => c.id === id);
+        if (!customer) return;
+
+        document.getElementById('customer-id').value = customer.id;
+        document.getElementById('customer-name').value = customer.name;
+        document.getElementById('customer-phone').value = customer.phone || '';
+        document.getElementById('customer-email').value = customer.email || '';
+        document.getElementById('customer-tier').value = customer.tier || 'Standard';
+        document.getElementById('customer-points').value = customer.points || 0;
+        App.openModal('customer-modal');
+      };
+
+      const saveCustomer = () => {
+        const customer = {
+          id: document.getElementById('customer-id').value || App.makeId('c'),
+          name: document.getElementById('customer-name').value.trim(),
+          phone: document.getElementById('customer-phone').value.trim(),
+          email: document.getElementById('customer-email').value.trim(),
+          tier: document.getElementById('customer-tier').value,
+          points: Number(document.getElementById('customer-points').value || 0)
+        };
+
+        if (!customer.name) {
+          App.showToast('Emri i klientit është i detyrueshëm.', 'danger');
           return;
         }
-        App.state.exchangeRate = rate;
-        App.saveData();
-        App.showToast('Kursi u ruajt me sukses.', 'success');
-      }
-    };
 
-    function openProductModal() {
-      document.getElementById('product-name').value = '';
-      document.getElementById('product-barcode').value = '';
-      document.getElementById('product-cost').value = '';
-      document.getElementById('product-price').value = '';
-      document.getElementById('product-stock').value = '';
-      openModal('product-modal');
-    }
+        const index = App.state.customers.findIndex(c => c.id === customer.id);
+        if (index >= 0) App.state.customers[index] = customer;
+        else App.state.customers.push(customer);
 
-    function openSupplierModal() {
-      document.getElementById('supplier-name').value = '';
-      document.getElementById('supplier-phone').value = '';
-      document.getElementById('supplier-email').value = '';
-      openModal('supplier-modal');
-    }
+        App.saveState();
+        renderCustomers();
+        renderStats();
+        App.closeModal('customer-modal');
+        App.showToast('Klienti u ruajt me sukses.', 'success');
+      };
 
-    function openModal(id) {
-      document.getElementById(id).classList.add('open');
-    }
+      const deleteCustomer = (id) => {
+        const customer = App.state.customers.find(c => c.id === id);
+        if (!customer) return;
 
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('open');
+        if (!confirm('Jeni i sigurt që doni të fshini klientin?')) return;
+
+        App.state.customers = App.state.customers.filter(c => c.id !== id);
+        App.saveState();
+        renderCustomers();
+        renderStats();
+        App.showToast(`Klienti "${customer.name}" u fshi.`, 'success');
+      };
+
+      return {
+        renderStats,
+        renderCustomers,
+        openModal,
+        editCustomer,
+        saveCustomer,
+        deleteCustomer
+      };
+    })();
+
+    const Settings = (() => {
+      const updateExchangeRate = () => {
+        const rate = parseFloat(document.getElementById('exchange-rate').value);
+        if (isNaN(rate) || rate <= 0) {
+          App.showToast('Kursi duhet të jetë një numër pozitiv.', 'danger');
+          return;
+        }
+
+        App.state.settings.exchangeRate = rate;
+        App.saveState();
+        App.updateCurrencyDisplay();
+        POS.updateTotals();
+        App.showToast('Kursi i këmbimit u përditësua me sukses.', 'success');
+      };
+
+      return {
+        updateExchangeRate
+      };
+    })();
+
+    function escapeHtml(value) {
+      return String(value || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     document.addEventListener('DOMContentLoaded', () => {
       App.init();
-      POS.renderProducts();
-      POS.renderCart();
     });
   </script>
 </body>
